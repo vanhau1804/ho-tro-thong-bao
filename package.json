@@ -1,0 +1,13 @@
+{
+  "name": "theo-doi-hoc-tap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ứng dụng theo dõi học tập cho phụ huynh, chạy trên Node, nhắc việc qua Telegram",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
