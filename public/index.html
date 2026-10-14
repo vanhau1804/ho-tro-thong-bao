@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Theo dõi học tập & Lịch thông báo</title>
+<title>Theo dõi học tập</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -195,21 +195,12 @@ main::-webkit-scrollbar { display: none; }
   border: 1px solid #E2E8F0;
   background: #fff;
   border-radius: 12px;
-  padding: 7px 12px;
+  padding: 7px 13px;
   font-weight: 700;
   font-size: 12px;
   cursor: pointer;
   white-space: nowrap;
   color: var(--muted);
-  text-align: center;
-  line-height: 1.25;
-}
-.chips button small {
-  display: block;
-  font-size: 10px;
-  font-weight: 500;
-  opacity: 0.8;
-  margin-top: 2px;
 }
 .chips button.on {
   background: var(--purple);
@@ -225,17 +216,8 @@ main::-webkit-scrollbar { display: none; }
   padding: 5px 8px;
   border-radius: 8px;
   text-align: center;
-  min-width: 56px;
+  min-width: 52px;
   line-height: 1.25;
-}
-.date-group {
-  font-size: 12.5px;
-  font-weight: 700;
-  margin: 14px 4px 6px;
-  color: var(--purple-dark);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 .empty {
   text-align: center;
@@ -354,7 +336,7 @@ nav button {
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 14px;
 }
 nav button .ic {
@@ -454,12 +436,12 @@ nav button.on { color: var(--purple); background: var(--purple-light); }
     </button>
     <button data-s="week">
       <span class="ic">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
-      </span>Lịch thông báo
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </span>Lịch học
     </button>
     <button data-s="tomorrow">
       <span class="ic">
-        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <i class="badge" id="nbadge" hidden>0</i>
       </span>Ngày mai
     </button>
@@ -469,4 +451,484 @@ nav button.on { color: var(--purple); background: var(--purple-light); }
       </span>Hồ sơ
     </button>
   </nav>
-  <div class
+  <div class="overlay" id="overlay"><div class="sheet" id="sheet"></div></div>
+  <div class="toast" id="toast"></div>
+  <input type="file" id="csvFile" accept=".csv,text/csv" hidden>
+</div>
+<script>
+const SUBJ = {"Toán":"#3B82F6","Tiếng Việt":"#EC4899","Tiếng Anh":"#10B981","Tự nhiên & Xã hội":"#F97316","Mỹ thuật":"#F59E0B","Khác":"#6366F1"};
+const DAYS = ["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"];
+const TODAY = 1, TOMORROW = 2;
+const KEY = "theodoihoctap-v1";
+const DEFAULT = {
+  child: {name:"Bé An", cls:"Lớp 3A", year:"2026-2027"},
+  reminder: "19:00",
+  tasks: [
+    {id:1, t:"Làm bài tập Toán trang 45", s:"Toán", due:"today", time:"19:00", done:true},
+    {id:2, t:"Đọc 10 phút sách Tiếng Việt", s:"Tiếng Việt", due:"today", time:"20:00", done:true},
+    {id:3, t:"Ôn 10 từ vựng Tiếng Anh", s:"Tiếng Anh", due:"today", time:"20:30", done:false},
+    {id:4, t:"Ký sổ liên lạc", s:"Khác", due:"tomorrow", time:"07:00", done:false}
+  ],
+  schedule: {
+    0:[{id:11,time:"07:30",s:"Toán",room:"Phòng 3A"},{id:12,time:"08:30",s:"Tiếng Việt",room:"Phòng 3A"},{id:13,time:"10:00",s:"Tiếng Anh",room:"Phòng 2B"}],
+    1:[{id:21,time:"07:30",s:"Tự nhiên & Xã hội",room:"Phòng 3A"},{id:22,time:"08:30",s:"Toán",room:"Phòng 3A"},{id:23,time:"10:00",s:"Mỹ thuật",room:"Phòng 1A"}],
+    2:[{id:31,time:"07:30",s:"Tiếng Việt",room:"Phòng 3A"},{id:32,time:"09:30",s:"Mỹ thuật",room:"Phòng 1A"}],
+    3:[{id:41,time:"07:30",s:"Toán",room:"Phòng 3A"}],
+    4:[{id:51,time:"07:30",s:"Tiếng Anh",room:"Phòng 2B"}],
+    5:[{id:52,time:"08:00",s:"Tiếng Anh",room:"Phòng 2B"}],
+    6:[]
+  },
+  prep: [{id:61, t:"Hộp sữa buổi sáng", done:false}],
+  autoChecked: {},
+  habits: [],
+  reminders: [],
+  scores: [
+    {id:71, s:"Toán", score:9, note:"Kiểm tra 15 phút", date:"2026-10-06"},
+    {id:72, s:"Tiếng Việt", score:7, note:"Chính tả", date:"2026-10-08"},
+    {id:73, s:"Tiếng Anh", score:8, note:"Từ vựng", date:"2026-10-09"}
+  ],
+  nextId: 100
+};
+
+function normalizeState(raw) {
+  const d = JSON.parse(JSON.stringify(DEFAULT));
+  if (!raw || typeof raw !== "object") return d;
+  return Object.assign({}, d, raw, {
+    child: Object.assign({}, d.child, raw.child || {}),
+    tasks: Array.isArray(raw.tasks) ? raw.tasks : d.tasks,
+    schedule: (raw.schedule && typeof raw.schedule === "object") ? raw.schedule : d.schedule,
+    prep: Array.isArray(raw.prep) ? raw.prep : d.prep,
+    autoChecked: (raw.autoChecked && typeof raw.autoChecked === "object") ? raw.autoChecked : {},
+    habits: Array.isArray(raw.habits) ? raw.habits : [],
+    reminders: Array.isArray(raw.reminders) ? raw.reminders : [],
+    scores: Array.isArray(raw.scores) ? raw.scores : d.scores,
+    nextId: Number(raw.nextId) || 100
+  });
+}
+
+let S;
+try { S = normalizeState(JSON.parse(localStorage.getItem(KEY))); } catch(e) { S = normalizeState(null); }
+let TG = {};
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {}
+  fetch("/api/state", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(S)}).catch(function(){});
+}
+
+async function loadServer() {
+  try {
+    const r = await fetch("/api/state");
+    if (r.ok) {
+      const j = await r.json();
+      TG = j.telegram || {};
+      if (j.state && Object.keys(j.state).length > 0) S = normalizeState(j.state);
+    }
+  } catch(e) {}
+  render();
+}
+
+async function tgPost(u, body, ok) {
+  try {
+    const r = await fetch(u, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || "Có lỗi xảy ra");
+    toast(ok);
+    await loadServer();
+  } catch(e) { toast(e.message); }
+}
+
+function nid() { S.nextId = (S.nextId || 100) + 1; save(); return S.nextId; }
+let cur = "today", wk = TODAY;
+
+const $ = function(id) { return document.getElementById(id); };
+const esc = function(s) {
+  return String(s === undefined || s === null ? "" : s).replace(/[&<>"]/g, function(c) {
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
+  });
+};
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(t._h);
+  t._h = setTimeout(function() { t.classList.remove("on"); }, 1500);
+}
+
+function openForm(title, fields, onSave) {
+  let html = "<h3>" + esc(title) + "</h3>";
+  fields.forEach(function(f) {
+    html += '<div class="field"><label>' + esc(f.label) + '</label>';
+    if (f.type === "select") {
+      html += '<select name="' + f.k + '">' + f.options.map(function(o) {
+        return '<option ' + (o === f.value ? "selected" : "") + '>' + esc(o) + '</option>';
+      }).join("") + '</select>';
+    } else {
+      html += '<input name="' + f.k + '" type="' + (f.type || "text") + '" value="' + esc(f.value || "") + '" placeholder="' + esc(f.ph || "") + '">';
+    }
+    html += '</div>';
+  });
+  html += '<div class="actions"><button class="cancel" data-sheet="cancel">Huỷ</button><button class="save" data-sheet="save">Lưu</button></div>';
+  $("sheet").innerHTML = html;
+  $("overlay").classList.add("on");
+  const first = $("sheet").querySelector("input,select");
+  if (first) setTimeout(function() { first.focus(); }, 50);
+  $("sheet").onclick = function(e) {
+    const b = e.target.closest("[data-sheet]");
+    if (!b) return;
+    if (b.dataset.sheet === "cancel") { closeSheet(); return; }
+    const vals = {};
+    fields.forEach(function(f) { vals[f.k] = $("sheet").querySelector('[name="' + f.k + '"]').value.trim(); });
+    if (fields.some(function(f) { return f.required && !vals[f.k]; })) { toast("Vui lòng nhập đủ thông tin"); return; }
+    onSave(vals); save(); closeSheet(); render();
+  };
+}
+function closeSheet() { $("overlay").classList.remove("on"); }
+$("overlay").addEventListener("click", function(e) { if (e.target.id === "overlay") closeSheet(); });
+const subjOpts = Object.keys(SUBJ);
+
+function renderWeek() {
+  const items = (S.schedule[wk] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); });
+  return '<div class="head-row" style="margin-top:4px"><b>Lịch học theo thứ</b><button class="btn" data-act="addPeriod">+ Thêm tiết</button></div>' +
+    '<div class="toolbar"><button class="btn ghost" data-act="weekRemind">+ Nhắc việc</button><button class="btn ghost" data-act="importCsv">Nhập CSV</button><button class="btn ghost" data-act="exportCsv">Xuất CSV</button></div>' +
+    '<div class="chips">' + DAYS.map(function(d,i) { return '<button class="' + (i===wk?"on":"") + '" data-act="day" data-i="' + i + '">' + d + '</button>'; }).join("") + '</div>' +
+    (items.length ? items.map(function(p) {
+      return '<div class="card" data-act="editPeriod" data-id="' + p.id + '" style="cursor:pointer">' +
+        '<div class="time">' + esc(p.time) + '</div>' +
+        '<div class="stripe" style="background:' + (SUBJ[p.s] || "#6366F1") + '"></div>' +
+        '<div class="txt"><b>' + esc(p.s) + '</b><span>' + esc(p.room || "Chưa xếp phòng") + '</span></div>' +
+        '<button class="x" data-act="delPeriod" data-id="' + p.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">' + DAYS[wk] + ' chưa có tiết học nào.</div>') +
+    weekRemindHtml() +
+    '<div class="remind" style="background:#EEF2FF;border-color:#C7D2FE;color:#3730A3"><b style="color:#4338CA">Mẹo:</b> Bấm trực tiếp vào một tiết học để sửa giờ, môn hoặc phòng.</div>';
+}
+
+const SUPPLIES = {"Toán":["Sách Toán","Vở ô li Toán"],"Tiếng Việt":["Sách Tiếng Việt","Vở tập viết"],"Tiếng Anh":["Sách Tiếng Anh","Vở Tiếng Anh"],"Tự nhiên & Xã hội":["Sách Tự nhiên & Xã hội","Vở TN&XH"],"Mỹ thuật":["Giấy vẽ","Màu sáp","Bút chì"],"Khác":[]};
+function autoPrep() {
+  const names = [];
+  (S.schedule[TOMORROW] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); }).forEach(function(p) {
+    (SUPPLIES[p.s] || []).forEach(function(n) { if (!names.includes(n)) names.push(n); });
+  });
+  return names;
+}
+function renderTomorrow() {
+  S.autoChecked = S.autoChecked || {};
+  const auto = autoPrep();
+  const doneAuto = auto.filter(function(n) { return S.autoChecked[n]; }).length;
+  const total = auto.length + S.prep.length;
+  const done = doneAuto + S.prep.filter(function(p) { return p.done; }).length;
+  const periods = (S.schedule[TOMORROW] || []).length;
+  return '<div class="hero"><small>Ngày mai · ' + DAYS[TOMORROW] + ' · ' + periods + ' tiết</small>' +
+    '<b>Đã chuẩn bị ' + done + '/' + total + ' món đồ</b>' +
+    '<div class="bar"><i style="width:' + (total ? done/total*100 : 0) + '%"></i></div></div>' +
+    '<div class="head-row"><b>Sách vở theo thời khoá biểu</b></div>' +
+    (auto.length ? auto.map(function(n) {
+      return '<div class="card ' + (S.autoChecked[n] ? "done" : "") + '">' +
+        '<button class="check" data-act="toggleAuto" data-name="' + esc(n) + '">' + (S.autoChecked[n] ? "✓" : "") + '</button>' +
+        '<div class="txt"><b>' + esc(n) + '</b><span>Soạn tự động theo lịch ngày mai</span></div></div>';
+    }).join("") : '<div class="empty">Ngày mai chưa có tiết học nào trong thời khoá biểu.</div>') +
+    '<div class="head-row"><b>Đồ dùng mang thêm</b><button class="btn" data-act="addPrep">+ Thêm món</button></div>' +
+    (S.prep.length ? S.prep.map(function(p) {
+      return '<div class="card ' + (p.done ? "done" : "") + '">' +
+        '<button class="check" data-act="togglePrep" data-id="' + p.id + '">' + (p.done ? "✓" : "") + '</button>' +
+        '<div class="txt"><b>' + esc(p.t) + '</b></div>' +
+        '<button class="x" data-act="delPrep" data-id="' + p.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">Chưa có món đồ mang thêm nào.</div>') +
+    upcomingHtml(dayAfter(todayStr())) +
+    '<div class="remind" style="background:#ECFDF5;border-color:#A7F3D0;color:#065F46"><b style="color:#047857">Tự động:</b> Sách vở được gợi ý theo lịch học ' + DAYS[TOMORROW] + '.</div>';
+}
+
+function renderProfile() {
+  const sub = {};
+  (S.scores || []).forEach(function(s) { (sub[s.s] = sub[s.s] || []).push(s.score); });
+  const keys = Object.keys(sub);
+  const bars = keys.length ? '<div class="stat-box">' + keys.map(function(k) {
+    const avg = sub[k].reduce(function(a,b) { return a+b; }, 0) / sub[k].length;
+    return '<div class="stat"><div class="lbl"><span>' + esc(k) + '</span><span>' + avg.toFixed(1) + '/10</span></div>' +
+      '<div class="track"><i style="width:' + (avg*10) + '%;background:' + (SUBJ[k] || "#6366F1") + '"></i></div></div>';
+  }).join("") + '</div>' : '<div class="empty">Chưa có điểm số nào.</div>';
+  const chName = (S.child && S.child.name) || "Bé";
+  return '<div class="kid">' +
+    '<div class="avatar">' + esc(chName.trim().split(" ").pop().charAt(0).toUpperCase() || "B") + '</div>' +
+    '<div class="info"><b>' + esc(chName) + '</b><span>' + esc(S.child.cls || "") + ' · Năm học ' + esc(S.child.year || "") + '</span></div>' +
+    '<button class="btn ghost" data-act="editChild">Sửa</button></div>' +
+    '<div class="head-row"><b>Trung bình môn</b><button class="btn" data-act="addScore">+ Thêm điểm</button></div>' +
+    bars +
+    '<div class="head-row"><b>Bảng điểm gần đây</b></div>' +
+    ((S.scores || []).length ? S.scores.slice().sort(function(a,b) { return (b.date||"").localeCompare(a.date||""); }).map(function(s) {
+      return '<div class="card"><div class="stripe" style="background:' + (SUBJ[s.s] || "#6366F1") + '"></div>' +
+        '<div class="txt"><b>' + esc(s.s) + ' · ' + s.score + '/10</b><span>' + esc(s.note || "Bài kiểm tra") + ' · ' + dmy(s.date) + '</span></div>' +
+        '<button class="x" data-act="delScore" data-id="' + s.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">Chưa có lịch sử điểm.</div>') +
+    routineHtml();
+}
+
+const HEADS = {
+  today: ["Việc của tôi", "Quản lý việc theo ngày & thói quen"],
+  week: ["Thời khoá biểu", "Lịch học các ngày trong tuần"],
+  tomorrow: ["Chuẩn bị ngày mai", "Soạn sách vở và việc sắp tới"],
+  profile: ["Hồ sơ học tập", "Theo dõi điểm số và lịch nhắc"]
+};
+
+function render() {
+  const map = {today:renderDaily, week:renderWeek, tomorrow:renderTomorrow, profile:renderProfile};
+  document.querySelectorAll(".screen").forEach(function(el) { el.classList.toggle("on", el.id === "s-" + cur); });
+  $("s-" + cur).innerHTML = map[cur]();
+  document.querySelectorAll("nav button").forEach(function(b) { b.classList.toggle("on", b.dataset.s === cur); });
+  updateBadge();
+  $("head").innerHTML = "<h1>" + HEADS[cur][0] + "</h1><p>" + HEADS[cur][1] + "</p>";
+}
+
+function updateBadge() {
+  const tm = dayAfter(todayStr());
+  const n = (S.tasks || []).filter(function(t) { return !t.done && taskDateC(t) === tm; }).length +
+            (S.reminders || []).filter(function(r) { return r.repeat !== "daily" && r.date === tm; }).length;
+  const b = $("nbadge");
+  if (!b) return;
+  b.textContent = n > 9 ? "9+" : String(n);
+  b.hidden = n === 0;
+}
+function go(s) { cur = s; render(); $("main").scrollTop = 0; }
+
+$("nav").addEventListener("click", function(e) { const b = e.target.closest("button"); if (b) go(b.dataset.s); });
+$("main").addEventListener("change", function(e) {
+  if (e.target.dataset.act === "reminder") { S.reminder = e.target.value; save(); render(); toast("Đã đặt giờ nhắc " + S.reminder); }
+});
+$("main").addEventListener("click", function(e) {
+  const el = e.target.closest("[data-act]");
+  if (!el) return;
+  const a = el.dataset.act, id = +el.dataset.id;
+  const find = function(arr) { return (arr || []).find(function(x) { return x.id === id; }); };
+  switch(a) {
+    case "toggleTask": { const t = find(S.tasks); if (t) { t.done = !t.done; save(); render(); } break; }
+    case "delTask": S.tasks = (S.tasks || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá việc"); break;
+    case "addTask": openForm("Thêm việc mới", [
+        {k:"t", label:"Tên công việc", required:true, ph:"VD: Làm bài tập Toán"},
+        {k:"date", label:"Ngày thực hiện", type:"date", value:todayStr(), required:true},
+        {k:"time", label:"Giờ hạn", type:"time", value:"19:00"},
+        {k:"priority", label:"Mức độ ưu tiên", type:"select", options:["Cao","Trung bình","Thấp"], value:"Trung bình"}],
+      function(v) { S.tasks.push({id:nid(), t:v.t, date:v.date, time:v.time||"19:00", priority:v.priority, done:false}); toast("Đã thêm việc"); }); break;
+    case "addHabit": openForm("Thêm thói quen", [{k:"name", label:"Tên thói quen", required:true, ph:"VD: Đọc sách 15 phút"}],
+      function(v) { (S.habits = S.habits || []).push({id:nid(), name:v.name, days:[]}); toast("Đã thêm thói quen"); }); break;
+    case "toggleHabit": { const h = find(S.habits); if (h) { const d = todayStr(); h.days = h.days.includes(d) ? h.days.filter(function(x) { return x !== d; }) : h.days.concat([d]); save(); render(); } break; }
+    case "delHabit": S.habits = (S.habits || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá thói quen"); break;
+    case "day": wk = +el.dataset.i; render(); break;
+    case "addPeriod": openForm("Thêm tiết - " + DAYS[wk], [
+        {k:"time", label:"Giờ học", type:"time", value:"07:30", required:true},
+        {k:"s", label:"Môn học", type:"select", options:subjOpts, value:"Toán"},
+        {k:"room", label:"Phòng học", ph:"VD: Phòng 3A"}],
+      function(v) { (S.schedule[wk] = S.schedule[wk] || []).push({id:nid(), time:v.time, s:v.s, room:v.room}); toast("Đã thêm tiết"); }); break;
+    case "editPeriod": {
+      if (e.target.closest('[data-act="delPeriod"]')) return;
+      const p = find(S.schedule[wk]); if (!p) break;
+      openForm("Sửa tiết học", [
+        {k:"time", label:"Giờ học", type:"time", value:p.time, required:true},
+        {k:"s", label:"Môn học", type:"select", options:subjOpts, value:p.s},
+        {k:"room", label:"Phòng học", value:p.room}],
+      function(v) { Object.assign(p, {time:v.time, s:v.s, room:v.room}); toast("Đã cập nhật"); }); break; }
+    case "delPeriod": e.stopPropagation(); S.schedule[wk] = (S.schedule[wk] || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá tiết"); break;
+    case "importCsv": $("csvFile").click(); break;
+    case "addNotify": openReminderForm(todayStr()); break;
+    case "weekRemind": openReminderForm(dateOfWeekday(wk)); break;
+    case "exportCsv": exportCsv(); break;
+    case "addPrep": openForm("Thêm đồ dùng cần mang", [{k:"t", label:"Tên món đồ", required:true, ph:"VD: Áo khoác, bình nước"}],
+      function(v) { S.prep.push({id:nid(), t:v.t, done:false}); toast("Đã thêm"); }); break;
+    case "togglePrep": { const p = find(S.prep); if (p) { p.done = !p.done; save(); render(); } break; }
+    case "toggleAuto": { S.autoChecked = S.autoChecked || {}; const n = el.dataset.name; S.autoChecked[n] = !S.autoChecked[n]; save(); render(); break; }
+    case "delPrep": S.prep = (S.prep || []).filter(function(x) { return x.id !== id; }); save(); render(); break;
+    case "editChild": openForm("Thông tin của con", [
+        {k:"name", label:"Họ và tên", value:S.child.name, required:true},
+        {k:"cls", label:"Lớp", value:S.child.cls, required:true},
+        {k:"year", label:"Năm học", value:S.child.year}],
+      function(v) { Object.assign(S.child, v); toast("Đã lưu"); }); break;
+    case "addScore": openForm("Thêm điểm mới", [
+        {k:"s", label:"Môn học", type:"select", options:subjOpts, value:"Toán"},
+        {k:"score", label:"Điểm số (0-10)", type:"number", value:"10", required:true},
+        {k:"note", label:"Ghi chú", ph:"VD: Kiểm tra 15 phút"}],
+      function(v) { const sc = Math.min(10, Math.max(0, +v.score)); S.scores.push({id:nid(), s:v.s, score:sc, note:v.note, date:todayStr()}); toast("Đã thêm điểm"); }); break;
+    case "delScore": S.scores = (S.scores || []).filter(function(x) { return x.id !== id; }); save(); render(); break;
+    case "addRoutine": openReminderForm(todayStr()); break;
+    case "delRoutine": S.reminders = (S.reminders || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá lịch nhắc"); break;
+    case "tgSave": tgPost("/api/telegram/token", {token:$("tgToken").value}, "Đã lưu token"); break;
+    case "tgDetect": tgPost("/api/telegram/detect", {}, "Đã kết nối với phụ huynh"); break;
+    case "tgTest": tgPost("/api/telegram/test", {}, "Đã gửi tin thử"); break;
+  }
+});
+
+const DAY_MAP = {"2":0,"thứ 2":0,"thứ hai":0,"3":1,"thứ 3":1,"thứ ba":1,"4":2,"thứ 4":2,"thứ tư":2,"5":3,"thứ 5":3,"thứ năm":3,"6":4,"thứ 6":4,"thứ sáu":4,"7":5,"thứ 7":5,"thứ bảy":5,"cn":6,"chủ nhật":6,"8":6};
+function dayIndex(t) { const v = DAY_MAP[(t || "").toLowerCase().trim()]; return v === undefined ? -1 : v; }
+function parseCsv(text) {
+  const out = {}; let added = 0, skipped = 0;
+  text.split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean).forEach(function(line, i) {
+    const c = line.split(",").map(function(x) { return x.trim(); });
+    const d = dayIndex(c[0]);
+    if (d < 0) { if (i === 0) return; skipped++; return; }
+    if (!/^\d{1,2}:\d{2}$/.test(c[1])) { skipped++; return; }
+    const s = SUBJ[c[2]] ? c[2] : "Khác";
+    (out[d] = out[d] || []).push({id:nid(), time:c[1].padStart(5,"0"), s:s, room:c[3]||""});
+    added++;
+  });
+  return {out:out, added:added, skipped:skipped};
+}
+$("csvFile").addEventListener("change", function(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = function() {
+    const res = parseCsv(String(reader.result));
+    if (!res.added) { toast("File không có dòng tiết hợp lệ"); }
+    else {
+      Object.keys(res.out).forEach(function(d) { S.schedule[d] = res.out[d]; });
+      save(); render();
+      toast("Đã nhập " + res.added + " tiết");
+    }
+    e.target.value = "";
+  };
+  reader.readAsText(f, "utf-8");
+});
+function exportCsv() {
+  const lines = ["Thứ,Giờ,Môn,Phòng"];
+  DAYS.forEach(function(d, i) {
+    (S.schedule[i] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); }).forEach(function(p) {
+      lines.push([d, p.time, p.s, (p.room || "").replace(/,/g, " ")].join(","));
+    });
+  });
+  const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "thoi-khoa-bieu.csv"; a.click();
+}
+
+function settingsHtml() {
+  return '<details class="settings-group">' +
+    '<summary>Cài đặt thông báo & Telegram (' + (TG.connected ? "Đã kết nối" : "Chưa kết nối") + ')</summary>' +
+    '<div class="settings-body">' +
+      '<div class="setting"><span>Giờ nhắc tổng hợp mỗi ngày</span>' +
+        '<select data-act="reminder">' + ["18:00","19:00","20:00","21:00"].map(function(h) { return '<option ' + (h===S.reminder?"selected":"") + '>' + h + '</option>'; }).join("") + '</select>' +
+      '</div>' +
+      '<div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.4">Mở Telegram, tìm bot của bạn, bấm <b>Start</b>, sau đó nhập Token và bấm Lấy mã kết nối.</div>' +
+      '<input id="tgToken" placeholder="Nhập Token bot từ BotFather..." style="width:100%;margin-top:8px">' +
+      '<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">' +
+        '<button class="btn ghost" data-act="tgSave">Lưu token</button>' +
+        '<button class="btn ghost" data-act="tgDetect">Lấy mã kết nối</button>' +
+        '<button class="btn" data-act="tgTest">Gửi thử</button>' +
+      '</div>' +
+    '</div></details>';
+}
+
+function todayStr() { return new Date().toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"}); }
+function dayAfter(s) { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + 1); return d.toLocaleDateString("sv-SE"); }
+function dateOfWeekday(i) { const b = new Date(todayStr() + "T12:00:00"); const tw = (b.getDay() + 6) % 7; b.setDate(b.getDate() + (i - tw)); return b.toLocaleDateString("sv-SE"); }
+function dmy(d) { return d ? String(d).split("-").reverse().join("/") : ""; }
+
+function openReminderForm(defDate) {
+  openForm("Thêm lịch nhắc", [
+    {k:"t", label:"Việc cần nhắc", required:true, ph:"VD: Đóng tiền học, Đi khám"},
+    {k:"date", label:"Ngày nhắc", type:"date", value:defDate||todayStr(), required:true},
+    {k:"time", label:"Giờ nhắc", type:"time", value:"19:00", required:true},
+    {k:"repeat", label:"Lặp lại", type:"select", options:["Một lần","Hằng ngày"], value:"Một lần"},
+    {k:"note", label:"Ghi chú (không bắt buộc)", ph:"VD: Mang theo biên lai"}],
+  function(v) { (S.reminders = S.reminders || []).push({id:nid(), t:v.t, date:v.date, time:v.time, repeat:v.repeat==="Hằng ngày"?"daily":"none", note:v.note}); toast("Đã lưu lịch nhắc"); });
+}
+
+function notifyHtml() {
+  const t0 = todayStr(), t1 = dayAfter(t0);
+  const list = (S.reminders || []).filter(function(r) { return r.repeat !== "daily" && (r.date === t0 || r.date === t1); }).sort(function(a,b) { return (a.date||"").localeCompare(b.date||"") || (a.time||"").localeCompare(b.time||""); });
+  return '<div class="head-row"><b>Lịch hẹn hôm nay & ngày mai</b><button class="btn ghost" data-act="addNotify">+ Nhắc hẹn</button></div>' +
+    (list.length ? list.map(function(r) {
+      return '<div class="card"><div class="time">' + esc(dmy(r.date).slice(0,5)) + '<br>' + esc(r.time) + '</div><div class="txt"><b>' + esc(r.t) + '</b><span>' + esc(r.note || "Nhắc qua Telegram") + '</span></div><button class="x" data-act="delRoutine" data-id="' + r.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">Chưa có lịch hẹn nào cho hôm nay và ngày mai.</div>');
+}
+
+function upcomingHtml(from) {
+  const items = [];
+  (S.tasks || []).forEach(function(t) { const d = taskDateC(t); if (!t.done && d >= from) items.push({d:d, time:t.time||"", label:t.t, kind:"Việc", pri:t.priority||"", note:""}); });
+  (S.reminders || []).forEach(function(r) { if (r.repeat !== "daily" && r.date >= from) items.push({d:r.date, time:r.time||"", label:r.t, kind:"Nhắc", pri:"", note:r.note||""}); });
+  let html = '<div class="head-row"><b>Kế hoạch các ngày tới</b></div>';
+  if (!items.length) return html + '<div class="empty">Chưa có việc nào từ ngày mai trở đi.</div>';
+  items.sort(function(a,b) { return a.d.localeCompare(b.d) || a.time.localeCompare(b.time); });
+  let curD = "";
+  items.forEach(function(i) {
+    if (i.d !== curD) { curD = i.d; html += '<div style="font-size:12.5px;font-weight:700;margin:12px 4px 6px;color:var(--purple-dark)">Ngày ' + esc(dmy(i.d)) + '</div>'; }
+    html += '<div class="card"><div class="time">' + esc(i.time || "--:--") + '</div><div class="txt"><b>' + esc(i.label) + '</b><span>' + i.kind + (i.pri ? " · Ưu tiên " + esc(i.pri) : "") + (i.note ? " · " + esc(i.note) : "") + '</span></div></div>';
+  });
+  return html;
+}
+
+function weekRemindHtml() {
+  const d = dateOfWeekday(wk);
+  const list = (S.reminders || []).filter(function(r) { return r.repeat !== "daily" && r.date === d; }).sort(function(a,b) { return (a.time||"").localeCompare(b.time||""); });
+  return '<div class="head-row"><b>Nhắc việc ' + DAYS[wk] + ' (' + esc(dmy(d)) + ')</b></div>' +
+    (list.length ? list.map(function(r) {
+      return '<div class="card"><div class="time">' + esc(r.time) + '</div><div class="txt"><b>' + esc(r.t) + '</b><span>' + esc(r.note || "Nhắc qua Telegram") + '</span></div><button class="x" data-act="delRoutine" data-id="' + r.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">' + DAYS[wk] + ' chưa có lịch nhắc.</div>');
+}
+
+const PRI = {"Cao":0, "Trung bình":1, "Thấp":2};
+const PRI_COLOR = {"Cao":"#EF4444", "Trung bình":"#F59E0B", "Thấp":"#10B981"};
+function taskDateC(t) {
+  if (t.date) return t.date;
+  const d = new Date(); if (t.due === "tomorrow") d.setTime(d.getTime() + 86400000);
+  return d.toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"});
+}
+function sortTasks(a,b) { return ((PRI[a.priority] !== undefined ? PRI[a.priority] : 1) - (PRI[b.priority] !== undefined ? PRI[b.priority] : 1)) || (a.time||"").localeCompare(b.time||""); }
+function taskCard(t) {
+  return '<div class="card ' + (t.done ? "done" : "") + '">' +
+    '<div class="stripe" style="background:' + (PRI_COLOR[t.priority] || "#94A3B8") + '"></div>' +
+    '<button class="check" data-act="toggleTask" data-id="' + t.id + '">' + (t.done ? "✓" : "") + '</button>' +
+    '<div class="txt"><b>' + esc(t.t) + '</b><span>Ưu tiên ' + esc(t.priority || "Trung bình") + ' · ' + esc(dmy(t.date)) + ' ' + esc(t.time || "") + '</span></div>' +
+    '<button class="x" data-act="delTask" data-id="' + t.id + '" title="Xoá">✕</button></div>';
+}
+function streak(h) {
+  let n = 0; const d = new Date();
+  const days = Array.isArray(h.days) ? h.days : [];
+  for (;;) { const s = d.toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"}); if (!days.includes(s)) break; n++; d.setTime(d.getTime() - 86400000); }
+  return n;
+}
+function renderDaily() {
+  S.habits = Array.isArray(S.habits) ? S.habits : [];
+  const today = todayStr();
+  const all = (S.tasks || []).map(function(t) { return Object.assign({}, t, {date:taskDateC(t)}); });
+  const overdue = all.filter(function(t) { return !t.done && t.date < today; }).sort(sortTasks);
+  const todayL = all.filter(function(t) { return t.date === today; }).sort(sortTasks);
+  const later = all.filter(function(t) { return t.date > today; }).sort(function(a,b) { return a.date.localeCompare(b.date) || sortTasks(a,b); });
+  const done = todayL.filter(function(t) { return t.done; }).length;
+  const pct = todayL.length ? Math.round(done / todayL.length * 100) : 0;
+  const section = function(title, list) { return list.length ? '<div class="head-row"><b>' + title + '</b></div>' + list.map(taskCard).join("") : ""; };
+  const habits = S.habits.length ? S.habits.map(function(h) {
+    const days = Array.isArray(h.days) ? h.days : [];
+    const on = days.includes(today);
+    return '<div class="card ' + (on ? "done" : "") + '">' +
+      '<button class="check ' + (on ? "on" : "") + '" data-act="toggleHabit" data-id="' + h.id + '">' + (on ? "✓" : "") + '</button>' +
+      '<div class="txt"><b>' + esc(h.name) + '</b><span>Chuỗi ' + streak(h) + ' ngày liên tiếp</span></div>' +
+      '<button class="x" data-act="delHabit" data-id="' + h.id + '" title="Xoá">✕</button></div>';
+  }).join("") : '<div class="empty">Chưa có thói quen nào. Bấm "+ Thêm" để rèn luyện mỗi ngày.</div>';
+  return '<div class="hero"><small>Hôm nay · ' + esc(dmy(today)) + '</small>' +
+    '<b>Hoàn thành ' + done + '/' + todayL.length + ' công việc</b>' +
+    '<div class="bar"><i style="width:' + pct + '%"></i></div></div>' +
+    (overdue.length ? '<div class="remind" style="background:#FEF2F2;border-color:#FECACA;color:#991B1B"><b style="color:#B91C1C">Chú ý:</b> Còn ' + overdue.length + ' việc quá hạn chưa hoàn thành.</div>' : "") +
+    '<div class="head-row"><b>Việc cần làm hôm nay</b><button class="btn" data-act="addTask">+ Thêm việc</button></div>' +
+    (todayL.length ? todayL.map(taskCard).join("") : '<div class="empty">Hôm nay chưa có việc nào.</div>') +
+    section("Quá hạn chưa xong", overdue) +
+    notifyHtml() +
+    '<div class="head-row"><b>Thói quen hằng ngày</b><button class="btn ghost" data-act="addHabit">+ Thêm</button></div>' +
+    habits +
+    section("Công việc sắp tới", later) +
+    settingsHtml();
+}
+
+function routineHtml() {
+  if (!Array.isArray(S.reminders) || !S.reminders.length) {
+    S.reminders = [{id:nid(), repeat:"daily", date:"", time:"19:00", t:"Học bài cũ", note:""}, {id:nid(), repeat:"daily", date:"", time:"20:00", t:"Làm bài tập", note:""}];
+  }
+  const items = S.reminders.slice().sort(function(a,b) { return (a.date||"9999").localeCompare(b.date||"9999") || (a.time||"").localeCompare(b.time||""); });
+  return '<div class="head-row"><b>Tất cả lịch nhắc</b><button class="btn ghost" data-act="addRoutine">+ Thêm nhắc</button></div>' +
+    (items.length ? items.map(function(r) {
+      return '<div class="card"><div class="time">' + (r.repeat==="daily" ? "Hằng ngày" : esc(dmy(r.date).slice(0,5))) + '<br>' + esc(r.time) + '</div>' +
+        '<div class="txt"><b>' + esc(r.t) + '</b><span>' + (r.note ? esc(r.note) : "Nhắc qua Telegram") + '</span></div>' +
+        '<button class="x" data-act="delRoutine" data-id="' + r.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">Chưa có lịch nhắc nào.</div>');
+}
+
+render();
+loadServer();
+</script>
+</body>
+</html>
