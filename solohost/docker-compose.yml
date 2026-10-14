@@ -1,0 +1,16 @@
+services:
+  web:
+    image: ghcr.io/vanhau1804/ho-tro-thong-bao:latest
+    labels:
+      pi.ui.primary: "true"
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8787:8787'
+    volumes:
+      - theo-doi-hoc-tap-data:/app/data
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 128
+
+volumes:
+  theo-doi-hoc-tap-data:
