@@ -4,14 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Theo dõi học tập</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+<link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+<link href="[https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap)" rel="stylesheet">
 <style>
 :root {
   --ink: #0F172A;
   --muted: #64748B;
-  --bg-page: #E2E8F0;
   --bg-phone: #F8FAFC;
   --card: #FFFFFF;
   --line: #F1F5F9;
@@ -27,9 +26,7 @@
   --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.04);
   --shadow-md: 0 12px 24px -6px rgba(99, 102, 241, 0.28);
 }
-
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
 body {
   margin: 0;
   min-height: 100vh;
@@ -41,9 +38,7 @@ body {
   color: var(--ink);
   padding: 12px;
 }
-
 button, input, select { font: inherit; }
-
 .phone {
   width: 390px;
   height: 844px;
@@ -56,7 +51,6 @@ button, input, select { font: inherit; }
   flex-direction: column;
   position: relative;
 }
-
 header {
   padding: 36px 20px 12px;
   background: rgba(248, 250, 252, 0.9);
@@ -67,7 +61,6 @@ header {
 }
 header h1 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -0.02em; }
 header p { margin: 3px 0 0; color: var(--muted); font-size: 13px; font-weight: 500; }
-
 main {
   flex: 1;
   overflow-y: auto;
@@ -75,11 +68,8 @@ main {
   scrollbar-width: none;
 }
 main::-webkit-scrollbar { display: none; }
-
-.screen { display: none; animation: fadeIn 0.2s ease; }
+.screen { display: none; }
 .screen.on { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
 .hero {
   border-radius: 22px;
   padding: 18px 20px;
@@ -92,7 +82,6 @@ main::-webkit-scrollbar { display: none; }
 .hero b { display: block; font-size: 19px; margin-top: 4px; font-weight: 800; }
 .bar { height: 7px; background: rgba(255, 255, 255, 0.28); border-radius: 99px; margin-top: 12px; overflow: hidden; }
 .bar i { display: block; height: 100%; background: #fff; border-radius: 99px; transition: width 0.35s ease; }
-
 .head-row {
   display: flex;
   justify-content: space-between;
@@ -101,7 +90,6 @@ main::-webkit-scrollbar { display: none; }
   gap: 8px;
 }
 .head-row b { font-size: 14px; font-weight: 700; color: #334155; }
-
 .toolbar {
   display: flex;
   gap: 6px;
@@ -110,7 +98,6 @@ main::-webkit-scrollbar { display: none; }
   scrollbar-width: none;
 }
 .toolbar::-webkit-scrollbar { display: none; }
-
 .btn {
   background: var(--purple);
   color: #fff;
@@ -120,16 +107,13 @@ main::-webkit-scrollbar { display: none; }
   font-weight: 700;
   font-size: 12px;
   cursor: pointer;
-  transition: transform 0.12s, background 0.15s;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
-.btn:active { transform: scale(0.96); }
 .btn.ghost { background: var(--purple-light); color: var(--purple-dark); }
 .btn.danger { background: #FEE2E2; color: var(--red); }
-
 .card {
   background: var(--card);
   border: 1px solid var(--line);
@@ -140,7 +124,6 @@ main::-webkit-scrollbar { display: none; }
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: transform 0.15s, opacity 0.2s;
 }
 .card .stripe { width: 4px; height: 32px; border-radius: 4px; flex: none; }
 .card .txt { flex: 1; min-width: 0; }
@@ -163,7 +146,6 @@ main::-webkit-scrollbar { display: none; }
 }
 .card.done { opacity: 0.65; background: #F8FAFC; box-shadow: none; }
 .card.done .txt b { text-decoration: line-through; color: var(--muted); }
-
 .check {
   width: 22px;
   height: 22px;
@@ -178,10 +160,8 @@ main::-webkit-scrollbar { display: none; }
   cursor: pointer;
   background: #fff;
   padding: 0;
-  transition: all 0.15s;
 }
 .card.done .check, .check.on { background: var(--teal); border-color: var(--teal); }
-
 .x {
   background: none;
   border: 0;
@@ -190,10 +170,8 @@ main::-webkit-scrollbar { display: none; }
   cursor: pointer;
   padding: 4px 6px;
   border-radius: 8px;
-  transition: all 0.15s;
 }
 .x:hover { color: var(--red); background: #FEF2F2; }
-
 .remind {
   background: #FFFBEB;
   border: 1px solid #FDE68A;
@@ -205,7 +183,6 @@ main::-webkit-scrollbar { display: none; }
   color: #92400E;
 }
 .remind b { color: #B45309; }
-
 .chips {
   display: flex;
   gap: 6px;
@@ -224,7 +201,6 @@ main::-webkit-scrollbar { display: none; }
   cursor: pointer;
   white-space: nowrap;
   color: var(--muted);
-  transition: all 0.15s;
 }
 .chips button.on {
   background: var(--purple);
@@ -232,7 +208,6 @@ main::-webkit-scrollbar { display: none; }
   border-color: var(--purple);
   box-shadow: 0 4px 10px rgba(99, 102, 241, 0.25);
 }
-
 .time {
   font-weight: 700;
   font-size: 11.5px;
@@ -244,7 +219,6 @@ main::-webkit-scrollbar { display: none; }
   min-width: 52px;
   line-height: 1.25;
 }
-
 .empty {
   text-align: center;
   color: var(--muted);
@@ -254,7 +228,6 @@ main::-webkit-scrollbar { display: none; }
   border: 1px dashed #CBD5E1;
   border-radius: 16px;
 }
-
 .kid {
   display: flex;
   align-items: center;
@@ -280,7 +253,6 @@ main::-webkit-scrollbar { display: none; }
 .kid .info { flex: 1; }
 .kid b { font-size: 16px; }
 .kid span { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-
 .stat-box {
   background: #fff;
   border: 1px solid var(--line);
@@ -293,7 +265,6 @@ main::-webkit-scrollbar { display: none; }
 .stat .lbl { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
 .track { height: 8px; background: #F1F5F9; border-radius: 99px; overflow: hidden; }
 .track i { display: block; height: 100%; border-radius: 99px; transition: width 0.3s; }
-
 details.settings-group {
   margin-top: 16px;
   background: #fff;
@@ -314,15 +285,7 @@ details.settings-group summary {
   align-items: center;
 }
 details.settings-group summary::-webkit-details-marker { display: none; }
-details.settings-group summary::after {
-  content: "▾";
-  font-size: 14px;
-  color: var(--muted);
-  transition: transform 0.2s;
-}
-details.settings-group[open] summary::after { transform: rotate(180deg); }
 .settings-body { padding: 0 14px 14px; border-top: 1px solid var(--line); }
-
 .setting {
   display: flex;
   justify-content: space-between;
@@ -335,7 +298,6 @@ details.settings-group[open] summary::after { transform: rotate(180deg); }
   font-size: 13px;
   font-weight: 600;
 }
-
 select, input {
   border: 1px solid #CBD5E1;
   border-radius: 10px;
@@ -344,10 +306,8 @@ select, input {
   font-size: 13.5px;
   color: var(--ink);
   outline: none;
-  transition: border 0.15s, background 0.15s;
 }
 select:focus, input:focus { border-color: var(--purple); background: #fff; }
-
 nav {
   position: absolute;
   left: 14px;
@@ -378,7 +338,6 @@ nav button {
   cursor: pointer;
   padding: 6px 12px;
   border-radius: 14px;
-  transition: all 0.2s;
 }
 nav button .ic {
   position: relative;
@@ -417,12 +376,10 @@ nav .badge {
 }
 nav .badge[hidden] { display: none; }
 nav button.on { color: var(--purple); background: var(--purple-light); }
-
 .overlay {
   position: absolute;
   inset: 0;
   background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(2px);
   display: none;
   align-items: flex-end;
   z-index: 10;
@@ -433,9 +390,7 @@ nav button.on { color: var(--purple); background: var(--purple-light); }
   width: 100%;
   border-radius: 26px 26px 0 0;
   padding: 20px 20px 26px;
-  animation: slideUp 0.22s ease-out;
 }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .sheet h3 { margin: 0 0 14px; font-size: 17px; font-weight: 800; }
 .field { margin-bottom: 12px; }
 .field label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
@@ -444,26 +399,24 @@ nav button.on { color: var(--purple); background: var(--purple-light); }
 .sheet .actions button { flex: 1; padding: 11px; border-radius: 12px; border: 0; font-weight: 700; cursor: pointer; font-size: 14px; }
 .sheet .cancel { background: #F1F5F9; color: var(--ink); }
 .sheet .save { background: var(--purple); color: #fff; }
-
 .toast {
   position: absolute;
   top: 48px;
   left: 50%;
-  transform: translateX(-50%) translateY(-8px);
+  transform: translateX(-50%);
   background: var(--ink);
   color: #fff;
   padding: 8px 16px;
   border-radius: 99px;
   font-size: 12.5px;
   font-weight: 600;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
   opacity: 0;
-  transition: all 0.2s;
+  transition: opacity 0.2s;
   pointer-events: none;
   z-index: 20;
   white-space: nowrap;
 }
-.toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.on { opacity: 1; }
 </style>
 </head>
 <body>
@@ -503,20 +456,20 @@ nav button.on { color: var(--purple); background: var(--purple-light); }
   <input type="file" id="csvFile" accept=".csv,text/csv" hidden>
 </div>
 <script>
-const SUBJ={"Toán":"#3B82F6","Tiếng Việt":"#EC4899","Tiếng Anh":"#10B981","Tự nhiên & Xã hội":"#F97316","Mỹ thuật":"#F59E0B","Khác":"#6366F1"};
-const DAYS=["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"];
-const TODAY=1, TOMORROW=2;
-const KEY="theodoihoctap-v1";
-const DEFAULT={
-  child:{name:"Bé An",cls:"Lớp 3A",year:"2026–2027"},
-  reminder:"19:00",
-  tasks:[
-    {id:1,t:"Làm bài tập Toán trang 45",s:"Toán",due:"today",time:"19:00",done:true},
-    {id:2,t:"Đọc 10 phút sách Tiếng Việt",s:"Tiếng Việt",due:"today",time:"20:00",done:true},
-    {id:3,t:"Ôn 10 từ vựng Tiếng Anh",s:"Tiếng Anh",due:"today",time:"20:30",done:false},
-    {id:4,t:"Ký sổ liên lạc",s:"Khác",due:"tomorrow",time:"07:00",done:false}
+const SUBJ = {"Toán":"#3B82F6","Tiếng Việt":"#EC4899","Tiếng Anh":"#10B981","Tự nhiên & Xã hội":"#F97316","Mỹ thuật":"#F59E0B","Khác":"#6366F1"};
+const DAYS = ["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"];
+const TODAY = 1, TOMORROW = 2;
+const KEY = "theodoihoctap-v1";
+const DEFAULT = {
+  child: {name:"Bé An", cls:"Lớp 3A", year:"2026-2027"},
+  reminder: "19:00",
+  tasks: [
+    {id:1, t:"Làm bài tập Toán trang 45", s:"Toán", due:"today", time:"19:00", done:true},
+    {id:2, t:"Đọc 10 phút sách Tiếng Việt", s:"Tiếng Việt", due:"today", time:"20:00", done:true},
+    {id:3, t:"Ôn 10 từ vựng Tiếng Anh", s:"Tiếng Anh", due:"today", time:"20:30", done:false},
+    {id:4, t:"Ký sổ liên lạc", s:"Khác", due:"tomorrow", time:"07:00", done:false}
   ],
-  schedule:{
+  schedule: {
     0:[{id:11,time:"07:30",s:"Toán",room:"Phòng 3A"},{id:12,time:"08:30",s:"Tiếng Việt",room:"Phòng 3A"},{id:13,time:"10:00",s:"Tiếng Anh",room:"Phòng 2B"}],
     1:[{id:21,time:"07:30",s:"Tự nhiên & Xã hội",room:"Phòng 3A"},{id:22,time:"08:30",s:"Toán",room:"Phòng 3A"},{id:23,time:"10:00",s:"Mỹ thuật",room:"Phòng 1A"}],
     2:[{id:31,time:"07:30",s:"Tiếng Việt",room:"Phòng 3A"},{id:32,time:"09:30",s:"Mỹ thuật",room:"Phòng 1A"}],
@@ -525,437 +478,453 @@ const DEFAULT={
     5:[{id:52,time:"08:00",s:"Tiếng Anh",room:"Phòng 2B"}],
     6:[]
   },
-  prep:[{id:61,t:"Hộp sữa buổi sáng",done:false}],
-  autoChecked:{},
-  habits:[],
-  reminders:[],
-  scores:[
-    {id:71,s:"Toán",score:9,note:"Kiểm tra 15 phút",date:"2026-10-06"},
-    {id:72,s:"Tiếng Việt",score:7,note:"Chính tả",date:"2026-10-08"},
-    {id:73,s:"Tiếng Anh",score:8,note:"Từ vựng",date:"2026-10-09"}
+  prep: [{id:61, t:"Hộp sữa buổi sáng", done:false}],
+  autoChecked: {},
+  habits: [],
+  reminders: [],
+  scores: [
+    {id:71, s:"Toán", score:9, note:"Kiểm tra 15 phút", date:"2026-10-06"},
+    {id:72, s:"Tiếng Việt", score:7, note:"Chính tả", date:"2026-10-08"},
+    {id:73, s:"Tiếng Anh", score:8, note:"Từ vựng", date:"2026-10-09"}
   ],
-  nextId:100
+  nextId: 100
 };
 
-function normalizeState(raw){
-  const d=JSON.parse(JSON.stringify(DEFAULT));
-  if(!raw||typeof raw!=="object") return d;
-  return {
-    ...d,
-    ...raw,
-    child: {...d.child, ...(raw.child||{})},
-    tasks: Array.isArray(raw.tasks)?raw.tasks:d.tasks,
-    schedule: (raw.schedule&&typeof raw.schedule==="object")?raw.schedule:d.schedule,
-    prep: Array.isArray(raw.prep)?raw.prep:d.prep,
-    autoChecked: (raw.autoChecked&&typeof raw.autoChecked==="object")?raw.autoChecked:{},
-    habits: Array.isArray(raw.habits)?raw.habits:[],
-    reminders: Array.isArray(raw.reminders)?raw.reminders:[],
-    scores: Array.isArray(raw.scores)?raw.scores:d.scores,
-    nextId: Number(raw.nextId)||100
-  };
+function normalizeState(raw) {
+  const d = JSON.parse(JSON.stringify(DEFAULT));
+  if (!raw || typeof raw !== "object") return d;
+  return Object.assign({}, d, raw, {
+    child: Object.assign({}, d.child, raw.child || {}),
+    tasks: Array.isArray(raw.tasks) ? raw.tasks : d.tasks,
+    schedule: (raw.schedule && typeof raw.schedule === "object") ? raw.schedule : d.schedule,
+    prep: Array.isArray(raw.prep) ? raw.prep : d.prep,
+    autoChecked: (raw.autoChecked && typeof raw.autoChecked === "object") ? raw.autoChecked : {},
+    habits: Array.isArray(raw.habits) ? raw.habits : [],
+    reminders: Array.isArray(raw.reminders) ? raw.reminders : [],
+    scores: Array.isArray(raw.scores) ? raw.scores : d.scores,
+    nextId: Number(raw.nextId) || 100
+  });
 }
 
 let S;
-try{S=normalizeState(JSON.parse(localStorage.getItem(KEY)));}catch(e){S=normalizeState(null);}
-let TG={};
+try { S = normalizeState(JSON.parse(localStorage.getItem(KEY))); } catch(e) { S = normalizeState(null); }
+let TG = {};
 
-function save(){
-  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
-  fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)}).catch(()=>{});
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {}
+  fetch("/api/state", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(S)}).catch(function(){});
 }
-async function loadServer(){
-  try{
-    const r=await fetch('/api/state');
-    if(r.ok){
-      const j=await r.json();
-      TG=j.telegram||{};
-      if(j.state && Object.keys(j.state).length>0) S=normalizeState(j.state);
+
+async function loadServer() {
+  try {
+    const r = await fetch("/api/state");
+    if (r.ok) {
+      const j = await r.json();
+      TG = j.telegram || {};
+      if (j.state && Object.keys(j.state).length > 0) S = normalizeState(j.state);
     }
-  }catch(e){}
+  } catch(e) {}
   render();
 }
-async function tgPost(u,body,ok){
-  try{
-    const r=await fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const j=await r.json();
-    if(!r.ok) throw new Error(j.error||'Có lỗi xảy ra');
-    toast(ok); await loadServer();
-  }catch(e){toast(e.message);}
+
+async function tgPost(u, body, ok) {
+  try {
+    const r = await fetch(u, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || "Có lỗi xảy ra");
+    toast(ok);
+    await loadServer();
+  } catch(e) { toast(e.message); }
 }
-function nid(){S.nextId=(S.nextId||100)+1;save();return S.nextId;}
-let cur="today", wk=TODAY;
 
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),1500);}
+function nid() { S.nextId = (S.nextId || 100) + 1; save(); return S.nextId; }
+let cur = "today", wk = TODAY;
 
-function openForm(title,fields,onSave){
-  let html=`<h3>${esc(title)}</h3>`;
-  fields.forEach(f=>{
-    html+=`<div class="field"><label>${esc(f.label)}</label>`;
-    if(f.type==="select") html+=`<select name="${f.k}">${f.options.map(o=>`<option ${o===f.value?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
-    else html+=`<input name="${f.k}" type="${f.type||"text"}" value="${esc(f.value??"")}" placeholder="${esc(f.ph||"")}">`;
-    html+=`</div>`;
+const $ = function(id) { return document.getElementById(id); };
+const esc = function(s) {
+  return String(s === undefined || s === null ? "" : s).replace(/[&<>"]/g, function(c) {
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
   });
-  html+=`<div class="actions"><button class="cancel" data-sheet="cancel">Huỷ</button><button class="save" data-sheet="save">Lưu</button></div>`;
-  $("sheet").innerHTML=html;
+};
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(t._h);
+  t._h = setTimeout(function() { t.classList.remove("on"); }, 1500);
+}
+
+function openForm(title, fields, onSave) {
+  let html = "<h3>" + esc(title) + "</h3>";
+  fields.forEach(function(f) {
+    html += '<div class="field"><label>' + esc(f.label) + '</label>';
+    if (f.type === "select") {
+      html += '<select name="' + f.k + '">' + f.options.map(function(o) {
+        return '<option ' + (o === f.value ? "selected" : "") + '>' + esc(o) + '</option>';
+      }).join("") + '</select>';
+    } else {
+      html += '<input name="' + f.k + '" type="' + (f.type || "text") + '" value="' + esc(f.value || "") + '" placeholder="' + esc(f.ph || "") + '">';
+    }
+    html += '</div>';
+  });
+  html += '<div class="actions"><button class="cancel" data-sheet="cancel">Huỷ</button><button class="save" data-sheet="save">Lưu</button></div>';
+  $("sheet").innerHTML = html;
   $("overlay").classList.add("on");
-  const first=$("sheet").querySelector("input,select"); if(first) setTimeout(()=>first.focus(),50);
-  $("sheet").onclick=e=>{
-    const b=e.target.closest("[data-sheet]"); if(!b) return;
-    if(b.dataset.sheet==="cancel"){closeSheet();return;}
-    const vals={};
-    fields.forEach(f=>{vals[f.k]=$("sheet").querySelector(`[name="${f.k}"]`).value.trim();});
-    if(fields.some(f=>f.required && !vals[f.k])){toast("Vui lòng nhập đủ thông tin");return;}
+  const first = $("sheet").querySelector("input,select");
+  if (first) setTimeout(function() { first.focus(); }, 50);
+  $("sheet").onclick = function(e) {
+    const b = e.target.closest("[data-sheet]");
+    if (!b) return;
+    if (b.dataset.sheet === "cancel") { closeSheet(); return; }
+    const vals = {};
+    fields.forEach(function(f) { vals[f.k] = $("sheet").querySelector('[name="' + f.k + '"]').value.trim(); });
+    if (fields.some(function(f) { return f.required && !vals[f.k]; })) { toast("Vui lòng nhập đủ thông tin"); return; }
     onSave(vals); save(); closeSheet(); render();
   };
 }
-function closeSheet(){$("overlay").classList.remove("on");}
-$("overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeSheet();});
-const subjOpts=Object.keys(SUBJ);
+function closeSheet() { $("overlay").classList.remove("on"); }
+$("overlay").addEventListener("click", function(e) { if (e.target.id === "overlay") closeSheet(); });
+const subjOpts = Object.keys(SUBJ);
 
-function renderWeek(){
-  const items=(S.schedule[wk]||[]).slice().sort((a,b)=>a.time.localeCompare(b.time));
-  return `
-  <div class="head-row" style="margin-top:4px">
-    <b>Lịch học theo thứ</b>
-    <button class="btn" data-act="addPeriod">+ Thêm tiết</button>
-  </div>
-  <div class="toolbar">
-    <button class="btn ghost" data-act="weekRemind">+ Nhắc việc</button>
-    <button class="btn ghost" data-act="importCsv">Nhập CSV</button>
-    <button class="btn ghost" data-act="exportCsv">Xuất CSV</button>
-  </div>
-  <div class="chips">${DAYS.map((d,i)=>`<button class="${i===wk?"on":""}" data-act="day" data-i="${i}">${d}</button>`).join("")}</div>
-  ${items.length? items.map(p=>`
-    <div class="card" data-act="editPeriod" data-id="${p.id}" style="cursor:pointer">
-      <div class="time">${esc(p.time)}</div>
-      <div class="stripe" style="background:${SUBJ[p.s]||"#6366F1"}"></div>
-      <div class="txt"><b>${esc(p.s)}</b><span>${esc(p.room||"Chưa xếp phòng")}</span></div>
-      <button class="x" data-act="delPeriod" data-id="${p.id}" title="Xoá">✕</button>
-    </div>`).join("") : `<div class="empty">${DAYS[wk]} chưa có tiết học nào.</div>`}
-  ${weekRemindHtml()}
-  <div class="remind" style="background:#EEF2FF;border-color:#C7D2FE;color:#3730A3"><b style="color:#4338CA">Mẹo:</b> Bấm trực tiếp vào một tiết học để sửa giờ, môn hoặc phòng.</div>`;
+function renderWeek() {
+  const items = (S.schedule[wk] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); });
+  return '<div class="head-row" style="margin-top:4px"><b>Lịch học theo thứ</b><button class="btn" data-act="addPeriod">+ Thêm tiết</button></div>' +
+    '<div class="toolbar"><button class="btn ghost" data-act="weekRemind">+ Nhắc việc</button><button class="btn ghost" data-act="importCsv">Nhập CSV</button><button class="btn ghost" data-act="exportCsv">Xuất CSV</button></div>' +
+    '<div class="chips">' + DAYS.map(function(d,i) { return '<button class="' + (i===wk?"on":"") + '" data-act="day" data-i="' + i + '">' + d + '</button>'; }).join("") + '</div>' +
+    (items.length ? items.map(function(p) {
+      return '<div class="card" data-act="editPeriod" data-id="' + p.id + '" style="cursor:pointer">' +
+        '<div class="time">' + esc(p.time) + '</div>' +
+        '<div class="stripe" style="background:' + (SUBJ[p.s] || "#6366F1") + '"></div>' +
+        '<div class="txt"><b>' + esc(p.s) + '</b><span>' + esc(p.room || "Chưa xếp phòng") + '</span></div>' +
+        '<button class="x" data-act="delPeriod" data-id="' + p.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">' + DAYS[wk] + ' chưa có tiết học nào.</div>') +
+    weekRemindHtml() +
+    '<div class="remind" style="background:#EEF2FF;border-color:#C7D2FE;color:#3730A3"><b style="color:#4338CA">Mẹo:</b> Bấm trực tiếp vào một tiết học để sửa giờ, môn hoặc phòng.</div>';
 }
 
-const SUPPLIES={"Toán":["Sách Toán","Vở ô li Toán"],"Tiếng Việt":["Sách Tiếng Việt","Vở tập viết"],"Tiếng Anh":["Sách Tiếng Anh","Vở Tiếng Anh"],"Tự nhiên & Xã hội":["Sách Tự nhiên & Xã hội","Vở TN&XH"],"Mỹ thuật":["Giấy vẽ","Màu sáp","Bút chì"],"Khác":[]};
-function autoPrep(){
-  const names=[];
-  (S.schedule[TOMORROW]||[]).slice().sort((a,b)=>a.time.localeCompare(b.time)).forEach(p=>{
-    (SUPPLIES[p.s]||[]).forEach(n=>{if(!names.includes(n))names.push(n);});
+const SUPPLIES = {"Toán":["Sách Toán","Vở ô li Toán"],"Tiếng Việt":["Sách Tiếng Việt","Vở tập viết"],"Tiếng Anh":["Sách Tiếng Anh","Vở Tiếng Anh"],"Tự nhiên & Xã hội":["Sách Tự nhiên & Xã hội","Vở TN&XH"],"Mỹ thuật":["Giấy vẽ","Màu sáp","Bút chì"],"Khác":[]};
+function autoPrep() {
+  const names = [];
+  (S.schedule[TOMORROW] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); }).forEach(function(p) {
+    (SUPPLIES[p.s] || []).forEach(function(n) { if (!names.includes(n)) names.push(n); });
   });
   return names;
 }
-function renderTomorrow(){
-  S.autoChecked=S.autoChecked||{};
-  const auto=autoPrep();
-  const doneAuto=auto.filter(n=>S.autoChecked[n]).length;
-  const total=auto.length+S.prep.length;
-  const done=doneAuto+S.prep.filter(p=>p.done).length;
-  const periods=(S.schedule[TOMORROW]||[]).length;
-  return `
-  <div class="hero"><small>Ngày mai · ${DAYS[TOMORROW]} · ${periods} tiết</small>
-    <b>Đã chuẩn bị ${done}/${total} món đồ</b>
-    <div class="bar"><i style="width:${total?done/total*100:0}%"></i></div></div>
-  <div class="head-row"><b>Sách vở theo thời khoá biểu</b></div>
-  ${auto.length? auto.map(n=>`
-    <div class="card ${S.autoChecked[n]?"done":""}">
-      <button class="check" data-act="toggleAuto" data-name="${esc(n)}">${S.autoChecked[n]?"✓":""}</button>
-      <div class="txt"><b>${esc(n)}</b><span>Soạn tự động theo lịch ngày mai</span></div>
-    </div>`).join("") : `<div class="empty">Ngày mai chưa có tiết học nào trong thời khoá biểu.</div>`}
-  <div class="head-row"><b>Đồ dùng mang thêm</b><button class="btn" data-act="addPrep">+ Thêm món</button></div>
-  ${S.prep.length? S.prep.map(p=>`
-    <div class="card ${p.done?"done":""}">
-      <button class="check" data-act="togglePrep" data-id="${p.id}">${p.done?"✓":""}</button>
-      <div class="txt"><b>${esc(p.t)}</b></div>
-      <button class="x" data-act="delPrep" data-id="${p.id}" title="Xoá">✕</button>
-    </div>`).join("") : `<div class="empty">Chưa có món đồ mang thêm nào.</div>`}
-  ${upcomingHtml(dayAfter(todayStr()))}
-  <div class="remind" style="background:#ECFDF5;border-color:#A7F3D0;color:#065F46"><b style="color:#047857">Tự động:</b> Sách vở được gợi ý theo lịch học ${DAYS[TOMORROW]}.</div>`;
+function renderTomorrow() {
+  S.autoChecked = S.autoChecked || {};
+  const auto = autoPrep();
+  const doneAuto = auto.filter(function(n) { return S.autoChecked[n]; }).length;
+  const total = auto.length + S.prep.length;
+  const done = doneAuto + S.prep.filter(function(p) { return p.done; }).length;
+  const periods = (S.schedule[TOMORROW] || []).length;
+  return '<div class="hero"><small>Ngày mai · ' + DAYS[TOMORROW] + ' · ' + periods + ' tiết</small>' +
+    '<b>Đã chuẩn bị ' + done + '/' + total + ' món đồ</b>' +
+    '<div class="bar"><i style="width:' + (total ? done/total*100 : 0) + '%"></i></div></div>' +
+    '<div class="head-row"><b>Sách vở theo thời khoá biểu</b></div>' +
+    (auto.length ? auto.map(function(n) {
+      return '<div class="card ' + (S.autoChecked[n] ? "done" : "") + '">' +
+        '<button class="check" data-act="toggleAuto" data-name="' + esc(n) + '">' + (S.autoChecked[n] ? "✓" : "") + '</button>' +
+        '<div class="txt"><b>' + esc(n) + '</b><span>Soạn tự động theo lịch ngày mai</span></div></div>';
+    }).join("") : '<div class="empty">Ngày mai chưa có tiết học nào trong thời khoá biểu.</div>') +
+    '<div class="head-row"><b>Đồ dùng mang thêm</b><button class="btn" data-act="addPrep">+ Thêm món</button></div>' +
+    (S.prep.length ? S.prep.map(function(p) {
+      return '<div class="card ' + (p.done ? "done" : "") + '">' +
+        '<button class="check" data-act="togglePrep" data-id="' + p.id + '">' + (p.done ? "✓" : "") + '</button>' +
+        '<div class="txt"><b>' + esc(p.t) + '</b></div>' +
+        '<button class="x" data-act="delPrep" data-id="' + p.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">Chưa có món đồ mang thêm nào.</div>') +
+    upcomingHtml(dayAfter(todayStr())) +
+    '<div class="remind" style="background:#ECFDF5;border-color:#A7F3D0;color:#065F46"><b style="color:#047857">Tự động:</b> Sách vở được gợi ý theo lịch học ' + DAYS[TOMORROW] + '.</div>';
 }
 
-function renderProfile(){
-  const sub={};
-  (S.scores||[]).forEach(s=>{(sub[s.s]=sub[s.s]||[]).push(s.score);});
-  const keys=Object.keys(sub);
-  const bars=keys.length? `<div class="stat-box">` + keys.map(k=>{
-    const avg=sub[k].reduce((a,b)=>a+b,0)/sub[k].length;
-    return `<div class="stat"><div class="lbl"><span>${esc(k)}</span><span>${avg.toFixed(1)}/10</span></div>
-      <div class="track"><i style="width:${avg*10}%;background:${SUBJ[k]||"#6366F1"}"></i></div></div>`;
-  }).join("") + `</div>` : `<div class="empty">Chưa có điểm số nào.</div>`;
-  const chName=(S.child&&S.child.name)||"Bé";
-  return `
-  <div class="kid">
-    <div class="avatar">${esc(chName.trim().split(" ").pop().charAt(0).toUpperCase()||"B")}</div>
-    <div class="info"><b>${esc(chName)}</b><span>${esc(S.child.cls||"")} · Năm học ${esc(S.child.year||"")}</span></div>
-    <button class="btn ghost" data-act="editChild">Sửa</button>
-  </div>
-  <div class="head-row"><b>Trung bình môn</b><button class="btn" data-act="addScore">+ Thêm điểm</button></div>
-  ${bars}
-  <div class="head-row"><b>Bảng điểm gần đây</b></div>
-  ${(S.scores||[]).length ? S.scores.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(s=>`
-    <div class="card"><div class="stripe" style="background:${SUBJ[s.s]||"#6366F1"}"></div>
-      <div class="txt"><b>${esc(s.s)} ·${s.score}/10</b><span>${esc(s.note\vert{}\vert{}"Bài kiểm tra")} · ${dmy(s.date)}</span></div>
-      <button class="x" data-act="delScore" data-id="${s.id}" title="Xoá">✕</button></div>`).join("") : `<div class="empty">Chưa có lịch sử điểm.</div>`}
-  ${routineHtml()}`;
+function renderProfile() {
+  const sub = {};
+  (S.scores || []).forEach(function(s) { (sub[s.s] = sub[s.s] || []).push(s.score); });
+  const keys = Object.keys(sub);
+  const bars = keys.length ? '<div class="stat-box">' + keys.map(function(k) {
+    const avg = sub[k].reduce(function(a,b) { return a+b; }, 0) / sub[k].length;
+    return '<div class="stat"><div class="lbl"><span>' + esc(k) + '</span><span>' + avg.toFixed(1) + '/10</span></div>' +
+      '<div class="track"><i style="width:' + (avg*10) + '%;background:' + (SUBJ[k] || "#6366F1") + '"></i></div></div>';
+  }).join("") + '</div>' : '<div class="empty">Chưa có điểm số nào.</div>';
+  const chName = (S.child && S.child.name) || "Bé";
+  return '<div class="kid">' +
+    '<div class="avatar">' + esc(chName.trim().split(" ").pop().charAt(0).toUpperCase() || "B") + '</div>' +
+    '<div class="info"><b>' + esc(chName) + '</b><span>' + esc(S.child.cls || "") + ' · Năm học ' + esc(S.child.year || "") + '</span></div>' +
+    '<button class="btn ghost" data-act="editChild">Sửa</button></div>' +
+    '<div class="head-row"><b>Trung bình môn</b><button class="btn" data-act="addScore">+ Thêm điểm</button></div>' +
+    bars +
+    '<div class="head-row"><b>Bảng điểm gần đây</b></div>' +
+    ((S.scores || []).length ? S.scores.slice().sort(function(a,b) { return (b.date||"").localeCompare(a.date||""); }).map(function(s) {
+      return '<div class="card"><div class="stripe" style="background:' + (SUBJ[s.s] || "#6366F1") + '"></div>' +
+        '<div class="txt"><b>' + esc(s.s) + ' · ' + s.score + '/10</b><span>' + esc(s.note || "Bài kiểm tra") + ' · ' + dmy(s.date) + '</span></div>' +
+        '<button class="x" data-act="delScore" data-id="' + s.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">Chưa có lịch sử điểm.</div>') +
+    routineHtml();
 }
 
-const HEADS={
-  today:["Việc của tôi","Quản lý việc theo ngày & thói quen"],
-  week:["Thời khoá biểu","Lịch học các ngày trong tuần"],
-  tomorrow:["Chuẩn bị ngày mai","Soạn sách vở và việc sắp tới"],
-  profile:["Hồ sơ học tập","Theo dõi điểm số và lịch nhắc"]
+const HEADS = {
+  today: ["Việc của tôi", "Quản lý việc theo ngày & thói quen"],
+  week: ["Thời khoá biểu", "Lịch học các ngày trong tuần"],
+  tomorrow: ["Chuẩn bị ngày mai", "Soạn sách vở và việc sắp tới"],
+  profile: ["Hồ sơ học tập", "Theo dõi điểm số và lịch nhắc"]
 };
 
-function render(){
-  const map={today:renderDaily,week:renderWeek,tomorrow:renderTomorrow,profile:renderProfile};
-  document.querySelectorAll(".screen").forEach(el=>el.classList.toggle("on",el.id==="s-"+cur));
-  $("s-"+cur).innerHTML=map[cur]();
-  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.s===cur));
+function render() {
+  const map = {today:renderDaily, week:renderWeek, tomorrow:renderTomorrow, profile:renderProfile};
+  document.querySelectorAll(".screen").forEach(function(el) { el.classList.toggle("on", el.id === "s-" + cur); });
+  $("s-" + cur).innerHTML = map[cur]();
+  document.querySelectorAll("nav button").forEach(function(b) { b.classList.toggle("on", b.dataset.s === cur); });
   updateBadge();
-  $("head").innerHTML=`<h1>${HEADS[cur][0]}</h1><p>${HEADS[cur][1]}</p>`;
+  $("head").innerHTML = "<h1>" + HEADS[cur][0] + "</h1><p>" + HEADS[cur][1] + "</p>";
 }
 
-function updateBadge(){
-  const tm=dayAfter(todayStr());
-  const n=(S.tasks||[]).filter(t=>!t.done&&taskDateC(t)===tm).length
-        +(S.reminders||[]).filter(r=>r.repeat!=="daily"&&r.date===tm).length;
-  const b=$("nbadge"); if(!b) return;
-  b.textContent=n>9?"9+":String(n); b.hidden=n===0;
+function updateBadge() {
+  const tm = dayAfter(todayStr());
+  const n = (S.tasks || []).filter(function(t) { return !t.done && taskDateC(t) === tm; }).length +
+            (S.reminders || []).filter(function(r) { return r.repeat !== "daily" && r.date === tm; }).length;
+  const b = $("nbadge");
+  if (!b) return;
+  b.textContent = n > 9 ? "9+" : String(n);
+  b.hidden = n === 0;
 }
-function go(s){cur=s;render();$("main").scrollTop=0;}
+function go(s) { cur = s; render(); $("main").scrollTop = 0; }
 
-$("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b)go(b.dataset.s);});
-$("main").addEventListener("change",e=>{
-  if(e.target.dataset.act==="reminder"){S.reminder=e.target.value;save();render();toast("Đã đặt giờ nhắc "+S.reminder);}
+$("nav").addEventListener("click", function(e) { const b = e.target.closest("button"); if (b) go(b.dataset.s); });
+$("main").addEventListener("change", function(e) {
+  if (e.target.dataset.act === "reminder") { S.reminder = e.target.value; save(); render(); toast("Đã đặt giờ nhắc " + S.reminder); }
 });
-$("main").addEventListener("click",e=>{
-  const el=e.target.closest("[data-act]"); if(!el) return;
-  const a=el.dataset.act, id=+el.dataset.id;
-  const find=(arr)=>(arr||[]).find(x=>x.id===id);
-  switch(a){
-    case "toggleTask": {const t=find(S.tasks);if(t){t.done=!t.done;save();render();}break;}
-    case "delTask": S.tasks=(S.tasks||[]).filter(x=>x.id!==id);save();render();toast("Đã xoá việc");break;
-    case "addTask": openForm("Thêm việc mới",[
-        {k:"t",label:"Tên công việc",required:true,ph:"VD: Làm bài tập Toán"},
-        {k:"date",label:"Ngày thực hiện",type:"date",value:todayStr(),required:true},
-        {k:"time",label:"Giờ hạn",type:"time",value:"19:00"},
-        {k:"priority",label:"Mức độ ưu tiên",type:"select",options:["Cao","Trung bình","Thấp"],value:"Trung bình"}],
-      v=>{S.tasks.push({id:nid(),t:v.t,date:v.date,time:v.time||"19:00",priority:v.priority,done:false});toast("Đã thêm việc");});break;
-    case "addHabit": openForm("Thêm thói quen",[{k:"name",label:"Tên thói quen",required:true,ph:"VD: Đọc sách 15 phút"}],
-      v=>{(S.habits=S.habits||[]).push({id:nid(),name:v.name,days:[]});toast("Đã thêm thói quen");});break;
-    case "toggleHabit": {const h=find(S.habits);if(h){const d=todayStr();h.days=h.days.includes(d)?h.days.filter(x=>x!==d):[...h.days,d];save();render();}break;}
-    case "delHabit": S.habits=(S.habits||[]).filter(x=>x.id!==id);save();render();toast("Đã xoá thói quen");break;
-    case "day": wk=+el.dataset.i;render();break;
-    case "addPeriod": openForm("Thêm tiết — "+DAYS[wk],[
-        {k:"time",label:"Giờ học",type:"time",value:"07:30",required:true},
-        {k:"s",label:"Môn học",type:"select",options:subjOpts,value:"Toán"},
-        {k:"room",label:"Phòng học",ph:"VD: Phòng 3A"}],
-      v=>{(S.schedule[wk]=S.schedule[wk]||[]).push({id:nid(),time:v.time,s:v.s,room:v.room});toast("Đã thêm tiết");});break;
+$("main").addEventListener("click", function(e) {
+  const el = e.target.closest("[data-act]");
+  if (!el) return;
+  const a = el.dataset.act, id = +el.dataset.id;
+  const find = function(arr) { return (arr || []).find(function(x) { return x.id === id; }); };
+  switch(a) {
+    case "toggleTask": { const t = find(S.tasks); if (t) { t.done = !t.done; save(); render(); } break; }
+    case "delTask": S.tasks = (S.tasks || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá việc"); break;
+    case "addTask": openForm("Thêm việc mới", [
+        {k:"t", label:"Tên công việc", required:true, ph:"VD: Làm bài tập Toán"},
+        {k:"date", label:"Ngày thực hiện", type:"date", value:todayStr(), required:true},
+        {k:"time", label:"Giờ hạn", type:"time", value:"19:00"},
+        {k:"priority", label:"Mức độ ưu tiên", type:"select", options:["Cao","Trung bình","Thấp"], value:"Trung bình"}],
+      function(v) { S.tasks.push({id:nid(), t:v.t, date:v.date, time:v.time||"19:00", priority:v.priority, done:false}); toast("Đã thêm việc"); }); break;
+    case "addHabit": openForm("Thêm thói quen", [{k:"name", label:"Tên thói quen", required:true, ph:"VD: Đọc sách 15 phút"}],
+      function(v) { (S.habits = S.habits || []).push({id:nid(), name:v.name, days:[]}); toast("Đã thêm thói quen"); }); break;
+    case "toggleHabit": { const h = find(S.habits); if (h) { const d = todayStr(); h.days = h.days.includes(d) ? h.days.filter(function(x) { return x !== d; }) : h.days.concat([d]); save(); render(); } break; }
+    case "delHabit": S.habits = (S.habits || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá thói quen"); break;
+    case "day": wk = +el.dataset.i; render(); break;
+    case "addPeriod": openForm("Thêm tiết - " + DAYS[wk], [
+        {k:"time", label:"Giờ học", type:"time", value:"07:30", required:true},
+        {k:"s", label:"Môn học", type:"select", options:subjOpts, value:"Toán"},
+        {k:"room", label:"Phòng học", ph:"VD: Phòng 3A"}],
+      function(v) { (S.schedule[wk] = S.schedule[wk] || []).push({id:nid(), time:v.time, s:v.s, room:v.room}); toast("Đã thêm tiết"); }); break;
     case "editPeriod": {
-      if(e.target.closest('[data-act="delPeriod"]')) return;
-      const p=find(S.schedule[wk]); if(!p) break;
-      openForm("Sửa tiết học",[
-        {k:"time",label:"Giờ học",type:"time",value:p.time,required:true},
-        {k:"s",label:"Môn học",type:"select",options:subjOpts,value:p.s},
-        {k:"room",label:"Phòng học",value:p.room}],
-      v=>{Object.assign(p,{time:v.time,s:v.s,room:v.room});toast("Đã cập nhật");});break;}
-    case "delPeriod": e.stopPropagation(); S.schedule[wk]=(S.schedule[wk]||[]).filter(x=>x.id!==id);save();render();toast("Đã xoá tiết");break;
+      if (e.target.closest('[data-act="delPeriod"]')) return;
+      const p = find(S.schedule[wk]); if (!p) break;
+      openForm("Sửa tiết học", [
+        {k:"time", label:"Giờ học", type:"time", value:p.time, required:true},
+        {k:"s", label:"Môn học", type:"select", options:subjOpts, value:p.s},
+        {k:"room", label:"Phòng học", value:p.room}],
+      function(v) { Object.assign(p, {time:v.time, s:v.s, room:v.room}); toast("Đã cập nhật"); }); break; }
+    case "delPeriod": e.stopPropagation(); S.schedule[wk] = (S.schedule[wk] || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá tiết"); break;
     case "importCsv": $("csvFile").click(); break;
     case "addNotify": openReminderForm(todayStr()); break;
     case "weekRemind": openReminderForm(dateOfWeekday(wk)); break;
     case "exportCsv": exportCsv(); break;
-    case "addPrep": openForm("Thêm đồ dùng cần mang",[{k:"t",label:"Tên món đồ",required:true,ph:"VD: Áo khoác, bình nước"}],
-      v=>{S.prep.push({id:nid(),t:v.t,done:false});toast("Đã thêm");});break;
-    case "togglePrep": {const p=find(S.prep);if(p){p.done=!p.done;save();render();}break;}
-    case "toggleAuto": {S.autoChecked=S.autoChecked||{};const n=el.dataset.name;S.autoChecked[n]=!S.autoChecked[n];save();render();break;}
-    case "delPrep": S.prep=(S.prep||[]).filter(x=>x.id!==id);save();render();break;
-    case "editChild": openForm("Thông tin của con",[
-        {k:"name",label:"Họ và tên",value:S.child.name,required:true},
-        {k:"cls",label:"Lớp",value:S.child.cls,required:true},
-        {k:"year",label:"Năm học",value:S.child.year}],
-      v=>{Object.assign(S.child,v);toast("Đã lưu");});break;
-    case "addScore": openForm("Thêm điểm mới",[
-        {k:"s",label:"Môn học",type:"select",options:subjOpts,value:"Toán"},
-        {k:"score",label:"Điểm số (0–10)",type:"number",value:"10",required:true},
-        {k:"note",label:"Ghi chú",ph:"VD: Kiểm tra 15 phút"}],
-      v=>{const sc=Math.min(10,Math.max(0,+v.score));S.scores.push({id:nid(),s:v.s,score:sc,note:v.note,date:todayStr()});toast("Đã thêm điểm");});break;
-    case "delScore": S.scores=(S.scores||[]).filter(x=>x.id!==id);save();render();break;
+    case "addPrep": openForm("Thêm đồ dùng cần mang", [{k:"t", label:"Tên món đồ", required:true, ph:"VD: Áo khoác, bình nước"}],
+      function(v) { S.prep.push({id:nid(), t:v.t, done:false}); toast("Đã thêm"); }); break;
+    case "togglePrep": { const p = find(S.prep); if (p) { p.done = !p.done; save(); render(); } break; }
+    case "toggleAuto": { S.autoChecked = S.autoChecked || {}; const n = el.dataset.name; S.autoChecked[n] = !S.autoChecked[n]; save(); render(); break; }
+    case "delPrep": S.prep = (S.prep || []).filter(function(x) { return x.id !== id; }); save(); render(); break;
+    case "editChild": openForm("Thông tin của con", [
+        {k:"name", label:"Họ và tên", value:S.child.name, required:true},
+        {k:"cls", label:"Lớp", value:S.child.cls, required:true},
+        {k:"year", label:"Năm học", value:S.child.year}],
+      function(v) { Object.assign(S.child, v); toast("Đã lưu"); }); break;
+    case "addScore": openForm("Thêm điểm mới", [
+        {k:"s", label:"Môn học", type:"select", options:subjOpts, value:"Toán"},
+        {k:"score", label:"Điểm số (0-10)", type:"number", value:"10", required:true},
+        {k:"note", label:"Ghi chú", ph:"VD: Kiểm tra 15 phút"}],
+      function(v) { const sc = Math.min(10, Math.max(0, +v.score)); S.scores.push({id:nid(), s:v.s, score:sc, note:v.note, date:todayStr()}); toast("Đã thêm điểm"); }); break;
+    case "delScore": S.scores = (S.scores || []).filter(function(x) { return x.id !== id; }); save(); render(); break;
     case "addRoutine": openReminderForm(todayStr()); break;
-    case "delRoutine": S.reminders=(S.reminders||[]).filter(x=>x.id!==id);save();render();toast("Đã xoá lịch nhắc");break;
-    case "tgSave": tgPost("/api/telegram/token",{token:$("tgToken").value},"Đã lưu token"); break;
-    case "tgDetect": tgPost("/api/telegram/detect",{},"Đã kết nối với phụ huynh"); break;
-    case "tgTest": tgPost("/api/telegram/test",{},"Đã gửi tin thử"); break;
+    case "delRoutine": S.reminders = (S.reminders || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá lịch nhắc"); break;
+    case "tgSave": tgPost("/api/telegram/token", {token:$("tgToken").value}, "Đã lưu token"); break;
+    case "tgDetect": tgPost("/api/telegram/detect", {}, "Đã kết nối với phụ huynh"); break;
+    case "tgTest": tgPost("/api/telegram/test", {}, "Đã gửi tin thử"); break;
   }
 });
 
-const DAY_MAP={"2":0,"thứ 2":0,"thứ hai":0,"3":1,"thứ 3":1,"thứ ba":1,"4":2,"thứ 4":2,"thứ tư":2,"5":3,"thứ 5":3,"thứ năm":3,"6":4,"thứ 6":4,"thứ sáu":4,"7":5,"thứ 7":5,"thứ bảy":5,"cn":6,"chủ nhật":6,"8":6};
-function dayIndex(t){const v=DAY_MAP[(t||"").toLowerCase().trim()];return v===undefined?-1:v;}
-function parseCsv(text){
-  const out={}; let added=0, skipped=0;
-  text.replace(/^\uFEFF/,"").split(/\r?\n/).map(l=>l.trim()).filter(Boolean).forEach((line,i)=>{
-    const c=line.split(",").map(x=>x.trim());
-    const d=dayIndex(c[0]);
-    if(d<0){ if(i===0) return; skipped++; return; }
-    if(!/^\d{1,2}:\d{2}$/.test(c[1])){ skipped++; return; }
-    const s=SUBJ[c[2]]?c[2]:"Khác";
-    (out[d]=out[d]||[]).push({id:nid(),time:c[1].padStart(5,"0"),s,room:c[3]||""});
+const DAY_MAP = {"2":0,"thứ 2":0,"thứ hai":0,"3":1,"thứ 3":1,"thứ ba":1,"4":2,"thứ 4":2,"thứ tư":2,"5":3,"thứ 5":3,"thứ năm":3,"6":4,"thứ 6":4,"thứ sáu":4,"7":5,"thứ 7":5,"thứ bảy":5,"cn":6,"chủ nhật":6,"8":6};
+function dayIndex(t) { const v = DAY_MAP[(t || "").toLowerCase().trim()]; return v === undefined ? -1 : v; }
+function parseCsv(text) {
+  const out = {}; let added = 0, skipped = 0;
+  text.split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean).forEach(function(line, i) {
+    const c = line.split(",").map(function(x) { return x.trim(); });
+    const d = dayIndex(c[0]);
+    if (d < 0) { if (i === 0) return; skipped++; return; }
+    if (!/^\d{1,2}:\d{2}$/.test(c[1])) { skipped++; return; }
+    const s = SUBJ[c[2]] ? c[2] : "Khác";
+    (out[d] = out[d] || []).push({id:nid(), time:c[1].padStart(5,"0"), s:s, room:c[3]||""});
     added++;
   });
-  return {out,added,skipped};
+  return {out:out, added:added, skipped:skipped};
 }
-$("csvFile").addEventListener("change",e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const reader=new FileReader();
-  reader.onload=()=>{
-    const {out,added,skipped}=parseCsv(String(reader.result));
-    if(!added){toast("File không có dòng tiết hợp lệ");}
-    else{
-      Object.keys(out).forEach(d=>{S.schedule[d]=out[d];});
+$("csvFile").addEventListener("change", function(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = function() {
+    const res = parseCsv(String(reader.result));
+    if (!res.added) { toast("File không có dòng tiết hợp lệ"); }
+    else {
+      Object.keys(res.out).forEach(function(d) { S.schedule[d] = res.out[d]; });
       save(); render();
-      toast(`Đã nhập ${added} tiết${skipped?", bỏ qua "+skipped+" dòng":""}`);
+      toast("Đã nhập " + res.added + " tiết");
     }
-    e.target.value="";
+    e.target.value = "";
   };
-  reader.readAsText(f,"utf-8");
+  reader.readAsText(f, "utf-8");
 });
-function exportCsv(){
-  const lines=["Thứ,Giờ,Môn,Phòng"];
-  DAYS.forEach((d,i)=>(S.schedule[i]||[]).slice().sort((a,b)=>a.time.localeCompare(b.time))
-    .forEach(p=>lines.push([d,p.time,p.s,(p.room||"").replace(/,/g," ")].join(","))));
-  const blob=new Blob(["\uFEFF"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob); a.download="thoi-khoa-bieu.csv"; a.click();
+function exportCsv() {
+  const lines = ["Thứ,Giờ,Môn,Phòng"];
+  DAYS.forEach(function(d, i) {
+    (S.schedule[i] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); }).forEach(function(p) {
+      lines.push([d, p.time, p.s, (p.room || "").replace(/,/g, " ")].join(","));
+    });
+  });
+  const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "thoi-khoa-bieu.csv"; a.click();
 }
 
-function settingsHtml(){
-  return `
-  <details class="settings-group">
-    <summary>⚙️ Cài đặt thông báo & Telegram (${TG.connected?"Đã kết nối":"Chưa kết nối"})</summary>
-    <div class="settings-body">
-      <div class="setting">
-        <span>Giờ nhắc tổng hợp mỗi ngày</span>
-        <select data-act="reminder">${["18:00","19:00","20:00","21:00"].map(h=>`<option ${h===S.reminder?"selected":""}>${h}</option>`).join("")}</select>
-      </div>
-      <div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.4">
-        Mở Telegram, tìm bot của bạn, bấm <b>Start</b>, sau đó nhập Token và bấm “Lấy mã kết nối”.
-      </div>
-      <input id="tgToken" placeholder="Nhập Token bot từ BotFather..." style="width:100%;margin-top:8px">
-      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-        <button class="btn ghost" data-act="tgSave">Lưu token</button>
-        <button class="btn ghost" data-act="tgDetect">Lấy mã kết nối</button>
-        <button class="btn" data-act="tgTest">Gửi thử</button>
-      </div>
-    </div>
-  </details>`;
+function settingsHtml() {
+  return '<details class="settings-group">' +
+    '<summary>Cài đặt thông báo & Telegram (' + (TG.connected ? "Đã kết nối" : "Chưa kết nối") + ')</summary>' +
+    '<div class="settings-body">' +
+      '<div class="setting"><span>Giờ nhắc tổng hợp mỗi ngày</span>' +
+        '<select data-act="reminder">' + ["18:00","19:00","20:00","21:00"].map(function(h) { return '<option ' + (h===S.reminder?"selected":"") + '>' + h + '</option>'; }).join("") + '</select>' +
+      '</div>' +
+      '<div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.4">Mở Telegram, tìm bot của bạn, bấm <b>Start</b>, sau đó nhập Token và bấm Lấy mã kết nối.</div>' +
+      '<input id="tgToken" placeholder="Nhập Token bot từ BotFather..." style="width:100%;margin-top:8px">' +
+      '<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">' +
+        '<button class="btn ghost" data-act="tgSave">Lưu token</button>' +
+        '<button class="btn ghost" data-act="tgDetect">Lấy mã kết nối</button>' +
+        '<button class="btn" data-act="tgTest">Gửi thử</button>' +
+      '</div>' +
+    '</div></details>';
 }
 
-function todayStr(){return new Date().toLocaleDateString("sv-SE",{timeZone:"Asia/Ho_Chi_Minh"});}
-function dayAfter(s){const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+1);return d.toLocaleDateString("sv-SE");}
-function dateOfWeekday(i){const b=new Date(todayStr()+"T12:00:00");const tw=(b.getDay()+6)%7;b.setDate(b.getDate()+(i-tw));return b.toLocaleDateString("sv-SE");}
-function dmy(d){return d?String(d).split("-").reverse().join("/"):"";}
+function todayStr() { return new Date().toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"}); }
+function dayAfter(s) { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + 1); return d.toLocaleDateString("sv-SE"); }
+function dateOfWeekday(i) { const b = new Date(todayStr() + "T12:00:00"); const tw = (b.getDay() + 6) % 7; b.setDate(b.getDate() + (i - tw)); return b.toLocaleDateString("sv-SE"); }
+function dmy(d) { return d ? String(d).split("-").reverse().join("/") : ""; }
 
-function openReminderForm(defDate){
-  openForm("Thêm lịch nhắc",[
-    {k:"t",label:"Việc cần nhắc",required:true,ph:"VD: Đóng tiền học, Đi khám"},
-    {k:"date",label:"Ngày nhắc",type:"date",value:defDate||todayStr(),required:true},
-    {k:"time",label:"Giờ nhắc",type:"time",value:"19:00",required:true},
-    {k:"repeat",label:"Lặp lại",type:"select",options:["Một lần","Hằng ngày"],value:"Một lần"},
-    {k:"note",label:"Ghi chú (không bắt buộc)",ph:"VD: Mang theo biên lai"}],
-  v=>{(S.reminders=S.reminders||[]).push({id:nid(),t:v.t,date:v.date,time:v.time,repeat:v.repeat==="Hằng ngày"?"daily":"none",note:v.note});toast("Đã lưu lịch nhắc");});
+function openReminderForm(defDate) {
+  openForm("Thêm lịch nhắc", [
+    {k:"t", label:"Việc cần nhắc", required:true, ph:"VD: Đóng tiền học, Đi khám"},
+    {k:"date", label:"Ngày nhắc", type:"date", value:defDate||todayStr(), required:true},
+    {k:"time", label:"Giờ nhắc", type:"time", value:"19:00", required:true},
+    {k:"repeat", label:"Lặp lại", type:"select", options:["Một lần","Hằng ngày"], value:"Một lần"},
+    {k:"note", label:"Ghi chú (không bắt buộc)", ph:"VD: Mang theo biên lai"}],
+  function(v) { (S.reminders = S.reminders || []).push({id:nid(), t:v.t, date:v.date, time:v.time, repeat:v.repeat==="Hằng ngày"?"daily":"none", note:v.note}); toast("Đã lưu lịch nhắc"); });
 }
 
-function notifyHtml(){
-  const t0=todayStr(), t1=dayAfter(t0);
-  const list=(S.reminders||[]).filter(r=>r.repeat!=="daily"&&(r.date===t0||r.date===t1)).sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.time||"").localeCompare(b.time||""));
-  return `<div class="head-row"><b>Lịch hẹn hôm nay & ngày mai</b><button class="btn ghost" data-act="addNotify">+ Nhắc hẹn</button></div>
-  ${list.length? list.map(r=>`<div class="card"><div class="time">${esc(dmy(r.date).slice(0,5))}<br>${esc(r.time)}</div><div class="txt"><b>${esc(r.t)}</b><span>${esc(r.note||"Nhắc qua Telegram")}</span></div><button class="x" data-act="delRoutine" data-id="${r.id}" title="Xoá">✕</button></div>`).join("") : `<div class="empty">Chưa có lịch hẹn nào cho hôm nay và ngày mai.</div>`}`;
+function notifyHtml() {
+  const t0 = todayStr(), t1 = dayAfter(t0);
+  const list = (S.reminders || []).filter(function(r) { return r.repeat !== "daily" && (r.date === t0 || r.date === t1); }).sort(function(a,b) { return (a.date||"").localeCompare(b.date||"") || (a.time||"").localeCompare(b.time||""); });
+  return '<div class="head-row"><b>Lịch hẹn hôm nay & ngày mai</b><button class="btn ghost" data-act="addNotify">+ Nhắc hẹn</button></div>' +
+    (list.length ? list.map(function(r) {
+      return '<div class="card"><div class="time">' + esc(dmy(r.date).slice(0,5)) + '<br>' + esc(r.time) + '</div><div class="txt"><b>' + esc(r.t) + '</b><span>' + esc(r.note || "Nhắc qua Telegram") + '</span></div><button class="x" data-act="delRoutine" data-id="' + r.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">Chưa có lịch hẹn nào cho hôm nay và ngày mai.</div>');
 }
 
-function upcomingHtml(from){
-  const items=[];
-  (S.tasks||[]).forEach(t=>{const d=taskDateC(t); if(!t.done&&d>=from) items.push({d,time:t.time||"",label:t.t,kind:"Việc",pri:t.priority||"",note:""});});
-  (S.reminders||[]).forEach(r=>{ if(r.repeat!=="daily"&&r.date>=from) items.push({d:r.date,time:r.time||"",label:r.t,kind:"Nhắc",pri:"",note:r.note||""}); });
-  let html=`<div class="head-row"><b>Kế hoạch các ngày tới</b></div>`;
-  if(!items.length) return html+`<div class="empty">Chưa có việc nào từ ngày mai trở đi.</div>`;
-  items.sort((a,b)=>a.d.localeCompare(b.d)||a.time.localeCompare(b.time));
-  let curD="";
-  items.forEach(i=>{
-    if(i.d!==curD){curD=i.d; html+=`<div style="font-size:12.5px;font-weight:700;margin:12px 4px 6px;color:var(--purple-dark)">📅 ${esc(dmy(i.d))}</div>`;}
-    html+=`<div class="card"><div class="time">${esc(i.time||"--:--")}</div><div class="txt"><b>${esc(i.label)}</b><span>${i.kind}${i.pri?" · Ưu tiên "+esc(i.pri):""}${i.note?" · "+esc(i.note):""}</span></div></div>`;
+function upcomingHtml(from) {
+  const items = [];
+  (S.tasks || []).forEach(function(t) { const d = taskDateC(t); if (!t.done && d >= from) items.push({d:d, time:t.time||"", label:t.t, kind:"Việc", pri:t.priority||"", note:""}); });
+  (S.reminders || []).forEach(function(r) { if (r.repeat !== "daily" && r.date >= from) items.push({d:r.date, time:r.time||"", label:r.t, kind:"Nhắc", pri:"", note:r.note||""}); });
+  let html = '<div class="head-row"><b>Kế hoạch các ngày tới</b></div>';
+  if (!items.length) return html + '<div class="empty">Chưa có việc nào từ ngày mai trở đi.</div>';
+  items.sort(function(a,b) { return a.d.localeCompare(b.d) || a.time.localeCompare(b.time); });
+  let curD = "";
+  items.forEach(function(i) {
+    if (i.d !== curD) { curD = i.d; html += '<div style="font-size:12.5px;font-weight:700;margin:12px 4px 6px;color:var(--purple-dark)">Ngày ' + esc(dmy(i.d)) + '</div>'; }
+    html += '<div class="card"><div class="time">' + esc(i.time || "--:--") + '</div><div class="txt"><b>' + esc(i.label) + '</b><span>' + i.kind + (i.pri ? " · Ưu tiên " + esc(i.pri) : "") + (i.note ? " · " + esc(i.note) : "") + '</span></div></div>';
   });
   return html;
 }
 
-function weekRemindHtml(){
-  const d=dateOfWeekday(wk);
-  const list=(S.reminders||[]).filter(r=>r.repeat!=="daily"&&r.date===d).sort((a,b)=>(a.time||"").localeCompare(b.time||""));
-  return `<div class="head-row"><b>Nhắc việc ${DAYS[wk]} (${esc(dmy(d))})</b></div>
-  ${list.length? list.map(r=>`<div class="card"><div class="time">${esc(r.time)}</div><div class="txt"><b>${esc(r.t)}</b><span>${esc(r.note||"Nhắc qua Telegram")}</span></div><button class="x" data-act="delRoutine" data-id="${r.id}" title="Xoá">✕</button></div>`).join("") : `<div class="empty">${DAYS[wk]} chưa có lịch nhắc.</div>`}`;
+function weekRemindHtml() {
+  const d = dateOfWeekday(wk);
+  const list = (S.reminders || []).filter(function(r) { return r.repeat !== "daily" && r.date === d; }).sort(function(a,b) { return (a.time||"").localeCompare(b.time||""); });
+  return '<div class="head-row"><b>Nhắc việc ' + DAYS[wk] + ' (' + esc(dmy(d)) + ')</b></div>' +
+    (list.length ? list.map(function(r) {
+      return '<div class="card"><div class="time">' + esc(r.time) + '</div><div class="txt"><b>' + esc(r.t) + '</b><span>' + esc(r.note || "Nhắc qua Telegram") + '</span></div><button class="x" data-act="delRoutine" data-id="' + r.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">' + DAYS[wk] + ' chưa có lịch nhắc.</div>');
 }
 
-const PRI={"Cao":0,"Trung bình":1,"Thấp":2};
-const PRI_COLOR={"Cao":"#EF4444","Trung bình":"#F59E0B","Thấp":"#10B981"};
-function taskDateC(t){
-  if(t.date) return t.date;
-  const d=new Date(); if(t.due==="tomorrow") d.setTime(d.getTime()+86400000);
-  return d.toLocaleDateString("sv-SE",{timeZone:"Asia/Ho_Chi_Minh"});
+const PRI = {"Cao":0, "Trung bình":1, "Thấp":2};
+const PRI_COLOR = {"Cao":"#EF4444", "Trung bình":"#F59E0B", "Thấp":"#10B981"};
+function taskDateC(t) {
+  if (t.date) return t.date;
+  const d = new Date(); if (t.due === "tomorrow") d.setTime(d.getTime() + 86400000);
+  return d.toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"});
 }
-function sortTasks(a,b){return (PRI[a.priority]??1)-(PRI[b.priority]??1)||(a.time||"").localeCompare(b.time||"");}
-function taskCard(t){
-  return `<div class="card ${t.done?"done":""}">
-    <div class="stripe" style="background:${PRI_COLOR[t.priority]||"#94A3B8"}"></div>
-    <button class="check" data-act="toggleTask" data-id="${t.id}">${t.done?"✓":""}</button>
-    <div class="txt"><b>${esc(t.t)}</b><span>Ưu tiên ${esc(t.priority||"Trung bình")} · ${esc(dmy(t.date))} ${esc(t.time||"")}</span></div>
-    <button class="x" data-act="delTask" data-id="${t.id}" title="Xoá">✕</button></div>`;
+function sortTasks(a,b) { return ((PRI[a.priority] !== undefined ? PRI[a.priority] : 1) - (PRI[b.priority] !== undefined ? PRI[b.priority] : 1)) || (a.time||"").localeCompare(b.time||""); }
+function taskCard(t) {
+  return '<div class="card ' + (t.done ? "done" : "") + '">' +
+    '<div class="stripe" style="background:' + (PRI_COLOR[t.priority] || "#94A3B8") + '"></div>' +
+    '<button class="check" data-act="toggleTask" data-id="' + t.id + '">' + (t.done ? "✓" : "") + '</button>' +
+    '<div class="txt"><b>' + esc(t.t) + '</b><span>Ưu tiên ' + esc(t.priority || "Trung bình") + ' · ' + esc(dmy(t.date)) + ' ' + esc(t.time || "") + '</span></div>' +
+    '<button class="x" data-act="delTask" data-id="' + t.id + '" title="Xoá">✕</button></div>';
 }
-function streak(h){
-  let n=0; const d=new Date();
-  const days=Array.isArray(h.days)?h.days:[];
-  for(;;){const s=d.toLocaleDateString("sv-SE",{timeZone:"Asia/Ho_Chi_Minh"}); if(!days.includes(s)) break; n++; d.setTime(d.getTime()-86400000);}
+function streak(h) {
+  let n = 0; const d = new Date();
+  const days = Array.isArray(h.days) ? h.days : [];
+  for (;;) { const s = d.toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"}); if (!days.includes(s)) break; n++; d.setTime(d.getTime() - 86400000); }
   return n;
 }
-function renderDaily(){
-  S.habits=Array.isArray(S.habits)?S.habits:[];
-  const today=todayStr();
-  const all=(S.tasks||[]).map(t=>({...t,date:taskDateC(t)}));
-  const overdue=all.filter(t=>!t.done&&t.date<today).sort(sortTasks);
-  const todayL=all.filter(t=>t.date===today).sort(sortTasks);
-  const later=all.filter(t=>t.date>today).sort((a,b)=>a.date.localeCompare(b.date)||sortTasks(a,b));
-  const done=todayL.filter(t=>t.done).length;
-  const pct=todayL.length?Math.round(done/todayL.length*100):0;
-  const section=(title,list)=>list.length?`<div class="head-row"><b>${title}</b></div>${list.map(taskCard).join("")}`:"";
-  const habits=S.habits.length? S.habits.map(h=>{const days=Array.isArray(h.days)?h.days:[];const on=days.includes(today);return `
-    <div class="card ${on?"done":""}">
-      <button class="check ${on?"on":""}" data-act="toggleHabit" data-id="${h.id}">${on?"✓":""}</button>
-      <div class="txt"><b>${esc(h.name)}</b><span>🔥 Chuỗi ${streak(h)} ngày liên tiếp</span></div>
-      <button class="x" data-act="delHabit" data-id="${h.id}" title="Xoá">✕</button></div>`;}).join("")
-    : `<div class="empty">Chưa có thói quen nào. Bấm "+ Thêm" để rèn luyện mỗi ngày.</div>`;
-  return `
-  <div class="hero"><small>Hôm nay · ${esc(dmy(today))}</small>
-    <b>Hoàn thành ${done}/${todayL.length} công việc</b>
-    <div class="bar"><i style="width:${pct}%"></i></div></div>
-  ${overdue.length?`<div class="remind" style="background:#FEF2F2;border-color:#FECACA;color:#991B1B"><b style="color:#B91C1C">Chú ý:</b> Còn ${overdue.length} việc quá hạn chưa hoàn thành.</div>`:""}
-  <div class="head-row"><b>Việc cần làm hôm nay</b><button class="btn" data-act="addTask">+ Thêm việc</button></div>
-  ${todayL.length? todayL.map(taskCard).join("") : `<div class="empty">Hôm nay chưa có việc nào.</div>`}
-  ${section("Quá hạn chưa xong", overdue)}
-  ${notifyHtml()}
-  <div class="head-row"><b>Thói quen hằng ngày</b><button class="btn ghost" data-act="addHabit">+ Thêm</button></div>
-  ${habits}
-  ${section("Công việc sắp tới", later)}
-  ${settingsHtml()}`;
+function renderDaily() {
+  S.habits = Array.isArray(S.habits) ? S.habits : [];
+  const today = todayStr();
+  const all = (S.tasks || []).map(function(t) { return Object.assign({}, t, {date:taskDateC(t)}); });
+  const overdue = all.filter(function(t) { return !t.done && t.date < today; }).sort(sortTasks);
+  const todayL = all.filter(function(t) { return t.date === today; }).sort(sortTasks);
+  const later = all.filter(function(t) { return t.date > today; }).sort(function(a,b) { return a.date.localeCompare(b.date) || sortTasks(a,b); });
+  const done = todayL.filter(function(t) { return t.done; }).length;
+  const pct = todayL.length ? Math.round(done / todayL.length * 100) : 0;
+  const section = function(title, list) { return list.length ? '<div class="head-row"><b>' + title + '</b></div>' + list.map(taskCard).join("") : ""; };
+  const habits = S.habits.length ? S.habits.map(function(h) {
+    const days = Array.isArray(h.days) ? h.days : [];
+    const on = days.includes(today);
+    return '<div class="card ' + (on ? "done" : "") + '">' +
+      '<button class="check ' + (on ? "on" : "") + '" data-act="toggleHabit" data-id="' + h.id + '">' + (on ? "✓" : "") + '</button>' +
+      '<div class="txt"><b>' + esc(h.name) + '</b><span>Chuỗi ' + streak(h) + ' ngày liên tiếp</span></div>' +
+      '<button class="x" data-act="delHabit" data-id="' + h.id + '" title="Xoá">✕</button></div>';
+  }).join("") : '<div class="empty">Chưa có thói quen nào. Bấm "+ Thêm" để rèn luyện mỗi ngày.</div>';
+  return '<div class="hero"><small>Hôm nay · ' + esc(dmy(today)) + '</small>' +
+    '<b>Hoàn thành ' + done + '/' + todayL.length + ' công việc</b>' +
+    '<div class="bar"><i style="width:' + pct + '%"></i></div></div>' +
+    (overdue.length ? '<div class="remind" style="background:#FEF2F2;border-color:#FECACA;color:#991B1B"><b style="color:#B91C1C">Chú ý:</b> Còn ' + overdue.length + ' việc quá hạn chưa hoàn thành.</div>' : "") +
+    '<div class="head-row"><b>Việc cần làm hôm nay</b><button class="btn" data-act="addTask">+ Thêm việc</button></div>' +
+    (todayL.length ? todayL.map(taskCard).join("") : '<div class="empty">Hôm nay chưa có việc nào.</div>') +
+    section("Quá hạn chưa xong", overdue) +
+    notifyHtml() +
+    '<div class="head-row"><b>Thói quen hằng ngày</b><button class="btn ghost" data-act="addHabit">+ Thêm</button></div>' +
+    habits +
+    section("Công việc sắp tới", later) +
+    settingsHtml();
 }
 
-function routineHtml(){
-  if(!Array.isArray(S.reminders)||!S.reminders.length) S.reminders=[{id:nid(),repeat:"daily",date:"",time:"19:00",t:"Học bài cũ",note:""},{id:nid(),repeat:"daily",date:"",time:"20:00",t:"Làm bài tập",note:""}];
-  const items=S.reminders.slice().sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999")||(a.time||"").localeCompare(b.time||""));
-  return `<div class="head-row"><b>Tất cả lịch nhắc</b><button class="btn ghost" data-act="addRoutine">+ Thêm nhắc</button></div>
-  ${items.length? items.map(r=>`
-    <div class="card">
-      <div class="time">${r.repeat==="daily"?"Hằng ngày":esc(dmy(r.date).slice(0,5))}<br>${esc(r.time)}</div>
-      <div class="txt"><b>${esc(r.t)}</b><span>${r.note?esc(r.note):"Nhắc qua Telegram"}</span></div>
-      <button class="x" data-act="delRoutine" data-id="${r.id}" title="Xoá">✕</button>
-    </div>`).join("") : `<div class="empty">Chưa có lịch nhắc nào.</div>`}`;
+function routineHtml() {
+  if (!Array.isArray(S.reminders) || !S.reminders.length) {
+    S.reminders = [{id:nid(), repeat:"daily", date:"", time:"19:00", t:"Học bài cũ", note:""}, {id:nid(), repeat:"daily", date:"", time:"20:00", t:"Làm bài tập", note:""}];
+  }
+  const items = S.reminders.slice().sort(function(a,b) { return (a.date||"9999").localeCompare(b.date||"9999") || (a.time||"").localeCompare(b.time||""); });
+  return '<div class="head-row"><b>Tất cả lịch nhắc</b><button class="btn ghost" data-act="addRoutine">+ Thêm nhắc</button></div>' +
+    (items.length ? items.map(function(r) {
+      return '<div class="card"><div class="time">' + (r.repeat==="daily" ? "Hằng ngày" : esc(dmy(r.date).slice(0,5))) + '<br>' + esc(r.time) + '</div>' +
+        '<div class="txt"><b>' + esc(r.t) + '</b><span>' + (r.note ? esc(r.note) : "Nhắc qua Telegram") + '</span></div>' +
+        '<button class="x" data-act="delRoutine" data-id="' + r.id + '" title="Xoá">✕</button></div>';
+    }).join("") : '<div class="empty">Chưa có lịch nhắc nào.</div>');
 }
 
 render();
