@@ -2,446 +2,222 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Theo dõi học tập & Lịch thông báo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1A6AC8">
+<title>Hành trình học tập</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink: #0F172A;
-  --muted: #64748B;
-  --bg-phone: #F8FAFC;
-  --card: #FFFFFF;
-  --line: #F1F5F9;
-  --purple: #6366F1;
-  --purple-dark: #4F46E5;
-  --purple-light: #EEF2FF;
-  --pink: #EC4899;
-  --teal: #10B981;
-  --orange: #F97316;
-  --blue: #3B82F6;
-  --yellow: #F59E0B;
-  --red: #EF4444;
-  --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 12px 24px -6px rgba(99, 102, 241, 0.28);
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;overflow-x:hidden;display:flex;align-items:center;justify-content:center;background:#D6E6F7;font-family:"Be Vietnam Pro",system-ui,-apple-system,sans-serif;color:#0F2C4D}
+h1,h2,b,span,p,small{overflow-wrap:anywhere}
+.phone{position:relative;width:100%;max-width:430px;height:100vh;height:100dvh;background:#EAF4FF;overflow:hidden;display:flex;flex-direction:column}
+@media (min-width:520px){
+  body{padding:16px}
+  .phone{height:min(880px,calc(100vh - 32px));height:min(880px,calc(100dvh - 32px));border-radius:44px;box-shadow:0 25px 60px -15px rgba(15,44,77,.35),0 0 0 8px #fff}
 }
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #E0E7FF 0%, #FCE7F3 100%);
-  font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
-  color: var(--ink);
-  padding: 12px;
-}
-button, input, select { font: inherit; }
-.phone {
-  width: 390px;
-  height: 844px;
-  max-height: 95vh;
-  background: var(--bg-phone);
-  border-radius: 44px;
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.22), 0 0 0 8px #FFFFFF;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-header {
-  padding: 36px 20px 12px;
-  background: rgba(248, 250, 252, 0.9);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 3;
-}
-header h1 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -0.02em; }
-header p { margin: 3px 0 0; color: var(--muted); font-size: 13px; font-weight: 500; }
-main {
-  flex: 1;
-  overflow-y: auto;
-  padding: 4px 18px 104px;
-  scrollbar-width: none;
-}
-main::-webkit-scrollbar { display: none; }
-.screen { display: none; }
-.screen.on { display: block; }
-.hero {
-  border-radius: 22px;
-  padding: 18px 20px;
-  color: #fff;
-  background: linear-gradient(135deg, var(--purple) 0%, #8B5CF6 55%, var(--pink) 100%);
-  box-shadow: var(--shadow-md);
-  margin-bottom: 6px;
-}
-.hero small { opacity: 0.9; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-.hero b { display: block; font-size: 19px; margin-top: 4px; font-weight: 800; }
-.bar { height: 7px; background: rgba(255, 255, 255, 0.28); border-radius: 99px; margin-top: 12px; overflow: hidden; }
-.bar i { display: block; height: 100%; background: #fff; border-radius: 99px; transition: width 0.35s ease; }
-.head-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 18px 2px 10px;
-  gap: 8px;
-}
-.head-row b { font-size: 14px; font-weight: 700; color: #334155; }
-.toolbar {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.toolbar::-webkit-scrollbar { display: none; }
-.btn {
-  background: var(--purple);
-  color: #fff;
-  border: 0;
-  border-radius: 11px;
-  padding: 7px 12px;
-  font-weight: 700;
-  font-size: 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.btn.ghost { background: var(--purple-light); color: var(--purple-dark); }
-.btn.danger { background: #FEE2E2; color: var(--red); }
-.card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-sm);
-  border-radius: 16px;
-  padding: 12px 14px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.card .stripe { width: 4px; height: 32px; border-radius: 4px; flex: none; }
-.card .txt { flex: 1; min-width: 0; }
-.card .txt b {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.card .txt span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 3px;
-}
-.card.done { opacity: 0.65; background: #F8FAFC; box-shadow: none; }
-.card.done .txt b { text-decoration: line-through; color: var(--muted); }
-.check {
-  width: 22px;
-  height: 22px;
-  border-radius: 7px;
-  border: 2px solid #CBD5E1;
-  display: grid;
-  place-items: center;
-  flex: none;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  background: #fff;
-  padding: 0;
-}
-.card.done .check, .check.on { background: var(--teal); border-color: var(--teal); }
-.x {
-  background: none;
-  border: 0;
-  color: #CBD5E1;
-  font-size: 15px;
-  cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 8px;
-}
-.x:hover { color: var(--red); background: #FEF2F2; }
-.remind {
-  background: #FFFBEB;
-  border: 1px solid #FDE68A;
-  border-radius: 14px;
-  padding: 11px 14px;
-  font-size: 12.5px;
-  line-height: 1.45;
-  margin-top: 10px;
-  color: #92400E;
-}
-.remind b { color: #B45309; }
-.chips {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  padding: 2px 2px 12px;
-  scrollbar-width: none;
-}
-.chips::-webkit-scrollbar { display: none; }
-.chips button {
-  border: 1px solid #E2E8F0;
-  background: #fff;
-  border-radius: 12px;
-  padding: 7px 12px;
-  font-weight: 700;
-  font-size: 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.25;
-}
-.chips button small {
-  display: block;
-  font-size: 10px;
-  font-weight: 500;
-  opacity: 0.8;
-  margin-top: 2px;
-}
-.chips button.on {
-  background: var(--purple);
-  color: #fff;
-  border-color: var(--purple);
-  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.25);
-}
-.time {
-  font-weight: 700;
-  font-size: 11.5px;
-  color: var(--purple-dark);
-  background: var(--purple-light);
-  padding: 5px 8px;
-  border-radius: 8px;
-  text-align: center;
-  min-width: 56px;
-  line-height: 1.25;
-}
-.date-group {
-  font-size: 12.5px;
-  font-weight: 700;
-  margin: 14px 4px 6px;
-  color: var(--purple-dark);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.empty {
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
-  padding: 20px 12px;
-  background: #fff;
-  border: 1px dashed #CBD5E1;
-  border-radius: 16px;
-}
-details.settings-group {
-  margin-top: 16px;
-  background: #fff;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-sm);
-  border-radius: 16px;
-  overflow: hidden;
-}
-details.settings-group summary {
-  padding: 13px 16px;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #334155;
-  cursor: pointer;
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-details.settings-group summary::-webkit-details-marker { display: none; }
-.settings-body { padding: 0 14px 14px; border-top: 1px solid var(--line); }
-.setting {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 10px 14px;
-  margin-top: 10px;
-  font-size: 13px;
-  font-weight: 600;
-}
-select, input {
-  border: 1px solid #CBD5E1;
-  border-radius: 10px;
-  padding: 8px 11px;
-  background: #F8FAFC;
-  font-size: 13.5px;
-  color: var(--ink);
-  outline: none;
-}
-select:focus, input:focus { border-color: var(--purple); background: #fff; }
-nav {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 14px;
-  height: 66px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 22px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0 6px;
-  z-index: 4;
-}
-nav button {
-  background: none;
-  border: 0;
-  font-size: 11px;
-  font-weight: 700;
-  color: #94A3B8;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 14px;
-}
-nav button .ic {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-nav button .ic svg {
-  width: 22px;
-  height: 22px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-nav .badge {
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 99px;
-  background: var(--red);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #fff;
-  font-style: normal;
-}
-nav .badge[hidden] { display: none; }
-nav button.on { color: var(--purple); background: var(--purple-light); }
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.4);
-  display: none;
-  align-items: flex-end;
-  z-index: 10;
-}
-.overlay.on { display: flex; }
-.sheet {
-  background: #fff;
-  width: 100%;
-  border-radius: 26px 26px 0 0;
-  padding: 20px 20px 26px;
-}
-.sheet h3 { margin: 0 0 14px; font-size: 17px; font-weight: 800; }
-.field { margin-bottom: 12px; }
-.field label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
-.field input, .field select { width: 100%; }
-.sheet .actions { display: flex; gap: 10px; margin-top: 16px; }
-.sheet .actions button { flex: 1; padding: 11px; border-radius: 12px; border: 0; font-weight: 700; cursor: pointer; font-size: 14px; }
-.sheet .cancel { background: #F1F5F9; color: var(--ink); }
-.sheet .save { background: var(--purple); color: #fff; }
-.toast {
-  position: absolute;
-  top: 48px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--ink);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 99px;
-  font-size: 12.5px;
-  font-weight: 600;
-  opacity: 0;
-  transition: opacity 0.2s;
-  pointer-events: none;
-  z-index: 20;
-  white-space: nowrap;
-}
-.toast.on { opacity: 1; }
+
+button,input,select{font-family:'Be Vietnam Pro',system-ui,sans-serif}
+.wrap{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding:0 0 28px}
+.wrap::-webkit-scrollbar{display:none}
+.wrap.form{padding-bottom:104px}
+.pad{padding:0 16px}
+.ban{position:relative;overflow:hidden;background:#1A6AC8;padding:26px 18px 28px;color:#fff}
+.ban::after{content:"";position:absolute;right:-50px;top:-60px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.10)}
+.ban::before{content:"";position:absolute;right:40px;bottom:-80px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.08)}
+.ban>*{position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.mark{width:26px;height:26px;border-radius:9px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:13px;font-weight:800}
+.ban h1{margin:12px 0 0;font-size:28px;font-weight:800;line-height:1.2;letter-spacing:-.01em}
+.ban p{margin:6px 0 0;font-size:12.5px;color:#DEEBFA}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:18px}
+.cell{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:#DCEBFB;border:0;border-radius:20px;padding:14px;min-height:218px;justify-content:flex-start;box-shadow:0 6px 18px rgba(15,44,77,.08);color:#0F2C4D;cursor:pointer}
+.ico{width:70px;height:70px;display:grid;place-items:center;margin:4px 0 8px -4px}
+.ico svg{width:66px;height:66px;stroke:#14538F;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cell b{font-size:14.5px;font-weight:700}
+.cell>span:not(.ico){font-size:11.5px;color:#44627F;line-height:1.45}
+.sec{display:flex;align-items:center;gap:10px;padding:22px 0 10px}
+.back{width:42px;height:42px;border:0;border-radius:13px;background:#fff;color:#0F2C4D;font-size:22px;font-weight:700;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(15,44,77,.08);cursor:pointer}
+.sec>div>b{display:block;font-size:20px;font-weight:800;color:#0F2C4D;line-height:1.25}
+.sec>div>span{display:block;font-size:12px;color:#52708F;margin-top:2px}
+.nav{position:absolute;left:0;right:0;bottom:0;height:72px;background:#fff;box-shadow:0 -4px 20px rgba(15,44,77,.08);display:flex;justify-content:space-around;align-items:center;padding:0 4px 6px;z-index:5}
+.nb{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;background:none;color:#52708F;font-size:10.5px;font-weight:700;padding:8px 2px;border-radius:14px;cursor:pointer}
+.nb.on{color:#14538F}
+.nb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:16px 18px;background:#1A6AC8;color:#fff;margin-bottom:6px}
+.hero small{display:block;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.hero b{display:block;font-size:18px;font-weight:800;margin-top:3px}
+.hero p{margin:4px 0 0;font-size:12px;color:#DEEBFA}
+.hr{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 6px;min-height:40px;gap:8px}
+.hr h2{margin:0;font-size:14px;font-weight:700;color:#14538F}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border:0;border-radius:12px;background:#1A6AC8;color:#fff;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap}
+.btn.g{background:#E7F1FD;color:#14538F}
+.btn.r{background:#FDE8E4;color:#B91C1C}
+.card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:10px 6px 10px 14px;margin-bottom:8px;box-shadow:0 4px 14px rgba(15,44,77,.07);color:#0F2C4D;min-height:60px;border:0;width:100%;text-align:left;font:inherit}
+.card.click{cursor:pointer}
+.tx{flex:1;min-width:0}
+.tx>b{display:block;font-size:14px;font-weight:600;color:#0F2C4D}
+.tx>span{display:block;font-size:12px;color:#52708F;margin-top:2px}
+.time{flex:none;min-width:58px;text-align:center;padding:5px 8px;border-radius:9px;background:#E7F1FD;color:#14538F;font-size:11.5px;font-weight:700;line-height:1.3}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.s-toan{background:#2F6BDB}.s-viet{background:#C2417C}.s-anh{background:#1A6AC8}.s-tnxh{background:#C2810E}.s-mt{background:#7C5CC4}.s-khac{background:#52708F}
+.xb{flex:none;width:44px;height:44px;border:0;background:none;color:#52708F;display:grid;place-items:center;padding:0;cursor:pointer;border-radius:12px;font-size:18px}
+.ck{flex:none;width:44px;height:44px;margin:-10px 0 -10px -12px;border:0;background:none;display:grid;place-items:center;padding:0;cursor:pointer}
+.bx{width:22px;height:22px;border-radius:7px;border:2px solid #8AA6C4;background:#fff;display:grid;place-items:center;font-size:13px;font-weight:800;color:#fff}
+.bx.on{background:#1A6AC8;border-color:#1A6AC8}
+.card.fin{background:#EAF2FB;box-shadow:none}
+.card.fin .tx>b{text-decoration:line-through;color:#52708F}
+.row{display:flex;gap:6px;margin-bottom:6px}
+.chip{flex:1;min-width:0;min-height:54px;border:0;border-radius:13px;background:#fff;color:#52708F;font-weight:700;font-size:11.5px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(15,44,77,.06);cursor:pointer}
+.chip.on{background:#1A6AC8;color:#fff}
+.empty{text-align:center;color:#52708F;font-size:13px;padding:16px 12px;background:#fff;border:1px dashed #BBD3EE;border-radius:16px;margin-bottom:8px}
+.seg{display:flex;gap:4px;padding:4px;border-radius:15px;background:#DCE9F7}
+.seg button{flex:1;min-height:42px;border:0;background:none;border-radius:11px;color:#52708F;font-size:13px;font-weight:700;cursor:pointer}
+.seg button.on{background:#fff;color:#14538F;box-shadow:0 2px 6px rgba(15,44,77,.12)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.pc{background:#fff;border-radius:18px;padding:12px;text-align:center;box-shadow:0 4px 14px rgba(15,44,77,.07)}
+.pc h3{margin:0 0 6px;font-size:13px;color:#14538F}
+.pc p{margin:4px 0 0;font-size:11.5px;color:#52708F}
+.bar{height:8px;border-radius:99px;background:#DCE9F7;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:#1A6AC8}
+.rowb{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px;color:#0F2C4D}
+.lb{display:block;font-size:12px;font-weight:700;color:#52708F;margin:12px 0 5px}
+.fld{display:block;width:100%;min-height:46px;box-sizing:border-box;border:1px solid #BBD3EE;border-radius:12px;padding:8px 12px;background:#fff;font-size:14px;color:#0F2C4D}
+.fld:focus{border-color:#1A6AC8;outline:none}
+.two2{display:flex;gap:8px}.two2>div{flex:1;min-width:0}
+.opt{flex:1;min-width:0;min-height:48px;border:1px solid #BBD3EE;border-radius:12px;background:#fff;color:#52708F;font-weight:700;font-size:12px;line-height:1.3;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.opt small{font-size:10px;font-weight:500}
+.opt.on{background:#1A6AC8;border-color:#1A6AC8;color:#fff}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts .opt{flex:0 0 auto;padding:0 12px;min-height:40px}
+.sw{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:1px solid #BBD3EE;border-radius:12px;padding:8px 8px 8px 12px;margin-top:12px;font-size:13px;font-weight:600;color:#0F2C4D;min-height:54px}
+.tg{width:52px;height:44px;border:0;background:none;padding:0;display:grid;place-items:center;cursor:pointer;flex:none}
+.tg i{display:block;width:44px;height:26px;border-radius:99px;background:#1A6AC8;position:relative}
+.tg i::after{content:"";position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff}
+.tg.off i{background:#BBD3EE}.tg.off i::after{right:21px}
+.ft{position:absolute;left:0;right:0;bottom:0;padding:12px 18px 22px;background:#fff;border-top:1px solid #DCE9F7;display:flex;gap:10px;z-index:5}
+.ft button{flex:1;min-height:48px;border:0;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer}
+.ft .c1{background:#E7F1FD;color:#14538F}.ft .c2{background:#1A6AC8;color:#fff}
+.err{margin:10px 2px 0;font-size:12.5px;font-weight:600;color:#B91C1C}
+.msg{margin:8px 2px 0;font-size:12.5px;font-weight:600;color:#14538F}
+.toast{position:absolute;top:18px;left:50%;transform:translateX(-50%);background:#0F2C4D;color:#fff;padding:9px 16px;border-radius:99px;font-size:12.5px;font-weight:600;z-index:30;max-width:90%;text-align:center}
+.big{font-size:40px;font-weight:800;line-height:1.1}
+.note{background:#fff;border-radius:16px;padding:12px 14px;font-size:13px;color:#0F2C4D;line-height:1.5;box-shadow:0 4px 14px rgba(15,44,77,.07)}
+.kid{display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:12px 14px;box-shadow:0 4px 14px rgba(15,44,77,.07)}
+.av{width:52px;height:52px;border-radius:16px;background:#1A6AC8;color:#fff;display:grid;place-items:center;font-size:22px;font-weight:800;flex:none}
+.grp2{background:#fff;border-radius:16px;box-shadow:0 4px 14px rgba(15,44,77,.07);overflow:hidden}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 8px 8px 14px;font-size:13.5px;font-weight:600;border-top:1px solid #EAF2FB;min-height:54px;color:#0F2C4D}
+.kv:first-child{border-top:0}
+.bars{display:flex;align-items:flex-end;gap:8px;height:96px}
+.bars>div{flex:1;text-align:center;font-size:10.5px;color:#52708F}
+.bars i{display:block;border-radius:6px 6px 0 0;background:#1A6AC8}
+.bars i.d{border:1px dashed #8AA6C4;background:none;border-radius:4px}
+
+.don{width:80%;max-width:94px;aspect-ratio:1/1;border-radius:50%;margin:0 auto;display:grid;place-items:center}
+.don>span{width:72%;height:72%;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;color:#0F2C4D}
+.bar i.s-toan{background:#2F6BDB}.bar i.s-viet{background:#C2417C}.bar i.s-anh{background:#1A6AC8}.bar i.s-tnxh{background:#C2810E}.bar i.s-mt{background:#7C5CC4}.bar i.s-khac{background:#52708F}
+.menu{width:44px;height:44px;border:0;border-radius:13px;background:#fff;color:#0F2C4D;display:grid;place-items:center;cursor:pointer;flex:none;box-shadow:0 4px 12px rgba(15,44,77,.10)}
+.menu svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
+.menu.w{background:rgba(255,255,255,.22);color:#fff;box-shadow:none}
+.brandrow{display:flex;align-items:center;gap:12px}
+.ov{position:absolute;left:0;top:0;right:0;bottom:0;background:rgba(15,44,77,.45);z-index:20}
+.drawer{position:absolute;left:0;top:0;bottom:0;width:min(284px,86%);background:#fff;z-index:21;border-radius:0 26px 26px 0;box-shadow:8px 0 30px rgba(15,44,77,.2);display:flex;flex-direction:column;padding:20px 14px 18px}
+.dh{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.dh .brand{color:#14538F}
+.dh .mark{background:#E7F1FD;color:#14538F}
+.dx{width:44px;height:44px;border:0;background:#EAF4FF;border-radius:13px;color:#0F2C4D;font-size:18px;cursor:pointer;display:grid;place-items:center}
+.kidbox{display:flex;align-items:center;gap:12px;background:#EAF4FF;border-radius:16px;padding:10px 12px;margin:8px 0 12px}
+.kidbox .av{width:42px;height:42px;border-radius:13px;font-size:18px}
+.kidbox b{display:block;font-size:14px;font-weight:700;color:#0F2C4D}
+.kidbox small{display:block;font-size:11.5px;color:#52708F;margin-top:1px}
+.mi{display:flex;align-items:center;gap:14px;min-height:52px;width:100%;border:0;background:none;border-radius:14px;padding:0 12px;font-size:14.5px;font-weight:700;color:#0F2C4D;text-align:left;cursor:pointer}
+.mi.on{background:#E7F1FD;color:#14538F}
+.mi svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.dl{height:1px;background:#E3EEF9;margin:8px 4px}
+.pad{min-width:0}
+.card,.tx{min-width:0}
+.row>*,.two2>div,.opts .opt{min-width:0}
+.wrap{overflow-x:hidden}
+.fld{font-size:16px}
+.card.click{cursor:pointer}
+input[type=date].fld,input[type=time].fld{min-height:46px}
 </style>
 </head>
 <body>
 <div class="phone">
-  <header id="head"></header>
-  <main id="main">
-    <section class="screen" id="s-today"></section>
-    <section class="screen" id="s-week"></section>
-    <section class="screen" id="s-tomorrow"></section>
-  </main>
-  <nav id="nav">
-    <button data-s="today" class="on">
-      <span class="ic">
-        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      </span>Hôm nay
-    </button>
-    <button data-s="week">
-      <span class="ic">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
-      </span>Lịch thông báo
-    </button>
-    <button data-s="tomorrow">
-      <span class="ic">
-        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        <i class="badge" id="nbadge" hidden>0</i>
-      </span>Ngày mai
-    </button>
-  </nav>
-  <div class="overlay" id="overlay"><div class="sheet" id="sheet"></div></div>
-  <div class="toast" id="toast"></div>
+  <div class="wrap" id="main"></div>
+  <div id="layer"></div>
+  <div id="toastBox"></div>
   <input type="file" id="csvFile" accept=".csv,text/csv" hidden>
 </div>
 <script>
-const SUBJ = {"Toán":"#3B82F6","Tiếng Việt":"#EC4899","Tiếng Anh":"#10B981","Tự nhiên & Xã hội":"#F97316","Mỹ thuật":"#F59E0B","Khác":"#6366F1"};
-const DAYS = ["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"];
+/* ======================= Hằng số & tiện ích ======================= */
+const TZ = "Asia/Ho_Chi_Minh";
 const KEY = "theodoihoctap-v1";
+const DAYS = ["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"];
+const SHORT = ["T2","T3","T4","T5","T6","T7","CN"];
+const SUBJ_ORDER = ["Toán","Tiếng Việt","Tiếng Anh","Tự nhiên & Xã hội","Mỹ thuật","Khác"];
+const SUBJ_CLS = {"Toán":"s-toan","Tiếng Việt":"s-viet","Tiếng Anh":"s-anh","Tự nhiên & Xã hội":"s-tnxh","Mỹ thuật":"s-mt","Khác":"s-khac"};
+const QUICK = ["Họp phụ huynh","Ký sổ liên lạc","Ngoại khoá cùng con","Đóng học phí"];
+const TITLES = {
+  schedule: ["Đồng hành cùng con","Thời khoá biểu học chính, phụ đạo, hoạt động ngoài"],
+  notes: ["Sổ tay cá nhân","Việc phụ huynh cần tham gia cùng con"],
+  results: ["Kết quả","Việc con hoàn thành và điểm số từng môn"],
+  review: ["Đánh giá","Mức độ hoàn thành theo tuần và tháng"],
+  settings: ["Cài đặt","Hồ sơ của con và nhắc hẹn"],
+  addLesson: ["Thêm lịch học","Học chính, phụ đạo hoặc hoạt động ngoài"],
+  addNote: ["Thêm việc","Việc phụ huynh cần tham gia cùng con"],
+  addResult: ["Thêm kết quả","Phụ huynh tự nhập điểm số"],
+  addDone: ["Thêm việc của con","Ghi nhận việc con đã làm hoặc cần làm"]
+};
+const BACK = {addLesson:"schedule",addNote:"notes",addResult:"results",addDone:"results",detail:"results"};
+const FORMS = ["addLesson","addNote","addResult","addDone"];
+const IC = {
+  cal:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+  check:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  star:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="7"/><path d="M8.2 13.9L7 23l5-3 5 3-1.2-9.1"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>',
+  home:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-8h6v8"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>',
+  ham:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>'
+};
+const HOME_ICONS = {
+  schedule:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="12" width="48" height="44" rx="7" fill="#F2F8FF"/><rect x="8" y="12" width="48" height="44" rx="7"/><path d="M8 25h48" stroke-width="2.4"/><path d="M20 6v10M44 6v10" stroke-width="3"/><rect x="17" y="33" width="9" height="8" rx="2" fill="#1A6AC8" stroke="none"/><rect x="31" y="33" width="9" height="8" rx="2" fill="#9CC4EC" stroke="none"/><rect x="17" y="45" width="9" height="6" rx="2" fill="#9CC4EC" stroke="none"/><rect x="31" y="45" width="16" height="6" rx="2" fill="#1A6AC8" stroke="none"/></svg>',
+  notes:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="8" width="40" height="48" rx="6" fill="#F2F8FF"/><rect x="12" y="8" width="40" height="48" rx="6"/><path d="M22 6h20a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H22a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="#9CC4EC"/><path d="M21 30l5 5 10-11" stroke="#1A6AC8" stroke-width="3.4"/><path d="M21 46h22" stroke-width="2.6"/></svg>',
+  results:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="16" fill="#F2F8FF"/><circle cx="32" cy="24" r="16"/><path d="M32 15l2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9-5.5 2.9 1-6.2-4.5-4.4 6.2-.9z" fill="#1A6AC8" stroke="none"/><path d="M22 37l-4 19 14-8 14 8-4-19" stroke-width="2.6" fill="#DCEBFB"/></svg>',
+  review:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44" rx="7" fill="#F2F8FF"/><rect x="8" y="10" width="48" height="44" rx="7"/><rect x="18" y="30" width="7" height="14" rx="2.5" fill="#9CC4EC" stroke="none"/><rect x="29" y="22" width="7" height="22" rx="2.5" fill="#1A6AC8" stroke="none"/><rect x="40" y="27" width="7" height="17" rx="2.5" fill="#9CC4EC" stroke="none"/></svg>'
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad = n => String(n).padStart(2, "0");
+function nowParts() {
+  const d = new Date();
+  const date = d.toLocaleDateString("sv-SE", {timeZone: TZ});
+  const time = d.toLocaleTimeString("en-GB", {timeZone: TZ, hour: "2-digit", minute: "2-digit", hourCycle: "h23"});
+  return {date: date, time: time, iso: date + "T" + time};
+}
+const todayStr = () => nowParts().date;
+function addDays(iso, n) { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return d.toLocaleDateString("sv-SE"); }
+const dmy = iso => iso ? iso.split("-").reverse().join("/") : "";
+const dm = iso => iso ? iso.split("-").reverse().slice(0, 2).join("/") : "";
+function wdIdx(iso) { return (new Date(iso + "T12:00:00").getDay() + 6) % 7; }
+const wdName = iso => DAYS[wdIdx(iso)];
+function weekStart(iso) { return addDays(iso, -wdIdx(iso)); }
+function monthRange(iso) { const [y, m] = iso.split("-").map(Number); const last = new Date(y, m, 0).getDate(); return [y + "-" + pad(m) + "-01", y + "-" + pad(m) + "-" + pad(last)]; }
+function addMonths(iso, n) { const [y, m, d] = iso.split("-").map(Number); const t = new Date(y, m - 1 + n, 1); const last = new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate(); return t.getFullYear() + "-" + pad(t.getMonth() + 1) + "-" + pad(Math.min(d, last)); }
+const fmt = n => (Math.round(n * 10) / 10).toFixed(1).replace(".", ",");
+const num = v => String(v).replace(".", ",");
+function parseTime(v) { const m = /^(\d{1,2}):(\d{2})$/.exec((v || "").trim()); if (!m || +m[1] > 23 || +m[2] > 59) return null; return pad(+m[1]) + ":" + m[2]; }
+function defaultTime() { const h = +nowParts().time.slice(0, 2); return h < 23 ? pad(h + 1) + ":00" : "23:59"; }
+
+/* ======================= Dữ liệu ======================= */
 const DEFAULT = {
+  child: {name: "Bé An", cls: "Lớp 3A", year: "2026-2027"},
   reminder: "19:00",
-  tasks: [
-    {id:1, t:"Làm bài tập Toán trang 45", s:"Toán", due:"today", time:"19:00", done:true},
-    {id:2, t:"Đọc 10 phút sách Tiếng Việt", s:"Tiếng Việt", due:"today", time:"20:00", done:true},
-    {id:3, t:"Ôn 10 từ vựng Tiếng Anh", s:"Tiếng Anh", due:"today", time:"20:30", done:false},
-    {id:4, t:"Ký sổ liên lạc", s:"Khác", due:"tomorrow", time:"07:00", done:false}
-  ],
+  tasks: [],
   schedule: {
     0:[{id:11,time:"07:30",s:"Toán",room:"Phòng 3A"},{id:12,time:"08:30",s:"Tiếng Việt",room:"Phòng 3A"},{id:13,time:"10:00",s:"Tiếng Anh",room:"Phòng 2B"}],
     1:[{id:21,time:"07:30",s:"Tự nhiên & Xã hội",room:"Phòng 3A"},{id:22,time:"08:30",s:"Toán",room:"Phòng 3A"},{id:23,time:"10:00",s:"Mỹ thuật",room:"Phòng 1A"}],
@@ -451,54 +227,39 @@ const DEFAULT = {
     5:[{id:52,time:"08:00",s:"Tiếng Anh",room:"Phòng 2B"}],
     6:[]
   },
-  prep: [{id:61, t:"Hộp sữa buổi sáng", done:false}],
-  autoChecked: {},
-  habits: [],
-  reminders: [
-    {id:81, repeat:"daily", date:"", time:"19:00", t:"Nhắc bé ngồi vào bàn học", note:"Chuẩn bị bài ngày mai"},
-    {id:82, repeat:"none", date:"", time:"07:00", t:"Đóng tiền học phí tháng", note:"Nộp cho cô chủ nhiệm"}
-  ],
+  tutoring: [],
+  outside: [],
+  reminders: [],
+  results: [],
   nextId: 100
 };
-
-function todayStr() { return new Date().toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"}); }
-function dayAfter(s) { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + 1); return d.toLocaleDateString("sv-SE"); }
-function dateOfWeekday(i) { const b = new Date(todayStr() + "T12:00:00"); const tw = (b.getDay() + 6) % 7; b.setDate(b.getDate() + (i - tw)); return b.toLocaleDateString("sv-SE"); }
-function dmy(d) { return d ? String(d).split("-").reverse().join("/") : ""; }
-function weekdayName(dateStr) {
-  if (!dateStr) return "";
-  const d = new Date(dateStr + "T12:00:00");
-  if (isNaN(d.getTime())) return "";
-  return DAYS[(d.getDay() + 6) % 7];
-}
-// Chỉ số thứ trong tuần (0 = Thứ Hai ... 6 = Chủ Nhật) tính theo ngày thực tế
-function todayIdx() { return (new Date(todayStr() + "T12:00:00").getDay() + 6) % 7; }
-function tomorrowIdx() { return (todayIdx() + 1) % 7; }
-
 function normalizeState(raw) {
   const d = JSON.parse(JSON.stringify(DEFAULT));
-  d.reminders[1].date = todayStr();
   if (!raw || typeof raw !== "object") return d;
-  return Object.assign({}, d, raw, {
-    tasks: Array.isArray(raw.tasks) ? raw.tasks : d.tasks,
-    schedule: (raw.schedule && typeof raw.schedule === "object") ? raw.schedule : d.schedule,
-    prep: Array.isArray(raw.prep) ? raw.prep : d.prep,
-    autoChecked: (raw.autoChecked && typeof raw.autoChecked === "object") ? raw.autoChecked : {},
-    habits: Array.isArray(raw.habits) ? raw.habits : [],
-    reminders: Array.isArray(raw.reminders) ? raw.reminders : d.reminders,
-    nextId: Number(raw.nextId) || 100
-  });
+  const out = Object.assign({}, d, raw);
+  out.child = Object.assign({}, d.child, raw.child || {});
+  out.tasks = Array.isArray(raw.tasks) ? raw.tasks : d.tasks;
+  out.schedule = (raw.schedule && typeof raw.schedule === "object") ? raw.schedule : d.schedule;
+  out.tutoring = Array.isArray(raw.tutoring) ? raw.tutoring : [];
+  out.outside = Array.isArray(raw.outside) ? raw.outside : [];
+  out.reminders = Array.isArray(raw.reminders) ? raw.reminders : [];
+  if (Array.isArray(raw.results)) out.results = raw.results;
+  else if (Array.isArray(raw.scores) && raw.scores.length) out.results = raw.scores.map(function (s, i) { return {id: s.id || (200 + i), subj: s.s || "Khác", score: Number(s.score) || 0, kind: s.note || "Bài kiểm tra", date: s.date || todayStr(), note: ""}; });
+  else out.results = [];
+  out.nextId = Number(raw.nextId) || 100;
+  out.reminder = typeof raw.reminder === "string" ? raw.reminder : d.reminder;
+  return out;
 }
-
 let S;
-try { S = normalizeState(JSON.parse(localStorage.getItem(KEY))); } catch(e) { S = normalizeState(null); }
+try { S = normalizeState(JSON.parse(localStorage.getItem(KEY))); } catch (e) { S = normalizeState(null); }
 let TG = {};
+const UI = {view: "home", day: wdIdx(todayStr()), mode: "week", sel: null, menu: false, form: {}, err: "", tg: ""};
+let toastTimer = null;
 
 function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {}
-  fetch("/api/state", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(S)}).catch(function(){});
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+  fetch("/api/state", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(S)}).catch(function () {});
 }
-
 async function loadServer() {
   try {
     const r = await fetch("/api/state");
@@ -506,445 +267,341 @@ async function loadServer() {
       const j = await r.json();
       TG = j.telegram || {};
       if (j.state && Object.keys(j.state).length > 0) S = normalizeState(j.state);
+      else save(); // máy chủ chưa có dữ liệu: gửi dữ liệu hiện tại lên để máy chủ nhắc việc được ngay
     }
-  } catch(e) {}
+  } catch (e) {}
   render();
 }
-
 async function tgPost(u, body, ok) {
   try {
-    const r = await fetch(u, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+    const r = await fetch(u, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
     const j = await r.json();
     if (!r.ok) throw new Error(j.error || "Có lỗi xảy ra");
-    toast(ok);
+    UI.tg = ok; toast(ok);
     await loadServer();
-  } catch(e) { toast(e.message); }
+  } catch (e) { UI.tg = e.message || "Không kết nối được máy chủ"; toast(UI.tg); render(); }
 }
-
-function nid() { S.nextId = (S.nextId || 100) + 1; save(); return S.nextId; }
-let cur = "today";
-let wk = -1; // -1 = Hiển thị tất cả các ngày thông báo, 0..6 = Lọc theo Thứ 2..CN
-
-const $ = function(id) { return document.getElementById(id); };
-const esc = function(s) {
-  return String(s === undefined || s === null ? "" : s).replace(/[&<>"]/g, function(c) {
-    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
-  });
-};
+function nid() { S.nextId = (S.nextId || 100) + 1; return S.nextId; }
 function toast(msg) {
-  const t = $("toast");
-  t.textContent = msg;
-  t.classList.add("on");
-  clearTimeout(t._h);
-  t._h = setTimeout(function() { t.classList.remove("on"); }, 1500);
+  $("toastBox").innerHTML = '<div class="toast" role="status">' + esc(msg) + '</div>';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { $("toastBox").innerHTML = ""; }, 2200);
 }
 
-function openForm(title, fields, onSave) {
-  let html = "<h3>" + esc(title) + "</h3>";
-  fields.forEach(function(f) {
-    html += '<div class="field"><label>' + esc(f.label) + '</label>';
-    if (f.type === "select") {
-      html += '<select name="' + f.k + '">' + f.options.map(function(o) {
-        return '<option ' + (o === f.value ? "selected" : "") + '>' + esc(o) + '</option>';
-      }).join("") + '</select>';
-    } else {
-      html += '<input name="' + f.k + '" type="' + (f.type || "text") + '" value="' + esc(f.value || "") + '" placeholder="' + esc(f.ph || "") + '">';
-    }
-    html += '</div>';
+/* ======================= Dữ liệu dẫn xuất ======================= */
+const taskDate = t => t.date || (t.due === "tomorrow" ? addDays(todayStr(), 1) : todayStr());
+const notesList = () => S.reminders.filter(r => r.repeat !== "daily" && !r.auto);
+function visibleNotes() {
+  // Việc lặp hằng tháng: chỉ hiện lần gần nhất chưa xong của mỗi chuỗi
+  const seen = {}, out = [];
+  notesList().slice().sort((a, b) => (a.date || "").localeCompare(b.date || "") || (a.time || "").localeCompare(b.time || "")).forEach(function (r) {
+    if (r.done) { out.push(r); return; }
+    if (r.series) { if (seen[r.series]) return; seen[r.series] = true; }
+    out.push(r);
   });
-  html += '<div class="actions"><button class="cancel" data-sheet="cancel">Huỷ</button><button class="save" data-sheet="save">Lưu</button></div>';
-  $("sheet").innerHTML = html;
-  $("overlay").classList.add("on");
-  const first = $("sheet").querySelector("input,select");
-  if (first) setTimeout(function() { first.focus(); }, 50);
-  $("sheet").onclick = function(e) {
-    const b = e.target.closest("[data-sheet]");
-    if (!b) return;
-    if (b.dataset.sheet === "cancel") { closeSheet(); return; }
-    const vals = {};
-    fields.forEach(function(f) { vals[f.k] = $("sheet").querySelector('[name="' + f.k + '"]').value.trim(); });
-    if (fields.some(function(f) { return f.required && !vals[f.k]; })) { toast("Vui lòng nhập đủ thông tin"); return; }
-    onSave(vals); save(); closeSheet(); render();
-  };
+  return out;
 }
-function closeSheet() { $("overlay").classList.remove("on"); }
-$("overlay").addEventListener("click", function(e) { if (e.target.id === "overlay") closeSheet(); });
-const subjOpts = Object.keys(SUBJ);
+function inRange(date, a, b) { return date >= a && date <= b; }
+function ratio(items, isDone) { const total = items.length, done = items.filter(isDone).length; return {total: total, done: done, pct: total ? Math.round(done / total * 100) : 0}; }
+function period(mode) { const t = todayStr(); return mode === "week" ? [weekStart(t), addDays(weekStart(t), 6)] : monthRange(t); }
 
-/* ---------- Tab Lịch thông báo ---------- */
-function reminderCardHtml(r) {
-  const isDaily = r.repeat === "daily";
-  return '<div class="card" data-act="editRemind" data-id="' + r.id + '" style="cursor:pointer">' +
-    '<div class="time">' + (isDaily ? "Hằng ngày" : esc(dmy(r.date).slice(0,5))) + '<br>' + esc(r.time) + '</div>' +
-    '<div class="stripe" style="background:' + (isDaily ? "var(--teal)" : "var(--purple)") + '"></div>' +
-    '<div class="txt"><b>' + esc(r.t) + '</b><span>' + esc(r.note || (isDaily ? "Lặp lại mỗi ngày" : "Thông báo đúng ngày")) + '</span></div>' +
-    '<button class="x" data-act="delRoutine" data-id="' + r.id + '" title="Xoá">✕</button>' +
-  '</div>';
+/* ======================= Giao diện ======================= */
+function iconBtn(act, label, cls) { return '<button class="menu ' + (cls || "") + '" data-act="' + act + '" aria-label="' + label + '">' + IC.ham + '</button>'; }
+function secHead(view, title, sub) {
+  const back = BACK[view] ? '<button class="back" data-act="back" aria-label="Quay lại">‹</button>' : "";
+  return '<div class="sec">' + iconBtn("openMenu", "Mở menu") + back + '<div><b>' + esc(title) + '</b><span>' + esc(sub) + '</span></div></div>';
+}
+function delBtn(act, id, label) { return '<button class="xb" data-act="' + act + '" data-id="' + id + '" aria-label="' + esc(label) + '">✕</button>'; }
+function tickBtn(act, id, on, label) { return '<button class="ck" data-act="' + act + '" data-id="' + id + '" aria-label="' + esc(label) + '"><span class="bx' + (on ? " on" : "") + '">' + (on ? "✓" : "") + '</span></button>'; }
+function chips(list, act, selIdx) {
+  return list.map(function (x, i) {
+    const obj = typeof x === "object" && x !== null, lab = obj ? x.label : x, sub = obj ? x.sub : "";
+    return '<button class="opt' + (i === selIdx ? " on" : "") + '" data-act="' + act + '" data-i="' + i + '" aria-pressed="' + (i === selIdx) + '">' + esc(lab) + (sub ? "<small>" + esc(sub) + "</small>" : "") + '</button>';
+  }).join("");
+}
+function toggle(act, on, label) { return '<div class="sw"><span>' + esc(label) + '</span><button class="tg' + (on ? "" : " off") + '" role="switch" aria-checked="' + on + '" aria-label="' + esc(label) + '" data-act="' + act + '"><i></i></button></div>'; }
+function field(label, name, value, opt) {
+  opt = opt || {};
+  return '<label class="lb" for="f-' + name + '">' + esc(label) + '</label><input class="fld" id="f-' + name + '" name="' + name + '" type="' + (opt.type || "text") + '" value="' + esc(value) + '" placeholder="' + esc(opt.ph || "") + '">';
 }
 
-function renderWeek() {
-  const allR = Array.isArray(S.reminders) ? S.reminders : [];
-  const dailyList = allR.filter(function(r) { return r.repeat === "daily"; }).sort(function(a,b) { return (a.time||"").localeCompare(b.time||""); });
-  const onceList = allR.filter(function(r) { return r.repeat !== "daily"; }).sort(function(a,b) { return (a.date||"9999").localeCompare(b.date||"9999") || (a.time||"").localeCompare(b.time||""); });
-  const selDate = wk >= 0 ? dateOfWeekday(wk) : todayStr();
+function vHome() {
+  const cell = (go, t, s) => '<button class="cell" data-go="' + go + '"><span class="ico">' + HOME_ICONS[go] + '</span><b>' + t + '</b><span>' + s + '</span></button>';
+  return '<div class="ban"><div class="brandrow">' + iconBtn("openMenu", "Mở menu", "w") + '<div class="brand"><span class="mark" aria-hidden="true">H</span>Hành trình học tập</div></div><h1>Hành trình<br>Học Tập</h1><p>Cùng con đi qua từng ngày học</p></div>' +
+    '<div class="pad"><div class="grid">' +
+    cell("schedule", "Đồng hành cùng con", "Thời khoá biểu học chính, phụ đạo, hoạt động ngoài") +
+    cell("notes", "Sổ tay cá nhân", "Việc phụ huynh cần tham gia cùng con") +
+    cell("results", "Kết quả", "Việc con hoàn thành và điểm số từng môn") +
+    cell("review", "Đánh giá", "Mức độ hoàn thành theo tuần và tháng") + '</div></div>';
+}
 
-  // Danh sách nút chọn các ngày trong tuần
-  let chipsHtml = '<div class="chips">' +
-    '<button class="' + (wk === -1 ? "on" : "") + '" data-act="day" data-i="-1">Tất cả<small>Các ngày</small></button>' +
-    DAYS.map(function(d, i) {
-      const dt = dateOfWeekday(i);
-      const count = allR.filter(function(r) { return r.repeat === "daily" || r.date === dt; }).length;
-      return '<button class="' + (i === wk ? "on" : "") + '" data-act="day" data-i="' + i + '">' +
-        d + '<small>' + esc(dmy(dt).slice(0,5)) + (count ? " • " + count : "") + '</small></button>';
-    }).join("") +
-  '</div>';
+function vSchedule() {
+  const ws = weekStart(todayStr());
+  const days = SHORT.map(function (d, i) { return '<button class="chip' + (UI.day === i ? " on" : "") + '" data-act="day" data-i="' + i + '" aria-pressed="' + (UI.day === i) + '" aria-label="' + DAYS[i] + '">' + d + '<small>' + addDays(ws, i).slice(8) + '</small></button>'; }).join("");
+  const main = (S.schedule[UI.day] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
+  const extra = (arr, key, label) => arr.slice().sort((a, b) => a.day - b.day || a.time.localeCompare(b.time)).map(l =>
+    '<div class="card"><div class="time">' + SHORT[l.day] + '<br>' + esc(l.time) + '</div><span class="dot ' + (key === "tutoring" ? "s-tnxh" : "s-mt") + '"></span><div class="tx"><b>' + esc(l.title) + '</b><span>' + esc(l.note || label) + '</span></div>' + delBtn("delExtra", l.id, "Xoá " + l.title) + '</div>').join("");
+  const kindOf = id => S.tutoring.some(x => x.id === id) ? "tutoring" : "outside";
+  let h = '<div class="pad"><div class="hr"><h2>Thời khoá biểu học chính</h2><button class="btn" data-act="addLesson" data-kind="0">+ Thêm tiết</button></div><div class="row">' + days + '</div>';
+  h += main.length ? main.map(l => '<div class="card"><div class="time">' + esc(l.time) + '</div><span class="dot ' + (SUBJ_CLS[l.s] || "s-khac") + '"></span><div class="tx"><b>' + esc(l.s) + '</b><span>' + esc((l.room || "Chưa xếp phòng") + (l.end ? " · đến " + l.end : "")) + '</span></div>' + delBtn("delMain", l.id, "Xoá tiết " + l.s) + '</div>').join("") : '<div class="empty">' + DAYS[UI.day] + ' chưa có tiết học nào.</div>';
+  h += '<div class="hr"><h2>Thời khoá biểu phụ đạo</h2><button class="btn g" data-act="addLesson" data-kind="1">+ Thêm</button></div>' + (S.tutoring.length ? extra(S.tutoring, "tutoring", "Lớp phụ đạo") : '<div class="empty">Chưa có lịch phụ đạo.</div>');
+  h += '<div class="hr"><h2>Hoạt động ngoài</h2><button class="btn g" data-act="addLesson" data-kind="2">+ Thêm</button></div>' + (S.outside.length ? extra(S.outside, "outside", "Hoạt động ngoài") : '<div class="empty">Chưa có hoạt động ngoài.</div>');
+  return h + '</div>';
+}
 
-  // Nội dung danh sách thông báo
-  let contentHtml = "";
-  if (wk === -1) {
-    // Hiển thị tất cả các ngày có thông báo
-    const grouped = {};
-    onceList.forEach(function(r) {
-      const k = r.date || todayStr();
-      (grouped[k] = grouped[k] || []).push(r);
-    });
-    const dates = Object.keys(grouped).sort();
+function vNotes() {
+  const all = visibleNotes(), pending = all.filter(r => !r.done), done = all.filter(r => r.done);
+  const meta = r => dm(r.date) + " · " + (r.time || "") + (r.note ? " · " + r.note : "") + (r.series ? " · Lặp hằng tháng" : "");
+  const total = notesList().length, doneN = notesList().filter(r => r.done).length;
+  let h = '<div class="pad"><section class="hero"><small>Sổ tay cá nhân</small><b>' + (pending.length ? "Còn " + pending.length + " việc cần tham gia" : "Không còn việc nào cần tham gia") + '</b><p>Đã xong ' + doneN + "/" + total + ' việc</p></section>';
+  h += '<div class="hr"><h2>Cần tham gia cùng con</h2><button class="btn" data-act="addNote">+ Thêm việc</button></div>';
+  h += pending.length ? pending.map(r => '<div class="card">' + tickBtn("tickNote", r.id, false, "Đánh dấu đã xong: " + r.t) + '<div class="tx"><b>' + esc(r.t) + '</b><span>' + esc(meta(r)) + '</span></div>' + delBtn("delNote", r.id, "Xoá việc " + r.t) + '</div>').join("") : '<div class="empty">Không còn việc nào cần tham gia.</div>';
+  h += '<div class="hr"><h2>Đã xong</h2></div>';
+  h += done.length ? done.map(r => '<div class="card fin">' + tickBtn("tickNote", r.id, true, "Bỏ đánh dấu: " + r.t) + '<div class="tx"><b>' + esc(r.t) + '</b><span>' + esc(meta(r)) + '</span></div>' + delBtn("delNote", r.id, "Xoá việc " + r.t) + '</div>').join("") : '<div class="empty">Chưa có việc nào hoàn thành.</div>';
+  return h + '</div>';
+}
 
-    if (dates.length) {
-      dates.forEach(function(d) {
-        const wName = weekdayName(d);
-        const isToday = d === todayStr();
-        contentHtml += '<div class="date-group"><span>📅 ' + esc(wName ? wName + " (" + dmy(d) + ")" : dmy(d)) + (isToday ? " · Hôm nay" : "") + '</span><span>' + grouped[d].length + ' thông báo</span></div>';
-        contentHtml += grouped[d].map(reminderCardHtml).join("");
-      });
-    } else {
-      contentHtml += '<div class="empty">Chưa có thông báo theo ngày cụ thể. Bấm "+ Thêm thông báo" để tạo mới.</div>';
-    }
+function vResults() {
+  const tasks = S.tasks.slice().sort((a, b) => (taskDate(b) + (b.time || "")).localeCompare(taskDate(a) + (a.time || "")));
+  const doneT = tasks.filter(t => t.done), openT = tasks.filter(t => !t.done);
+  const res = S.results.slice().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  const overall = res.length ? res.reduce((a, r) => a + r.score, 0) / res.length : 0;
+  const subs = SUBJ_ORDER.filter(n => res.some(r => r.subj === n)).map(function (n) { const rs = res.filter(r => r.subj === n); return {n: n, avg: rs.reduce((a, r) => a + r.score, 0) / rs.length}; });
+  const tCard = (t, on) => '<div class="card' + (on ? " fin" : "") + '">' + tickBtn("tickTask", t.id, on, (on ? "Bỏ đánh dấu: " : "Đánh dấu đã xong: ") + t.t) + '<div class="tx"><b>' + esc(t.t) + '</b><span>' + esc(dm(taskDate(t)) + (t.time ? " · " + t.time : "")) + '</span></div>' + delBtn("delTask", t.id, "Xoá " + t.t) + '</div>';
+  let h = '<div class="pad"><section class="hero"><small>Tổng quan</small><b>Điểm trung bình ' + fmt(overall) + '/10</b><p>Việc con hoàn thành: ' + doneT.length + ' · Từ ' + res.length + ' bài kiểm tra</p></section>';
+  h += '<div class="hr"><h2>Việc con đã hoàn thành</h2><button class="btn g" data-act="addDone">+ Thêm</button></div>';
+  h += doneT.length ? doneT.map(t => tCard(t, true)).join("") : '<div class="empty">Chưa có việc nào con hoàn thành.</div>';
+  if (openT.length) h += '<div class="hr"><h2>Việc con chưa hoàn thành</h2></div>' + openT.map(t => tCard(t, false)).join("");
+  h += '<div class="hr"><h2>Điểm theo môn</h2></div>';
+  h += subs.length ? subs.map(s => '<div class="card" style="display:block"><div class="rowb"><span>' + esc(s.n) + '</span><span>' + fmt(s.avg) + '/10</span></div><div class="bar"><i class="' + SUBJ_CLS[s.n] + '" style="width:' + Math.round(s.avg * 10) + '%"></i></div></div>').join("") : '<div class="empty">Chưa có điểm số nào.</div>';
+  h += '<div class="hr"><h2>Bài kiểm tra</h2><button class="btn" data-act="addResult">+ Thêm kết quả</button></div>';
+  h += res.length ? res.map(r => '<button class="card click" data-act="openResult" data-id="' + r.id + '"><div class="time">' + num(r.score) + '/10</div><span class="dot ' + (SUBJ_CLS[r.subj] || "s-khac") + '"></span><div class="tx"><b>' + esc(r.subj) + '</b><span>' + esc(r.kind + " · " + dmy(r.date)) + '</span></div><span class="xb" aria-hidden="true">›</span></button>').join("") : '<div class="empty">Chưa có bài kiểm tra nào. Bấm “+ Thêm kết quả” để ghi nhận.</div>';
+  return h + '</div>';
+}
 
-    contentHtml += '<div class="head-row"><b>🔁 Thông báo lặp lại hằng ngày</b></div>';
-    contentHtml += dailyList.length ? dailyList.map(reminderCardHtml).join("") : '<div class="empty">Chưa có thông báo lặp lại hằng ngày.</div>';
-  } else {
-    // Hiển thị thông báo của ngày đang chọn trên thanh thứ
-    const dayOnce = onceList.filter(function(r) { return r.date === selDate; });
-    contentHtml += '<div class="date-group"><span>📅 ' + DAYS[wk] + ' · Ngày ' + esc(dmy(selDate)) + '</span><button class="btn ghost" data-act="weekRemind">+ Thêm vào ngày này</button></div>';
-    if (dayOnce.length || dailyList.length) {
-      contentHtml += dayOnce.map(reminderCardHtml).join("");
-      if (dailyList.length) {
-        contentHtml += '<div class="date-group"><span>🔁 Lặp hằng ngày</span></div>' + dailyList.map(reminderCardHtml).join("");
-      }
-    } else {
-      contentHtml += '<div class="empty">Ngày ' + esc(dmy(selDate)) + ' chưa có thông báo nào.</div>';
-    }
+function vReview() {
+  const [a, b] = period(UI.mode), week = UI.mode === "week";
+  const child = ratio(S.tasks.filter(t => inRange(taskDate(t), a, b)), t => t.done);
+  const par = ratio(notesList().filter(r => inRange(r.date || "", a, b)), r => r.done);
+  const donut = (title, r) => '<div class="pc"><h3>' + title + '</h3><div class="don" style="background:conic-gradient(#1A6AC8 ' + Math.round(r.pct * 3.6) + 'deg,#C9DFF8 0)"><span>' + r.pct + '%</span></div><p>' + (r.total ? r.done + "/" + r.total + " việc · chưa xong " + (100 - r.pct) + "%" : "Chưa có việc nào") + '</p></div>';
+  let h = '<div class="pad"><div class="seg" role="group" aria-label="Khoảng thời gian"><button class="' + (week ? "on" : "") + '" data-act="mode" data-mode="week" aria-pressed="' + week + '">Theo tuần</button><button class="' + (week ? "" : "on") + '" data-act="mode" data-mode="month" aria-pressed="' + !week + '">Theo tháng</button></div>';
+  h += '<div class="hr"><h2>' + (week ? "Tuần này · " : "Tháng " + a.slice(5, 7) + "/" + a.slice(0, 4) + " · ") + dm(a) + " – " + dm(b) + (week ? "/" + b.slice(0, 4) : "") + '</h2></div><div class="two">' + donut("Con", child) + donut("Phụ huynh", par) + '</div>';
+  // biểu đồ: theo ngày (tuần) hoặc theo tuần (tháng)
+  const buckets = [];
+  if (week) for (let i = 0; i < 7; i++) buckets.push({l: SHORT[i], from: addDays(a, i), to: addDays(a, i)});
+  else { let s = a, k = 1; while (s <= b) { const e = addDays(s, 6) > b ? b : addDays(s, 6); buckets.push({l: "Tuần " + k, from: s, to: e}); s = addDays(e, 1); k++; } }
+  const tod = todayStr();
+  h += '<div class="hr"><h2>Con hoàn thành theo ' + (week ? "ngày" : "tuần") + '</h2></div><div class="card" style="display:block"><div class="bars">' + buckets.map(function (k) {
+    const r = ratio(S.tasks.filter(t => inRange(taskDate(t), k.from, k.to)), t => t.done);
+    return '<div>' + (r.total && k.from <= tod ? '<i style="height:' + Math.max(6, Math.round(r.pct * 0.8)) + 'px" title="' + r.pct + '%"></i>' : '<i class="d" style="height:6px"></i>') + k.l + '</div>';
+  }).join("") + '</div></div>';
+  return h + '</div>';
+}
+
+function vSettings() {
+  return '<div class="pad"><div class="kid"><span class="av" aria-hidden="true">' + esc((S.child.name || "B").trim().split(" ").pop().charAt(0).toUpperCase()) + '</span><div class="tx"><b style="font-size:16px">' + esc(S.child.name) + '</b><span>' + esc(S.child.cls + " · Năm học " + S.child.year) + '</span></div></div>' +
+    '<div class="hr"><h2>Nhắc hẹn</h2></div><div class="grp2"><div class="kv"><span>Giờ nhắc tổng hợp mỗi ngày</span><select class="fld" style="width:auto;min-height:42px" data-change="reminderTime" aria-label="Giờ nhắc tổng hợp">' + ["18:00","19:00","20:00","21:00"].map(x => '<option' + (x === S.reminder ? " selected" : "") + '>' + x + '</option>').join("") + '</select></div></div>' +
+    '<div class="hr"><h2>Kết nối Telegram (' + (TG.connected ? "Đã kết nối" : "Chưa kết nối") + ')</h2></div><div class="card" style="display:block;padding:12px 14px"><div style="font-size:12px;color:#52708F;line-height:1.45">Mở Telegram, tìm bot của bạn, bấm Start, sau đó dán token và bấm Lấy mã kết nối.</div>' +
+    '<label class="lb" for="tgToken">Token bot từ BotFather</label><input class="fld" id="tgToken" type="text" placeholder="Dán token vào đây">' +
+    '<div class="row" style="margin-top:8px"><button class="btn g" style="flex:1" data-act="tgSave">Lưu token</button><button class="btn g" style="flex:1" data-act="tgDetect">Lấy mã kết nối</button><button class="btn" style="flex:1" data-act="tgTest">Gửi thử</button></div>' + (UI.tg ? '<p class="msg" role="status">' + esc(UI.tg) + '</p>' : '') + '</div>' +
+    '<div class="hr"><h2>Dữ liệu</h2></div><div class="grp2"><div class="kv"><span>Xuất thời khoá biểu ra CSV</span><button class="btn g" data-act="exportCsv">Xuất</button></div><div class="kv"><span>Nhập thời khoá biểu từ CSV</span><button class="btn g" data-act="importCsv">Nhập</button></div></div></div>';
+}
+
+function vDetail() {
+  const r = S.results.find(x => x.id === UI.sel) || S.results[0];
+  if (!r) return '<div class="pad"><div class="empty">Không tìm thấy kết quả.</div></div>';
+  const same = S.results.filter(x => x.subj === r.subj), avg = same.reduce((a, x) => a + x.score, 0) / same.length, diff = r.score - avg;
+  return '<div class="pad"><section class="hero"><small>Điểm số</small><div class="big">' + num(r.score) + '/10</div><p>' + (Math.abs(diff) < 0.05 ? "Bằng mức trung bình " : (diff > 0 ? "Cao hơn" : "Thấp hơn") + " trung bình ") + esc(r.subj) + ' (' + fmt(avg) + ')</p></section>' +
+    '<div class="hr"><h2>Nhận xét của cô</h2></div><div class="note">' + esc(r.note || "Chưa có nhận xét.") + '</div>' +
+    '<div class="hr"><h2>Thông tin</h2></div><div class="grp2"><div class="kv"><span>Môn học</span><b>' + esc(r.subj) + '</b></div><div class="kv"><span>Loại bài</span><b>' + esc(r.kind) + '</b></div><div class="kv"><span>Ngày</span><b>' + esc(dmy(r.date)) + '</b></div></div>' +
+    '<div class="row" style="margin-top:14px"><button class="btn g" style="flex:1" data-act="share">Chia sẻ</button><button class="btn r" style="flex:1" data-act="delResult" data-id="' + r.id + '">Xoá kết quả</button></div></div>';
+}
+
+function vForm(view) {
+  const f = UI.form;
+  let h = '<div class="pad">';
+  if (view === "addLesson") {
+    h += '<span class="lb">Loại lịch</span><div class="row">' + chips([{label: "Học chính", sub: "Tiết trên lớp"}, {label: "Phụ đạo", sub: "Học thêm"}, {label: "Hoạt động ngoài", sub: "Ngoại khoá"}], "fkind", f.kind) + '</div>' +
+      field("Môn học hoặc tên hoạt động", "title", f.title) + '<span class="lb">Ngày trong tuần</span><div class="row">' + chips(SHORT, "fday", f.day) + '</div>' +
+      '<div class="two2"><div>' + field("Giờ bắt đầu", "start", f.start, {type: "time"}) + '</div><div>' + field("Giờ kết thúc", "end", f.end, {type: "time"}) + '</div></div>' + field("Phòng học hoặc địa điểm", "room", f.room);
+  } else if (view === "addNote") {
+    h += field("Tên việc", "tname", f.tname, {ph: "VD: Họp phụ huynh"}) + '<span class="lb">Chọn nhanh</span><div class="opts">' + chips(QUICK, "fquick", QUICK.indexOf(f.tname)) + '</div>' +
+      '<div class="two2"><div>' + field("Ngày", "tdate", f.tdate, {type: "date"}) + '</div><div>' + field("Giờ", "ttime", f.ttime, {type: "time"}) + '</div></div>' + field("Địa điểm (không bắt buộc)", "tplace", f.tplace) +
+      toggle("tremind", f.tremind, "Nhắc trước 1 ngày") + toggle("tmonthly", f.tmonthly, "Lặp lại hằng tháng");
+  } else if (view === "addResult") {
+    h += '<label class="lb" for="f-rsubj">Môn học</label><select class="fld" id="f-rsubj" name="rsubj">' + SUBJ_ORDER.map(s => '<option' + (s === f.rsubj ? " selected" : "") + '>' + esc(s) + '</option>').join("") + '</select>' +
+      '<span class="lb">Điểm số (0 – 10)</span><div class="row">' + chips(["6", "7", "8", "9", "10"], "fscore", ["6", "7", "8", "9", "10"].indexOf(String(f.rscore))) + '</div>' +
+      '<input class="fld" name="rscore" type="text" inputmode="decimal" value="' + esc(f.rscore) + '" placeholder="Hoặc nhập điểm, ví dụ 8,5" aria-label="Điểm số">' +
+      '<div class="two2"><div>' + field("Loại bài", "rkind", f.rkind) + '</div><div>' + field("Ngày", "rdate", f.rdate, {type: "date"}) + '</div></div>' + field("Nhận xét của cô (không bắt buộc)", "rnote", f.rnote);
+  } else if (view === "addDone") {
+    h += field("Việc của con", "dname", f.dname, {ph: "VD: Làm bài tập Toán trang 45"}) + '<div class="two2"><div>' + field("Ngày", "ddate", f.ddate, {type: "date"}) + '</div><div>' + field("Giờ", "dtime", f.dtime, {type: "time"}) + '</div></div>' + toggle("ddone", f.ddone, "Con đã hoàn thành việc này");
   }
-
-  // Phần quản lý thời khoá biểu thu gọn bên dưới để phục vụ tab Ngày mai
-  const tkbDay = wk >= 0 ? wk : todayIdx();
-  const periods = (S.schedule[tkbDay] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); });
-  const tkbHtml = '<details class="settings-group">' +
-    '<summary>📚 Thời khoá biểu tiết học (' + DAYS[tkbDay] + ')</summary>' +
-    '<div class="settings-body">' +
-      '<div class="toolbar" style="margin-top:10px">' +
-        '<button class="btn" data-act="addPeriod">+ Thêm tiết ' + DAYS[tkbDay] + '</button>' +
-        '<button class="btn ghost" data-act="importCsv">Nhập CSV</button>' +
-        '<button class="btn ghost" data-act="exportCsv">Xuất CSV</button>' +
-      '</div>' +
-      (periods.length ? periods.map(function(p) {
-        return '<div class="card" data-act="editPeriod" data-id="' + p.id + '" style="cursor:pointer">' +
-          '<div class="time">' + esc(p.time) + '</div>' +
-          '<div class="stripe" style="background:' + (SUBJ[p.s] || "#6366F1") + '"></div>' +
-          '<div class="txt"><b>' + esc(p.s) + '</b><span>' + esc(p.room || "Chưa xếp phòng") + '</span></div>' +
-          '<button class="x" data-act="delPeriod" data-id="' + p.id + '" title="Xoá">✕</button></div>';
-      }).join("") : '<div class="empty">' + DAYS[tkbDay] + ' chưa có tiết học nào.</div>') +
-    '</div></details>';
-
-  return '<div class="hero"><small>Quản lý nhắc hẹn & Telegram</small>' +
-    '<b>Tổng cộng ' + allR.length + ' lịch thông báo</b>' +
-    '<div style="font-size:12px;margin-top:6px;opacity:0.9">Đang có ' + onceList.length + ' lịch theo ngày · ' + dailyList.length + ' lịch hằng ngày</div></div>' +
-    '<div class="head-row"><b>Các ngày thông báo</b><button class="btn" data-act="weekRemind">+ Thêm thông báo</button></div>' +
-    chipsHtml +
-    contentHtml +
-    '<div class="remind" style="background:#EEF2FF;border-color:#C7D2FE;color:#3730A3"><b style="color:#4338CA">Mẹo:</b> Bấm trực tiếp vào một thông báo bất kỳ để đổi ngày, giờ hoặc nội dung.</div>' +
-    tkbHtml;
+  if (UI.err) h += '<p class="err" role="alert">' + esc(UI.err) + '</p>';
+  return h + '</div>';
 }
 
-const SUPPLIES = {"Toán":["Sách Toán","Vở ô li Toán"],"Tiếng Việt":["Sách Tiếng Việt","Vở tập viết"],"Tiếng Anh":["Sách Tiếng Anh","Vở Tiếng Anh"],"Tự nhiên & Xã hội":["Sách Tự nhiên & Xã hội","Vở TN&XH"],"Mỹ thuật":["Giấy vẽ","Màu sáp","Bút chì"],"Khác":[]};
-function autoPrep() {
-  const names = [];
-  (S.schedule[tomorrowIdx()] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); }).forEach(function(p) {
-    (SUPPLIES[p.s] || []).forEach(function(n) { if (!names.includes(n)) names.push(n); });
-  });
-  return names;
+function drawer() {
+  const item = (go, ic, t) => '<button class="mi' + (UI.view === go || (go === "results" && (UI.view === "detail" || UI.view === "addResult" || UI.view === "addDone")) || (go === "notes" && UI.view === "addNote") || (go === "schedule" && UI.view === "addLesson") ? " on" : "") + '" data-go="' + go + '">' + IC[ic] + t + '</button>';
+  return '<div class="ov" data-act="closeMenu"></div><aside class="drawer" role="dialog" aria-modal="true" aria-label="Menu"><div class="dh"><div class="brand"><span class="mark" aria-hidden="true">H</span>Hành trình học tập</div><button class="dx" data-act="closeMenu" aria-label="Đóng menu">✕</button></div>' +
+    '<div class="kidbox"><span class="av" aria-hidden="true">' + esc((S.child.name || "B").trim().split(" ").pop().charAt(0).toUpperCase()) + '</span><div><b>' + esc(S.child.name) + '</b><small>' + esc(S.child.cls + " · Năm học " + S.child.year) + '</small></div></div>' +
+    item("home", "home", "Trang chủ") + item("schedule", "cal", "Đồng hành cùng con") + item("notes", "check", "Sổ tay cá nhân") + item("results", "star", "Kết quả") + item("review", "chart", "Đánh giá") + '<div class="dl"></div>' + item("settings", "gear", "Cài đặt") + '</aside>';
 }
-function renderTomorrow() {
-  S.autoChecked = S.autoChecked || {};
-  const tmIdx = tomorrowIdx();
-  const auto = autoPrep();
-  const doneAuto = auto.filter(function(n) { return S.autoChecked[n]; }).length;
-  const total = auto.length + S.prep.length;
-  const done = doneAuto + S.prep.filter(function(p) { return p.done; }).length;
-  const periods = (S.schedule[tmIdx] || []).length;
-  return '<div class="hero"><small>Ngày mai · ' + DAYS[tmIdx] + ' · ' + periods + ' tiết</small>' +
-    '<b>Đã chuẩn bị ' + done + '/' + total + ' món đồ</b>' +
-    '<div class="bar"><i style="width:' + (total ? done/total*100 : 0) + '%"></i></div></div>' +
-    '<div class="head-row"><b>Sách vở theo thời khoá biểu</b></div>' +
-    (auto.length ? auto.map(function(n) {
-      return '<div class="card ' + (S.autoChecked[n] ? "done" : "") + '">' +
-        '<button class="check" data-act="toggleAuto" data-name="' + esc(n) + '">' + (S.autoChecked[n] ? "✓" : "") + '</button>' +
-        '<div class="txt"><b>' + esc(n) + '</b><span>Soạn tự động theo lịch ngày mai</span></div></div>';
-    }).join("") : '<div class="empty">Ngày mai chưa có tiết học nào trong thời khoá biểu.</div>') +
-    '<div class="head-row"><b>Đồ dùng mang thêm</b><button class="btn" data-act="addPrep">+ Thêm món</button></div>' +
-    (S.prep.length ? S.prep.map(function(p) {
-      return '<div class="card ' + (p.done ? "done" : "") + '">' +
-        '<button class="check" data-act="togglePrep" data-id="' + p.id + '">' + (p.done ? "✓" : "") + '</button>' +
-        '<div class="txt"><b>' + esc(p.t) + '</b></div>' +
-        '<button class="x" data-act="delPrep" data-id="' + p.id + '" title="Xoá">✕</button></div>';
-    }).join("") : '<div class="empty">Chưa có món đồ mang thêm nào.</div>') +
-    upcomingHtml(dayAfter(todayStr())) +
-    '<div class="remind" style="background:#ECFDF5;border-color:#A7F3D0;color:#065F46"><b style="color:#047857">Tự động:</b> Sách vở được gợi ý theo lịch học ' + DAYS[tmIdx] + '.</div>';
-}
-
-const HEADS = {
-  today: ["Việc của tôi", "Quản lý việc theo ngày & thói quen"],
-  week: ["Lịch thông báo", "Quản lý các ngày thông báo & nhắc hẹn"],
-  tomorrow: ["Chuẩn bị ngày mai", "Soạn sách vở và việc sắp tới"]
-};
 
 function render() {
-  const map = {today:renderDaily, week:renderWeek, tomorrow:renderTomorrow};
-  document.querySelectorAll(".screen").forEach(function(el) { el.classList.toggle("on", el.id === "s-" + cur); });
-  $("s-" + cur).innerHTML = map[cur]();
-  document.querySelectorAll("nav button").forEach(function(b) { b.classList.toggle("on", b.dataset.s === cur); });
-  updateBadge();
-  $("head").innerHTML = "<h1>" + HEADS[cur][0] + "</h1><p>" + HEADS[cur][1] + "</p>";
+  const v = UI.view, isForm = FORMS.indexOf(v) >= 0;
+  let body;
+  if (v === "home") body = vHome();
+  else {
+    const t = v === "detail" ? (function () { const r = S.results.find(x => x.id === UI.sel) || S.results[0] || {subj: "", score: 0, kind: "", date: ""}; return [r.subj + " · " + num(r.score) + "/10", r.kind + " · " + dmy(r.date)]; })() : TITLES[v];
+    const view = {schedule: vSchedule, notes: vNotes, results: vResults, review: vReview, settings: vSettings, detail: vDetail}[v] || (() => vForm(v));
+    body = '<div class="pad">' + secHead(v, t[0], t[1]) + '</div>' + view();
+  }
+  const main = $("main"), keep = main.scrollTop;
+  main.className = "wrap" + (isForm ? " form" : "");
+  main.innerHTML = body;
+  main.scrollTop = keep;
+  let layer = "";
+  if (isForm) layer += '<div class="ft"><button class="c1" data-act="back">Huỷ</button><button class="c2" data-act="save">' + ({addLesson: "Lưu lịch học", addNote: "Lưu việc", addResult: "Lưu kết quả", addDone: "Lưu"}[v]) + '</button></div>';
+  if (UI.menu) layer += drawer();
+  $("layer").innerHTML = layer;
+}
+function go(view, extra) { UI.view = view; UI.menu = false; UI.err = ""; Object.assign(UI, extra || {}); render(); $("main").scrollTop = 0; }
+function syncForm() { document.querySelectorAll("#main [name]").forEach(function (el) { if (el.name) UI.form[el.name] = el.value; }); }
+
+/* ======================= Mở form ======================= */
+function openForm(view, patch) {
+  const t = todayStr();
+  UI.form = Object.assign({kind: 0, title: "", day: UI.day, start: "07:30", end: "08:15", room: "",
+    tname: "", tdate: t, ttime: defaultTime(), tplace: "", tremind: true, tmonthly: false,
+    rsubj: "Toán", rscore: "8", rkind: "Kiểm tra 15 phút", rdate: t, rnote: "",
+    dname: "", ddate: t, dtime: defaultTime(), ddone: true}, patch || {});
+  go(view);
 }
 
-function updateBadge() {
-  const tm = dayAfter(todayStr());
-  const n = (S.tasks || []).filter(function(t) { return !t.done && taskDateC(t) === tm; }).length +
-            (S.reminders || []).filter(function(r) { return r.repeat !== "daily" && r.date === tm; }).length;
-  const b = $("nbadge");
-  if (!b) return;
-  b.textContent = n > 9 ? "9+" : String(n);
-  b.hidden = n === 0;
+/* ======================= Lưu ======================= */
+function saveForm() {
+  syncForm();
+  const f = UI.form, v = UI.view;
+  const fail = m => { UI.err = m; render(); };
+  if (v === "addLesson") {
+    const title = (f.title || "").trim(); if (!title) return fail("Vui lòng nhập môn học hoặc tên hoạt động.");
+    const time = parseTime(f.start); if (!time) return fail("Giờ bắt đầu chưa đúng.");
+    const end = f.end ? parseTime(f.end) : ""; if (f.end && !end) return fail("Giờ kết thúc chưa đúng.");
+    const room = (f.room || "").trim();
+    if (f.kind === 0) (S.schedule[f.day] = S.schedule[f.day] || []).push({id: nid(), time: time, end: end || "", s: title, room: room});
+    else (f.kind === 1 ? S.tutoring : S.outside).push({id: nid(), day: f.day, time: time, end: end || "", title: title, note: room});
+    UI.day = f.day; save(); go("schedule"); toast("Đã thêm lịch học"); return;
+  }
+  if (v === "addNote") {
+    const name = (f.tname || "").trim(); if (!name) return fail("Vui lòng nhập tên việc.");
+    if (!f.tdate) return fail("Vui lòng chọn ngày.");
+    const time = parseTime(f.ttime); if (!time) return fail("Vui lòng chọn giờ.");
+    const place = (f.tplace || "").trim(), series = f.tmonthly ? "s" + nid() : "";
+    const n = f.tmonthly ? 12 : 1;
+    for (let i = 0; i < n; i++) {
+      const date = addMonths(f.tdate, i), id = nid();
+      S.reminders.push({id: id, repeat: "none", date: date, time: time, t: name, note: place, done: false, series: series});
+      if (f.tremind) S.reminders.push({id: nid(), repeat: "none", date: addDays(date, -1), time: S.reminder || "19:00", t: "Ngày mai: " + name, note: place, auto: true, pid: id, series: series});
+    }
+    save(); go("notes"); toast("Đã thêm việc"); return;
+  }
+  if (v === "addResult") {
+    const sc = Number(String(f.rscore).replace(",", "."));
+    if (String(f.rscore).trim() === "" || isNaN(sc) || sc < 0 || sc > 10) return fail("Điểm số cần nằm trong khoảng 0 đến 10.");
+    if (!f.rdate) return fail("Vui lòng chọn ngày.");
+    S.results.push({id: nid(), subj: f.rsubj, score: sc, kind: (f.rkind || "").trim() || "Bài kiểm tra", date: f.rdate, note: (f.rnote || "").trim()});
+    save(); go("results"); toast("Đã ghi nhận kết quả"); return;
+  }
+  if (v === "addDone") {
+    const name = (f.dname || "").trim(); if (!name) return fail("Vui lòng nhập việc của con.");
+    if (!f.ddate) return fail("Vui lòng chọn ngày.");
+    const time = parseTime(f.dtime); if (!time) return fail("Vui lòng chọn giờ.");
+    S.tasks.push({id: nid(), t: name, date: f.ddate, time: time, priority: "Trung bình", done: !!f.ddone});
+    save(); go("results"); toast(f.ddone ? "Đã ghi nhận việc con hoàn thành" : "Đã thêm việc của con"); return;
+  }
 }
-function go(s) { cur = s; render(); $("main").scrollTop = 0; }
 
-$("nav").addEventListener("click", function(e) { const b = e.target.closest("button"); if (b) go(b.dataset.s); });
-$("main").addEventListener("change", function(e) {
-  if (e.target.dataset.act === "reminder") { S.reminder = e.target.value; save(); render(); toast("Đã đặt giờ nhắc " + S.reminder); }
+/* ======================= CSV thời khoá biểu ======================= */
+const DAY_MAP = {"2":0,"thứ 2":0,"thứ hai":0,"3":1,"thứ 3":1,"thứ ba":1,"4":2,"thứ 4":2,"thứ tư":2,"5":3,"thứ 5":3,"thứ năm":3,"6":4,"thứ 6":4,"thứ sáu":4,"7":5,"thứ 7":5,"thứ bảy":5,"cn":6,"chủ nhật":6,"8":6};
+function dayIndex(t) { const v = DAY_MAP[(t || "").toLowerCase().trim()]; return v === undefined ? -1 : v; }
+function parseCsv(text) {
+  const out = {}; let added = 0;
+  text.split(/\r?\n/).map(l => l.trim()).filter(Boolean).forEach(function (line) {
+    const c = line.split(",").map(x => x.trim()), d = dayIndex(c[0]);
+    if (d < 0 || !/^\d{1,2}:\d{2}$/.test(c[1])) return;
+    (out[d] = out[d] || []).push({id: nid(), time: c[1].padStart(5, "0"), s: SUBJ_CLS[c[2]] ? c[2] : "Khác", room: c[3] || ""});
+    added++;
+  });
+  return {out: out, added: added};
+}
+function exportCsv() {
+  const lines = ["Thứ,Giờ,Môn,Phòng"];
+  DAYS.forEach(function (d, i) { (S.schedule[i] || []).slice().sort((a, b) => a.time.localeCompare(b.time)).forEach(p => lines.push([d, p.time, p.s, (p.room || "").replace(/,/g, " ")].join(","))); });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["\ufeff" + lines.join("\n")], {type: "text/csv;charset=utf-8"}));
+  a.download = "thoi-khoa-bieu.csv"; a.click();
+}
+$("csvFile").addEventListener("change", function (e) {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = function () {
+    const res = parseCsv(String(rd.result).replace(/^\ufeff/, ""));
+    if (!res.added) toast("File không có dòng tiết hợp lệ");
+    else { Object.keys(res.out).forEach(d => { S.schedule[d] = res.out[d]; }); save(); render(); toast("Đã nhập " + res.added + " tiết"); }
+    e.target.value = "";
+  };
+  rd.readAsText(f, "utf-8");
 });
-$("main").addEventListener("click", function(e) {
+
+/* ======================= Sự kiện ======================= */
+document.addEventListener("input", function (e) { if (e.target.name && FORM_LIVE()) UI.form[e.target.name] = e.target.value; });
+function FORM_LIVE() { return FORMS.indexOf(UI.view) >= 0; }
+document.addEventListener("change", function (e) {
+  if (e.target.dataset && e.target.dataset.change === "reminderTime") { S.reminder = e.target.value; save(); toast("Đã đặt giờ nhắc " + S.reminder); }
+  if (e.target.name === "rsubj") UI.form.rsubj = e.target.value;
+});
+document.addEventListener("click", function (e) {
+  const g = e.target.closest("[data-go]");
+  if (g) { go(g.dataset.go); return; }
   const el = e.target.closest("[data-act]");
   if (!el) return;
-  const a = el.dataset.act, id = +el.dataset.id;
-  const find = function(arr) { return (arr || []).find(function(x) { return x.id === id; }); };
-  const tkbDay = wk >= 0 ? wk : todayIdx();
-  switch(a) {
-    case "toggleTask": { const t = find(S.tasks); if (t) { t.done = !t.done; save(); render(); } break; }
-    case "delTask": S.tasks = (S.tasks || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá việc"); break;
-    case "addTask": openForm("Thêm việc mới", [
-        {k:"t", label:"Tên công việc", required:true, ph:"VD: Làm bài tập Toán"},
-        {k:"date", label:"Ngày thực hiện", type:"date", value:todayStr(), required:true},
-        {k:"time", label:"Giờ hạn", type:"time", value:"19:00"},
-        {k:"priority", label:"Mức độ ưu tiên", type:"select", options:["Cao","Trung bình","Thấp"], value:"Trung bình"}],
-      function(v) { S.tasks.push({id:nid(), t:v.t, date:v.date, time:v.time||"19:00", priority:v.priority, done:false}); toast("Đã thêm việc"); }); break;
-    case "addHabit": openForm("Thêm thói quen", [{k:"name", label:"Tên thói quen", required:true, ph:"VD: Đọc sách 15 phút"}],
-      function(v) { (S.habits = S.habits || []).push({id:nid(), name:v.name, days:[]}); toast("Đã thêm thói quen"); }); break;
-    case "toggleHabit": { const h = find(S.habits); if (h) { const d = todayStr(); h.days = h.days.includes(d) ? h.days.filter(function(x) { return x !== d; }) : h.days.concat([d]); save(); render(); } break; }
-    case "delHabit": S.habits = (S.habits || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá thói quen"); break;
-    case "day": wk = +el.dataset.i; render(); break;
-    case "addPeriod": openForm("Thêm tiết - " + DAYS[tkbDay], [
-        {k:"time", label:"Giờ học", type:"time", value:"07:30", required:true},
-        {k:"s", label:"Môn học", type:"select", options:subjOpts, value:"Toán"},
-        {k:"room", label:"Phòng học", ph:"VD: Phòng 3A"}],
-      function(v) { (S.schedule[tkbDay] = S.schedule[tkbDay] || []).push({id:nid(), time:v.time, s:v.s, room:v.room}); toast("Đã thêm tiết"); }); break;
-    case "editPeriod": {
-      if (e.target.closest('[data-act="delPeriod"]')) return;
-      const p = find(S.schedule[tkbDay]); if (!p) break;
-      openForm("Sửa tiết học", [
-        {k:"time", label:"Giờ học", type:"time", value:p.time, required:true},
-        {k:"s", label:"Môn học", type:"select", options:subjOpts, value:p.s},
-        {k:"room", label:"Phòng học", value:p.room}],
-      function(v) { Object.assign(p, {time:v.time, s:v.s, room:v.room}); toast("Đã cập nhật"); }); break; }
-    case "delPeriod": e.stopPropagation(); S.schedule[tkbDay] = (S.schedule[tkbDay] || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá tiết"); break;
+  const a = el.dataset.act, id = +el.dataset.id, i = +el.dataset.i;
+  const upd = () => { syncForm(); };
+  switch (a) {
+    case "openMenu": UI.menu = true; render(); break;
+    case "closeMenu": UI.menu = false; render(); break;
+    case "back": go(BACK[UI.view] || "home"); break;
+    case "day": UI.day = i; render(); break;
+    case "mode": UI.mode = el.dataset.mode; render(); break;
+    case "addLesson": openForm("addLesson", {kind: +el.dataset.kind, title: +el.dataset.kind === 0 ? "Toán" : ""}); break;
+    case "addNote": openForm("addNote"); break;
+    case "addResult": openForm("addResult"); break;
+    case "addDone": openForm("addDone"); break;
+    case "fkind": upd(); UI.form.kind = i; if (i === 0 && !UI.form.title) UI.form.title = "Toán"; render(); break;
+    case "fday": upd(); UI.form.day = i; render(); break;
+    case "fquick": upd(); UI.form.tname = QUICK[i]; render(); break;
+    case "fscore": upd(); UI.form.rscore = ["6", "7", "8", "9", "10"][i]; render(); break;
+    case "tremind": upd(); UI.form.tremind = !UI.form.tremind; render(); break;
+    case "tmonthly": upd(); UI.form.tmonthly = !UI.form.tmonthly; render(); break;
+    case "ddone": upd(); UI.form.ddone = !UI.form.ddone; render(); break;
+    case "save": saveForm(); break;
+    case "delMain": S.schedule[UI.day] = (S.schedule[UI.day] || []).filter(x => x.id !== id); save(); render(); toast("Đã xoá tiết học"); break;
+    case "delExtra": S.tutoring = S.tutoring.filter(x => x.id !== id); S.outside = S.outside.filter(x => x.id !== id); save(); render(); toast("Đã xoá"); break;
+    case "tickNote": { const r = S.reminders.find(x => x.id === id); if (r) { r.done = !r.done; save(); render(); } break; }
+    case "delNote": { const r = S.reminders.find(x => x.id === id); if (r) { S.reminders = S.reminders.filter(x => x.id !== id && x.pid !== id && !(r.series && x.series === r.series)); save(); render(); toast("Đã xoá việc"); } break; }
+    case "tickTask": { const t = S.tasks.find(x => x.id === id); if (t) { t.done = !t.done; save(); render(); } break; }
+    case "delTask": S.tasks = S.tasks.filter(x => x.id !== id); save(); render(); toast("Đã xoá"); break;
+    case "openResult": go("detail", {sel: id}); break;
+    case "delResult": S.results = S.results.filter(x => x.id !== id); save(); go("results"); toast("Đã xoá kết quả"); break;
+    case "share": toast("Đã sao chép liên kết kết quả"); break;
     case "importCsv": $("csvFile").click(); break;
-    case "addNotify": openReminderForm(todayStr()); break;
-    case "weekRemind": openReminderForm(wk >= 0 ? dateOfWeekday(wk) : todayStr()); break;
-    case "editRemind": {
-      const r = find(S.reminders); if (!r) break;
-      openForm("Sửa thông báo", [
-        {k:"t", label:"Nội dung thông báo", required:true, value:r.t},
-        {k:"date", label:"Ngày thông báo (bỏ qua nếu lặp hằng ngày)", type:"date", value:r.date || todayStr()},
-        {k:"time", label:"Giờ thông báo", type:"time", value:r.time || "19:00", required:true},
-        {k:"repeat", label:"Chế độ lặp", type:"select", options:["Một lần","Hằng ngày"], value:r.repeat==="daily"?"Hằng ngày":"Một lần"},
-        {k:"note", label:"Ghi chú", value:r.note || ""}],
-      function(v) {
-        const daily = v.repeat === "Hằng ngày";
-        Object.assign(r, {t:v.t, date:daily ? "" : (v.date || todayStr()), time:v.time, repeat:daily ? "daily" : "none", note:v.note});
-        toast("Đã cập nhật thông báo");
-      });
-      break;
-    }
     case "exportCsv": exportCsv(); break;
-    case "addPrep": openForm("Thêm đồ dùng cần mang", [{k:"t", label:"Tên món đồ", required:true, ph:"VD: Áo khoác, bình nước"}],
-      function(v) { S.prep.push({id:nid(), t:v.t, done:false}); toast("Đã thêm"); }); break;
-    case "togglePrep": { const p = find(S.prep); if (p) { p.done = !p.done; save(); render(); } break; }
-    case "toggleAuto": { S.autoChecked = S.autoChecked || {}; const n = el.dataset.name; S.autoChecked[n] = !S.autoChecked[n]; save(); render(); break; }
-    case "delPrep": S.prep = (S.prep || []).filter(function(x) { return x.id !== id; }); save(); render(); break;
-    case "delRoutine": e.stopPropagation(); S.reminders = (S.reminders || []).filter(function(x) { return x.id !== id; }); save(); render(); toast("Đã xoá thông báo"); break;
-    case "tgSave": tgPost("/api/telegram/token", {token:$("tgToken").value}, "Đã lưu token"); break;
+    case "tgSave": tgPost("/api/telegram/token", {token: ($("tgToken") || {}).value}, "Đã lưu token"); break;
     case "tgDetect": tgPost("/api/telegram/detect", {}, "Đã kết nối với phụ huynh"); break;
     case "tgTest": tgPost("/api/telegram/test", {}, "Đã gửi tin thử"); break;
   }
 });
-
-const DAY_MAP = {"2":0,"thứ 2":0,"thứ hai":0,"3":1,"thứ 3":1,"thứ ba":1,"4":2,"thứ 4":2,"thứ tư":2,"5":3,"thứ 5":3,"thứ năm":3,"6":4,"thứ 6":4,"thứ sáu":4,"7":5,"thứ 7":5,"thứ bảy":5,"cn":6,"chủ nhật":6,"8":6};
-function dayIndex(t) { const v = DAY_MAP[(t || "").toLowerCase().trim()]; return v === undefined ? -1 : v; }
-function parseCsv(text) {
-  const out = {}; let added = 0, skipped = 0;
-  text.split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean).forEach(function(line, i) {
-    const c = line.split(",").map(function(x) { return x.trim(); });
-    const d = dayIndex(c[0]);
-    if (d < 0) { if (i === 0) return; skipped++; return; }
-    if (!/^\d{1,2}:\d{2}$/.test(c[1])) { skipped++; return; }
-    const s = SUBJ[c[2]] ? c[2] : "Khác";
-    (out[d] = out[d] || []).push({id:nid(), time:c[1].padStart(5,"0"), s:s, room:c[3]||""});
-    added++;
-  });
-  return {out:out, added:added, skipped:skipped};
-}
-$("csvFile").addEventListener("change", function(e) {
-  const f = e.target.files[0]; if (!f) return;
-  const reader = new FileReader();
-  reader.onload = function() {
-    const res = parseCsv(String(reader.result));
-    if (!res.added) { toast("File không có dòng tiết hợp lệ"); }
-    else {
-      Object.keys(res.out).forEach(function(d) { S.schedule[d] = res.out[d]; });
-      save(); render();
-      toast("Đã nhập " + res.added + " tiết");
-    }
-    e.target.value = "";
-  };
-  reader.readAsText(f, "utf-8");
-});
-function exportCsv() {
-  const lines = ["Thứ,Giờ,Môn,Phòng"];
-  DAYS.forEach(function(d, i) {
-    (S.schedule[i] || []).slice().sort(function(a,b) { return a.time.localeCompare(b.time); }).forEach(function(p) {
-      lines.push([d, p.time, p.s, (p.room || "").replace(/,/g, " ")].join(","));
-    });
-  });
-  const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob); a.download = "thoi-khoa-bieu.csv"; a.click();
-}
-
-function settingsHtml() {
-  return '<details class="settings-group">' +
-    '<summary>⚙️ Cài đặt thông báo & Telegram (' + (TG.connected ? "Đã kết nối" : "Chưa kết nối") + ')</summary>' +
-    '<div class="settings-body">' +
-      '<div class="setting"><span>Giờ nhắc tổng hợp mỗi ngày</span>' +
-        '<select data-act="reminder">' + ["18:00","19:00","20:00","21:00"].map(function(h) { return '<option ' + (h===S.reminder?"selected":"") + '>' + h + '</option>'; }).join("") + '</select>' +
-      '</div>' +
-      '<div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.4">Mở Telegram, tìm bot của bạn, bấm <b>Start</b>, sau đó nhập Token và bấm Lấy mã kết nối.</div>' +
-      '<input id="tgToken" placeholder="Nhập Token bot từ BotFather..." style="width:100%;margin-top:8px">' +
-      '<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">' +
-        '<button class="btn ghost" data-act="tgSave">Lưu token</button>' +
-        '<button class="btn ghost" data-act="tgDetect">Lấy mã kết nối</button>' +
-        '<button class="btn" data-act="tgTest">Gửi thử</button>' +
-      '</div>' +
-    '</div></details>';
-}
-
-function openReminderForm(defDate) {
-  openForm("Thêm thông báo mới", [
-    {k:"t", label:"Nội dung thông báo", required:true, ph:"VD: Đóng tiền học, Đi khám, Họp phụ huynh"},
-    {k:"date", label:"Ngày thông báo (bỏ qua nếu lặp hằng ngày)", type:"date", value:defDate||todayStr()},
-    {k:"time", label:"Giờ thông báo", type:"time", value:"19:00", required:true},
-    {k:"repeat", label:"Chế độ lặp", type:"select", options:["Một lần","Hằng ngày"], value:"Một lần"},
-    {k:"note", label:"Ghi chú (không bắt buộc)", ph:"VD: Mang theo biên lai"}],
-  function(v) {
-    const daily = v.repeat === "Hằng ngày";
-    (S.reminders = S.reminders || []).push({id:nid(), t:v.t, date:daily ? "" : (v.date || todayStr()), time:v.time, repeat:daily ? "daily" : "none", note:v.note});
-    toast("Đã thêm thông báo");
-  });
-}
-
-function notifyHtml() {
-  const t0 = todayStr(), t1 = dayAfter(t0);
-  const list = (S.reminders || []).filter(function(r) { return r.repeat !== "daily" && (r.date === t0 || r.date === t1); }).sort(function(a,b) { return (a.date||"").localeCompare(b.date||"") || (a.time||"").localeCompare(b.time||""); });
-  return '<div class="head-row"><b>Thông báo hôm nay & ngày mai</b><button class="btn ghost" data-act="addNotify">+ Thêm thông báo</button></div>' +
-    (list.length ? list.map(reminderCardHtml).join("") : '<div class="empty">Chưa có thông báo nào cho hôm nay và ngày mai.</div>');
-}
-
-function upcomingHtml(from) {
-  const items = [];
-  (S.tasks || []).forEach(function(t) { const d = taskDateC(t); if (!t.done && d >= from) items.push({d:d, time:t.time||"", label:t.t, kind:"Việc", pri:t.priority||"", note:""}); });
-  (S.reminders || []).forEach(function(r) { if (r.repeat !== "daily" && r.date >= from) items.push({d:r.date, time:r.time||"", label:r.t, kind:"Thông báo", pri:"", note:r.note||""}); });
-  let html = '<div class="head-row"><b>Kế hoạch & thông báo các ngày tới</b></div>';
-  if (!items.length) return html + '<div class="empty">Chưa có việc hay thông báo nào từ ngày mai trở đi.</div>';
-  items.sort(function(a,b) { return a.d.localeCompare(b.d) || a.time.localeCompare(b.time); });
-  let curD = "";
-  items.forEach(function(i) {
-    if (i.d !== curD) { curD = i.d; html += '<div class="date-group"><span>📅 Ngày ' + esc(dmy(i.d)) + '</span></div>'; }
-    html += '<div class="card"><div class="time">' + esc(i.time || "--:--") + '</div><div class="txt"><b>' + esc(i.label) + '</b><span>' + i.kind + (i.pri ? " · Ưu tiên " + esc(i.pri) : "") + (i.note ? " · " + esc(i.note) : "") + '</span></div></div>';
-  });
-  return html;
-}
-
-const PRI = {"Cao":0, "Trung bình":1, "Thấp":2};
-const PRI_COLOR = {"Cao":"#EF4444", "Trung bình":"#F59E0B", "Thấp":"#10B981"};
-function taskDateC(t) {
-  if (t.date) return t.date;
-  const d = new Date(); if (t.due === "tomorrow") d.setTime(d.getTime() + 86400000);
-  return d.toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"});
-}
-function sortTasks(a,b) { return ((PRI[a.priority] !== undefined ? PRI[a.priority] : 1) - (PRI[b.priority] !== undefined ? PRI[b.priority] : 1)) || (a.time||"").localeCompare(b.time||""); }
-function taskCard(t) {
-  return '<div class="card ' + (t.done ? "done" : "") + '">' +
-    '<div class="stripe" style="background:' + (PRI_COLOR[t.priority] || "#94A3B8") + '"></div>' +
-    '<button class="check" data-act="toggleTask" data-id="' + t.id + '">' + (t.done ? "✓" : "") + '</button>' +
-    '<div class="txt"><b>' + esc(t.t) + '</b><span>Ưu tiên ' + esc(t.priority || "Trung bình") + ' · ' + esc(dmy(t.date)) + ' ' + esc(t.time || "") + '</span></div>' +
-    '<button class="x" data-act="delTask" data-id="' + t.id + '" title="Xoá">✕</button></div>';
-}
-function streak(h) {
-  let n = 0; const d = new Date();
-  const days = Array.isArray(h.days) ? h.days : [];
-  for (;;) { const s = d.toLocaleDateString("sv-SE", {timeZone:"Asia/Ho_Chi_Minh"}); if (!days.includes(s)) break; n++; d.setTime(d.getTime() - 86400000); }
-  return n;
-}
-function renderDaily() {
-  S.habits = Array.isArray(S.habits) ? S.habits : [];
-  const today = todayStr();
-  const all = (S.tasks || []).map(function(t) { return Object.assign({}, t, {date:taskDateC(t)}); });
-  const overdue = all.filter(function(t) { return !t.done && t.date < today; }).sort(sortTasks);
-  const todayL = all.filter(function(t) { return t.date === today; }).sort(sortTasks);
-  const later = all.filter(function(t) { return t.date > today; }).sort(function(a,b) { return a.date.localeCompare(b.date) || sortTasks(a,b); });
-  const done = todayL.filter(function(t) { return t.done; }).length;
-  const pct = todayL.length ? Math.round(done / todayL.length * 100) : 0;
-  const section = function(title, list) { return list.length ? '<div class="head-row"><b>' + title + '</b></div>' + list.map(taskCard).join("") : ""; };
-  const habits = S.habits.length ? S.habits.map(function(h) {
-    const days = Array.isArray(h.days) ? h.days : [];
-    const on = days.includes(today);
-    return '<div class="card ' + (on ? "done" : "") + '">' +
-      '<button class="check ' + (on ? "on" : "") + '" data-act="toggleHabit" data-id="' + h.id + '">' + (on ? "✓" : "") + '</button>' +
-      '<div class="txt"><b>' + esc(h.name) + '</b><span>Chuỗi ' + streak(h) + ' ngày liên tiếp</span></div>' +
-      '<button class="x" data-act="delHabit" data-id="' + h.id + '" title="Xoá">✕</button></div>';
-  }).join("") : '<div class="empty">Chưa có thói quen nào. Bấm "+ Thêm" để rèn luyện mỗi ngày.</div>';
-  return '<div class="hero"><small>Hôm nay · ' + esc(dmy(today)) + '</small>' +
-    '<b>Hoàn thành ' + done + '/' + todayL.length + ' công việc</b>' +
-    '<div class="bar"><i style="width:' + pct + '%"></i></div></div>' +
-    (overdue.length ? '<div class="remind" style="background:#FEF2F2;border-color:#FECACA;color:#991B1B"><b style="color:#B91C1C">Chú ý:</b> Còn ' + overdue.length + ' việc quá hạn chưa hoàn thành.</div>' : "") +
-    '<div class="head-row"><b>Việc cần làm hôm nay</b><button class="btn" data-act="addTask">+ Thêm việc</button></div>' +
-    (todayL.length ? todayL.map(taskCard).join("") : '<div class="empty">Hôm nay chưa có việc nào.</div>') +
-    section("Quá hạn chưa xong", overdue) +
-    notifyHtml() +
-    '<div class="head-row"><b>Thói quen hằng ngày</b><button class="btn ghost" data-act="addHabit">+ Thêm</button></div>' +
-    habits +
-    section("Công việc sắp tới", later) +
-    settingsHtml();
-}
+document.addEventListener("visibilitychange", function () { if (!document.hidden && !UI.menu && FORMS.indexOf(UI.view) < 0) render(); });
 
 render();
 loadServer();
