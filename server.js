@@ -42,6 +42,18 @@ function taskDate(t) {
 }
 const toMin = hhmm => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
 
+// Chuông nhắc: gửi tin có nút "Đã xem"; chưa bấm thì lặp lại mỗi 5 phút
+function startAlarm(text) {
+  db.alarms = db.alarms || {};
+  db.alarmSeq = (db.alarmSeq || 0) + 1;
+  const id = "a" + db.alarmSeq;
+  db.alarms[id] = { text, acked: false, next: Date.now() };
+  // Dọn bớt chuông đã xem, giữ tối đa 50 mục
+  const ids = Object.keys(db.alarms);
+  if (ids.length > 50) ids.slice(0, ids.length - 50).forEach(k => { if (db.alarms[k].acked) delete db.alarms[k]; });
+  persist();
+}
+
 // Danh sách các con: mỗi con có thời khoá biểu, việc nhắc và việc cần làm riêng
 function kidsOf(st) {
   if (Array.isArray(st.kids) && st.kids.length) return st.kids;
@@ -108,7 +120,7 @@ setInterval(async () => {
       persist();
       const when = isDaily ? 'Hằng ngày lúc ' + r.time : r.date + ' lúc ' + r.time;
       try {
-        await send('🔔 ' + r.t + '\n⏰ ' + when + (r.note ? '\n📝 ' + r.note : ''));
+        startAlarm('🔔 ' + r.t + '\n⏰ ' + when + (r.note ? '\n📝 ' + r.note : ''));
       } catch (e) {
         console.error('Gửi nhắc lỗi:', e.message);
       }
@@ -124,7 +136,7 @@ setInterval(async () => {
       if (l.time === n.hhmm && !db.sent["lesson|" + k.id + "|" + l.id + "|" + n.date + "|start"]) {
         db.sent["lesson|" + k.id + "|" + l.id + "|" + n.date + "|start"] = true;
         persist();
-        try { await send("🔔 Bắt đầu " + kind.toLowerCase() + ": " + name + "\n⏰ " + l.time + where + tag); }
+        try { startAlarm("🔔 Bắt đầu " + kind.toLowerCase() + ": " + name + "\n⏰ " + l.time + where + tag); }
         catch (e) { console.error("Gửi nhắc lỗi:", e.message); }
       }
       if (l.end && l.end === n.hhmm && !db.sent["lesson|" + k.id + "|" + l.id + "|" + n.date + "|end"]) {
@@ -178,6 +190,36 @@ setInterval(async () => {
     }
   }
 }, 30000);
+
+setInterval(async () => {
+  if (!db.telegram.token || !db.telegram.chatId || !db.alarms) return;
+  const open = Object.keys(db.alarms).filter(k => !db.alarms[k].acked);
+  if (!open.length) return;
+  const t = Date.now();
+  for (const id of open) {
+    const a = db.alarms[id];
+    if (t < a.next) continue;
+    a.next = t + 5 * 60000;
+    persist();
+    try {
+      await tgCall("sendMessage", { chat_id: db.telegram.chatId, text: a.text, reply_markup: { inline_keyboard: [[{ text: "✅ Đã xem, tắt chuông", callback_data: "ack|" + id }]] } });
+    } catch (e) { console.error("Gửi chuông lỗi:", e.message); }
+  }
+  // Nhận bấm nút "Đã xem" (chỉ lấy sự kiện nút bấm)
+  try {
+    const ups = await tgCall("getUpdates", { offset: db.tgOffset || 0, timeout: 0, allowed_updates: ["callback_query"] });
+    for (const u of ups) {
+      db.tgOffset = u.update_id + 1;
+      const cq = u.callback_query;
+      if (!cq || !cq.data || !cq.data.startsWith("ack|")) continue;
+      const id = cq.data.slice(4);
+      if (db.alarms && db.alarms[id]) db.alarms[id].acked = true;
+      await tgCall("answerCallbackQuery", { callback_query_id: cq.id, text: "Đã tắt chuông" }).catch(() => {});
+      if (cq.message) await tgCall("editMessageReplyMarkup", { chat_id: cq.message.chat.id, message_id: cq.message.message_id, reply_markup: { inline_keyboard: [] } }).catch(() => {});
+    }
+    persist();
+  } catch (e) { console.error("Nhận nút bấm lỗi:", e.message); }
+}, 5000);
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
