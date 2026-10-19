@@ -480,7 +480,7 @@ function vForm(view) {
   let h = '<div class="pad">';
   if (view === "addLesson") {
     h += '<span class="lb">Loại lịch</span><div class="row">' + chips([{label: "Học chính", sub: "Tiết trên lớp"}, {label: "Phụ đạo", sub: "Học thêm"}, {label: "Hoạt động ngoài", sub: "Ngoại khoá"}], "fkind", f.kind) + '</div>' +
-      field("Môn học hoặc tên hoạt động", "title", f.title) + '<span class="lb">Ngày trong tuần</span><div class="row">' + chips(SHORT, "fday", f.day) + '</div>' +
+      field("Môn học hoặc tên hoạt động", "title", f.title) + '<span class="lb">Lặp lại</span><div class="row">' + chips(["Theo tuần", "Hằng ngày"], "frepeat", f.lrepeat || 0) + '</div>' + (f.lrepeat ? "" : '<span class="lb">Ngày trong tuần</span><div class="row">' + chips(SHORT, "fday", f.day) + '</div>') +
       '<div class="two2"><div>' + field("Giờ bắt đầu", "start", f.start, {type: "time"}) + '</div><div>' + field("Giờ kết thúc", "end", f.end, {type: "time"}) + '</div></div>' + field("Phòng học hoặc địa điểm", "room", f.room);
   } else if (view === "addNote") {
     h += field("Tên việc", "tname", f.tname, {ph: "VD: Họp phụ huynh"}) + '<span class="lb">Chọn nhanh</span><div class="opts">' + chips(QUICK, "fquick", QUICK.indexOf(f.tname)) + '</div>' +
@@ -549,8 +549,12 @@ function saveForm() {
     const time = parseTime(f.start); if (!time) return fail("Giờ bắt đầu chưa đúng.");
     const end = f.end ? parseTime(f.end) : ""; if (f.end && !end) return fail("Giờ kết thúc chưa đúng.");
     const room = (f.room || "").trim();
-    if (f.kind === 0) (S.schedule[f.day] = S.schedule[f.day] || []).push({id: nid(), time: time, end: end || "", s: title, room: room});
-    else (f.kind === 1 ? S.tutoring : S.outside).push({id: nid(), day: f.day, time: time, end: end || "", title: title, note: room});
+    // Lặp hằng ngày: thêm vào cả 7 ngày trong tuần; mặc định: chỉ lặp theo tuần vào ngày đã chọn
+    const days = f.lrepeat === 1 ? [0, 1, 2, 3, 4, 5, 6] : [f.day];
+    days.forEach(function (d) {
+      if (f.kind === 0) (S.schedule[d] = S.schedule[d] || []).push({id: nid(), time: time, end: end || "", s: title, room: room});
+      else (f.kind === 1 ? S.tutoring : S.outside).push({id: nid(), day: d, time: time, end: end || "", title: title, note: room});
+    });
     UI.day = f.day; save(); go("schedule"); toast("Đã thêm lịch học"); return;
   }
   if (v === "addNote") {
@@ -660,6 +664,7 @@ document.addEventListener("click", function (e) {
     case "removeKid": if (confirm("Xoá hồ sơ này cùng toàn bộ thời khoá biểu, việc nhắc và điểm của con?")) removeKid(el.dataset.id); render(); break;
     case "fkind": upd(); UI.form.kind = i; if (i === 0 && !UI.form.title) UI.form.title = "Toán"; render(); break;
     case "fday": upd(); UI.form.day = i; render(); break;
+    case "frepeat": upd(); UI.form.lrepeat = i; render(); break;
     case "fquick": upd(); UI.form.tname = QUICK[i]; render(); break;
     case "fscore": upd(); UI.form.rscore = ["6", "7", "8", "9", "10"][i]; render(); break;
     case "tremind": upd(); UI.form.tremind = !UI.form.tremind; render(); break;
