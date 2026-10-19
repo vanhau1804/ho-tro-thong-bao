@@ -108,7 +108,7 @@ setInterval(async () => {
       persist();
       const when = isDaily ? 'Hằng ngày lúc ' + r.time : r.date + ' lúc ' + r.time;
       try {
-        await send('🔔 ' + r.t + '\n⏰ ' + when + (r.note ? '\n📝 ' + r.note : '') + tag);
+        await send('🔔 ' + r.t + '\n⏰ ' + when + (r.note ? '\n📝 ' + r.note : ''));
       } catch (e) {
         console.error('Gửi nhắc lỗi:', e.message);
       }
