@@ -236,7 +236,7 @@ const DEFAULT = {
 };
 function normalizeState(raw) {
   const d = JSON.parse(JSON.stringify(DEFAULT));
-  if (!raw || typeof raw !== "object") return d;
+  if (!raw || typeof raw !== "object") raw = {};
   const out = Object.assign({}, d, raw);
   out.child = Object.assign({}, d.child, raw.child || {});
   out.tasks = Array.isArray(raw.tasks) ? raw.tasks : d.tasks;
@@ -249,7 +249,56 @@ function normalizeState(raw) {
   else out.results = [];
   out.nextId = Number(raw.nextId) || 100;
   out.reminder = typeof raw.reminder === "string" ? raw.reminder : d.reminder;
+  const rawKids = (raw && Array.isArray(raw.kids)) ? raw.kids.filter(function (k) { return k && typeof k === "object"; }) : [];
+  if (rawKids.length) {
+    out.kids = rawKids.map(function (k, i) {
+      return {
+        id: String(k.id || ("k" + (i + 1))),
+        child: Object.assign({}, d.child, k.child || {}),
+        schedule: (k.schedule && typeof k.schedule === "object") ? k.schedule : {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+        tutoring: Array.isArray(k.tutoring) ? k.tutoring : [],
+        outside: Array.isArray(k.outside) ? k.outside : [],
+        reminders: Array.isArray(k.reminders) ? k.reminders : [],
+        results: Array.isArray(k.results) ? k.results : [],
+        tasks: Array.isArray(k.tasks) ? k.tasks : []
+      };
+    });
+  } else {
+    out.kids = [{id: "k1", child: out.child, schedule: out.schedule, tutoring: out.tutoring, outside: out.outside, reminders: out.reminders, results: out.results, tasks: out.tasks}];
+  }
+  out.activeKid = out.kids.some(function (k) { return k.id === raw.activeKid; }) ? raw.activeKid : out.kids[0].id;
+  const act = out.kids.find(function (k) { return k.id === out.activeKid; });
+  KID_KEYS.forEach(function (key) { out[key] = act[key]; });
   return out;
+}
+const KID_KEYS = ["child", "schedule", "tutoring", "outside", "reminders", "results", "tasks"];
+// Ghi dữ liệu đang xem vào đúng hồ sơ của con đó
+function syncKid() {
+  const k = (S.kids || []).find(function (x) { return x.id === S.activeKid; });
+  if (k) KID_KEYS.forEach(function (key) { k[key] = S[key]; });
+}
+// Chuyển sang xem con khác
+function switchKid(id) {
+  syncKid();
+  const k = (S.kids || []).find(function (x) { return x.id === id; });
+  if (!k) return;
+  S.activeKid = id;
+  KID_KEYS.forEach(function (key) { S[key] = k[key]; });
+  save();
+}
+function addKid(child) {
+  syncKid();
+  const id = "k" + nid();
+  S.kids.push({id: id, child: child, schedule: {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []}, tutoring: [], outside: [], reminders: [], results: [], tasks: []});
+  switchKid(id);
+}
+function removeKid(id) {
+  if ((S.kids || []).length <= 1) return toast("Cần giữ ít nhất một hồ sơ");
+  syncKid();
+  const wasActive = id === S.activeKid;
+  S.kids = S.kids.filter(function (k) { return k.id !== id; });
+  if (wasActive) switchKid(S.kids[0].id); else save();
+  toast("Đã xoá hồ sơ");
 }
 let S;
 try { S = normalizeState(JSON.parse(localStorage.getItem(KEY))); } catch (e) { S = normalizeState(null); }
@@ -258,6 +307,7 @@ const UI = {view: "home", day: wdIdx(todayStr()), mode: "week", sel: null, menu:
 let toastTimer = null;
 
 function save() {
+  syncKid();
   try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
   fetch("/api/state", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(S)}).catch(function () {});
 }
@@ -329,7 +379,7 @@ function field(label, name, value, opt) {
 function vHome() {
   const cell = (go, t, s) => '<button class="cell" data-go="' + go + '"><span class="ico">' + HOME_ICONS[go] + '</span><b>' + t + '</b>' + (s ? '<span>' + s + '</span>' : '') + '</button>';
   return '<div class="ban"><div class="brandrow">' + iconBtn("openMenu", "Mở menu", "w") + '<div class="brand"><span class="mark" aria-hidden="true">H</span>Hành trình học tập</div></div><h1>Hành trình<br>Học Tập</h1><p>Cùng con đi qua từng ngày học</p></div>' +
-    '<div class="pad"><div class="grid">' +
+    '<div class="pad">' + (S.kids.length > 1 ? '<div class="row" style="margin-bottom:12px">' + chips(S.kids.map(function (k) { return {label: k.child.name, sub: k.child.cls}; }), "pickKid", S.kids.findIndex(function (k) { return k.id === S.activeKid; })) + '</div>' : '') + '<div class="grid">' +
     cell("schedule", "Đồng hành cùng con", "Thời khoá biểu học chính, phụ đạo, hoạt động ngoài") +
     cell("notes", "Sổ tay cá nhân", "") +
     cell("results", "Kết quả", "Việc con hoàn thành và điểm số từng môn") +
@@ -400,7 +450,14 @@ function vReview() {
 }
 
 function vSettings() {
-  return '<div class="pad"><div class="kid"><span class="av" aria-hidden="true">' + esc((S.child.name || "B").trim().split(" ").pop().charAt(0).toUpperCase()) + '</span><div class="tx"><b style="font-size:16px">' + esc(S.child.name) + '</b><span>' + esc(S.child.cls + " · Năm học " + S.child.year) + '</span></div><button class="btn g" data-act="editChild" aria-label="Sửa hồ sơ của con">Sửa</button></div>' +
+  const kidRows = S.kids.map(function (k) {
+    const on = k.id === S.activeKid;
+    return '<div class="card" style="display:flex;align-items:center;gap:10px"><span class="av" aria-hidden="true">' + esc((k.child.name || "B").trim().split(" ").pop().charAt(0).toUpperCase()) + '</span><div class="tx" style="flex:1"><b>' + esc(k.child.name) + '</b><span>' + esc(k.child.cls + " · Năm học " + k.child.year) + (on ? " · Đang xem" : "") + '</span></div>' +
+      (on ? '' : '<button class="btn g" data-act="switchKid" data-id="' + esc(k.id) + '">Xem</button>') +
+      '<button class="btn g" data-act="editKid" data-id="' + esc(k.id) + '" aria-label="Sửa hồ sơ ' + esc(k.child.name) + '">Sửa</button>' +
+      (S.kids.length > 1 ? delBtn("removeKid", k.id, "Xoá hồ sơ " + k.child.name) : '') + '</div>';
+  }).join("");
+  return '<div class="pad"><div class="hr"><h2>Các con đang theo dõi</h2><button class="btn" data-act="addKid">+ Thêm con</button></div>' + kidRows +
     '<div class="hr"><h2>Nhắc hẹn</h2></div><div class="grp2"><div class="kv"><span>Giờ nhắc tổng hợp mỗi ngày</span><input class="fld" type="time" value="' + esc(S.reminder) + '" style="width:auto;min-height:42px" data-change="reminderTime" aria-label="Giờ nhắc tổng hợp"></div></div>' +
     '<div class="hr"><h2>Kết nối Telegram (' + (TG.connected ? "Đã kết nối" : "Chưa kết nối") + ')</h2></div><div class="card" style="display:block;padding:12px 14px"><div style="font-size:12px;color:#52708F;line-height:1.45">Mở Telegram, tìm bot của bạn, bấm Start, sau đó dán token và bấm Lấy mã kết nối.</div>' +
     '<label class="lb" for="tgToken">Token bot từ BotFather</label><input class="fld" id="tgToken" type="text" placeholder="Dán token vào đây">' +
@@ -521,7 +578,9 @@ function saveForm() {
     if (!name) return fail("Vui lòng nhập họ và tên của con.");
     if (!cls) return fail("Vui lòng nhập lớp học.");
     if (year && !/^\d{4}\s*-\s*\d{4}$/.test(year)) return fail("Năm học nhập dạng 2026-2027.");
-    S.child = Object.assign({}, S.child, {name: name, cls: cls, year: year.replace(/\s+/g, "")});
+    const child = {name: name, cls: cls, year: year.replace(/\s+/g, "")};
+    if (f.kidNew) { addKid(child); go("settings"); toast("Đã thêm con " + name); return; }
+    S.child = Object.assign({}, S.child, child);
     save(); go("settings"); toast("Đã lưu hồ sơ của con"); return;
   }
   if (v === "addDone") {
@@ -594,6 +653,11 @@ document.addEventListener("click", function (e) {
     case "addResult": openForm("addResult"); break;
     case "addDone": openForm("addDone"); break;
     case "editChild": openForm("editChild"); break;
+    case "addKid": openForm("editChild", {kidNew: true, cname: "", ccls: "", cyear: S.child.year || "2026-2027"}); break;
+    case "editKid": switchKid(el.dataset.id); openForm("editChild"); break;
+    case "switchKid": switchKid(el.dataset.id); render(); break;
+    case "pickKid": switchKid(S.kids[i].id); render(); break;
+    case "removeKid": if (confirm("Xoá hồ sơ này cùng toàn bộ thời khoá biểu, việc nhắc và điểm của con?")) removeKid(el.dataset.id); render(); break;
     case "fkind": upd(); UI.form.kind = i; if (i === 0 && !UI.form.title) UI.form.title = "Toán"; render(); break;
     case "fday": upd(); UI.form.day = i; render(); break;
     case "fquick": upd(); UI.form.tname = QUICK[i]; render(); break;

@@ -42,17 +42,23 @@ function taskDate(t) {
 }
 const toMin = hhmm => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
 
-function buildMessage() {
-  const s = db.state;
+// Danh sách các con: mỗi con có thời khoá biểu, việc nhắc và việc cần làm riêng
+function kidsOf(st) {
+  if (Array.isArray(st.kids) && st.kids.length) return st.kids;
+  return [{ id: 'main', child: st.child, schedule: st.schedule, tasks: st.tasks || [], reminders: st.reminders || [] }];
+}
+
+function buildMessage(k) {
   const n = now();
   const tomorrowIdx = (n.wd + 1) % 7;
-  const undone = s.tasks.filter(t => t.due === 'today' && !t.done);
-  const tomorrowTasks = s.tasks.filter(t => t.due === 'tomorrow' && !t.done);
-  const periods = (s.schedule[tomorrowIdx] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
+  const tasks = k.tasks || [];
+  const undone = tasks.filter(t => t.due === 'today' && !t.done);
+  const tomorrowTasks = tasks.filter(t => t.due === 'tomorrow' && !t.done);
+  const periods = ((k.schedule || {})[tomorrowIdx] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
   const names = [];
   periods.forEach(p => (SUPPLIES[p.s] || []).forEach(x => { if (!names.includes(x)) names.push(x); }));
 
-  const lines = ['🔔 Nhắc học tập — ' + s.child.name, ''];
+  const lines = ['🔔 Nhắc học tập — ' + k.child.name, ''];
   lines.push('📌 Việc còn lại hôm nay:');
   lines.push(undone.length ? undone.map(t => '• ' + t.t + ' (' + t.time + ')').join('\n') : '• Đã xong hết 🎉');
   lines.push('', '📅 Ngày mai có ' + periods.length + ' tiết:');
@@ -87,62 +93,68 @@ db.sentRoutine = db.sentRoutine || {};
 setInterval(async () => {
   if (!db.state || !db.telegram.token || !db.telegram.chatId) return;
   const n = now();
-  // Nhắc việc: một lần đúng ngày giờ đã chọn, hoặc lặp hằng ngày theo giờ
-  db.sent = db.sent || {};
-  for (const r of db.state.reminders || []) {
-    const isDaily = r.repeat === 'daily';
-    // Nhắc một lần: gửi khi tới giờ (kể cả trễ vài phút trong cùng ngày nếu máy vừa được bật lại)
-    const due = isDaily ? r.time === n.hhmm : (r.date === n.date && r.time <= n.hhmm);
-    const key = r.id + '|' + (isDaily ? n.date : r.date + ' ' + r.time);
-    if (!due || db.sent[key]) continue;
-    db.sent[key] = true;
-    persist();
-    const when = isDaily ? 'Hằng ngày lúc ' + r.time : r.date + ' lúc ' + r.time;
-    try {
-      await send('🔔 ' + r.t + '\n⏰ ' + when + (r.note ? '\n📝 ' + r.note : '') + '\n👧 ' + db.state.child.name);
-    } catch (e) {
-      console.error('Gửi nhắc lỗi:', e.message);
-    }
-  }
-  // Việc sắp đến hạn trong 60 phút tới (mỗi việc báo một lần)
-  const openTasks = (db.state.tasks || []).filter(t => !t.done);
   const nowMin = toMin(n.hhmm);
-  for (const t of openTasks) {
-    const td = taskDate(t);
-    if (td !== n.date || !t.time) continue;
-    const diff = toMin(t.time) - nowMin;
-    const key = 'soon|' + t.id + '|' + td;
-    if (diff < 0 || diff > 60 || db.sent[key]) continue;
-    db.sent[key] = true;
-    persist();
-    try {
-      await send('⏳ Sắp đến hạn: ' + t.t + '\n⏰ ' + t.time + (t.priority ? ' · Ưu tiên ' + t.priority : ''));
-    } catch (e) {
-      console.error('Gửi nhắc lỗi:', e.message);
-    }
-  }
-  // Việc quá hạn chưa hoàn thành: báo một lần mỗi ngày vào giờ nhắc chung
-  if (n.hhmm === db.state.reminder && !db.sent['overdue|' + n.date]) {
-    const overdue = openTasks.filter(t => taskDate(t) < n.date);
-    if (overdue.length) {
-      db.sent['overdue|' + n.date] = true;
+  db.sent = db.sent || {};
+  for (const k of kidsOf(db.state)) {
+    const tag = '\n👧 ' + (k.child && k.child.name ? k.child.name : '');
+    // Nhắc việc: một lần đúng ngày giờ đã chọn, hoặc lặp hằng ngày theo giờ
+    for (const r of k.reminders || []) {
+      const isDaily = r.repeat === 'daily';
+      // Nhắc một lần: gửi khi tới giờ (kể cả trễ vài phút trong cùng ngày nếu máy vừa được bật lại)
+      const due = isDaily ? r.time === n.hhmm : (r.date === n.date && r.time <= n.hhmm);
+      const key = r.id + '|' + (isDaily ? n.date : r.date + ' ' + r.time);
+      if (!due || db.sent[key]) continue;
+      db.sent[key] = true;
       persist();
+      const when = isDaily ? 'Hằng ngày lúc ' + r.time : r.date + ' lúc ' + r.time;
       try {
-        await send('⚠️ Việc quá hạn chưa hoàn thành:\n' + overdue.map(t => '• ' + t.t + ' (hạn ' + taskDate(t) + ')').join('\n'));
+        await send('🔔 ' + r.t + '\n⏰ ' + when + (r.note ? '\n📝 ' + r.note : '') + tag);
       } catch (e) {
         console.error('Gửi nhắc lỗi:', e.message);
       }
     }
-  }
-  // Tóm tắt chung vào giờ nhắc hằng ngày
-  if (n.hhmm !== db.state.reminder || db.lastSent === n.date) return;
-  db.lastSent = n.date;
-  persist();
-  try {
-    await send(buildMessage());
-    console.log('Đã gửi nhắc lúc', n.hhmm);
-  } catch (e) {
-    console.error('Gửi nhắc lỗi:', e.message);
+    // Việc sắp đến hạn trong 60 phút tới (mỗi việc báo một lần)
+    const openTasks = (k.tasks || []).filter(t => !t.done);
+    for (const t of openTasks) {
+      const td = taskDate(t);
+      if (td !== n.date || !t.time) continue;
+      const diff = toMin(t.time) - nowMin;
+      const key = 'soon|' + t.id + '|' + td;
+      if (diff < 0 || diff > 60 || db.sent[key]) continue;
+      db.sent[key] = true;
+      persist();
+      try {
+        await send('⏳ Sắp đến hạn: ' + t.t + '\n⏰ ' + t.time + (t.priority ? ' · Ưu tiên ' + t.priority : '') + tag);
+      } catch (e) {
+        console.error('Gửi nhắc lỗi:', e.message);
+      }
+    }
+    if (n.hhmm !== db.state.reminder) continue;
+    // Việc quá hạn chưa hoàn thành: báo một lần mỗi ngày vào giờ nhắc chung
+    const overdueKey = 'overdue|' + k.id + '|' + n.date;
+    if (!db.sent[overdueKey]) {
+      const overdue = openTasks.filter(t => taskDate(t) < n.date);
+      if (overdue.length) {
+        db.sent[overdueKey] = true;
+        persist();
+        try {
+          await send('⚠️ Việc quá hạn chưa hoàn thành:\n' + overdue.map(t => '• ' + t.t + ' (hạn ' + taskDate(t) + ')').join('\n') + tag);
+        } catch (e) {
+          console.error('Gửi nhắc lỗi:', e.message);
+        }
+      }
+    }
+    // Tóm tắt chung của từng con vào giờ nhắc hằng ngày
+    const sumKey = 'summary|' + k.id + '|' + n.date;
+    if (db.sent[sumKey]) continue;
+    db.sent[sumKey] = true;
+    persist();
+    try {
+      await send(buildMessage(k));
+      console.log('Đã gửi nhắc lúc', n.hhmm, 'cho', k.child && k.child.name);
+    } catch (e) {
+      console.error('Gửi nhắc lỗi:', e.message);
+    }
   }
 }, 30000);
 
