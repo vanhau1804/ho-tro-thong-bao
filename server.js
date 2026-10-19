@@ -113,6 +113,27 @@ setInterval(async () => {
         console.error('Gửi nhắc lỗi:', e.message);
       }
     }
+    // Giờ học: báo khi bắt đầu và khi kết thúc từng tiết trong ngày hôm nay
+    const todays = [].concat(
+      ((k.schedule || {})[n.wd] || []).map(l => ({ l, kind: "Tiết học", name: l.s })),
+      (k.tutoring || []).filter(l => Number(l.day) === n.wd).map(l => ({ l, kind: "Phụ đạo", name: l.title })),
+      (k.outside || []).filter(l => Number(l.day) === n.wd).map(l => ({ l, kind: "Hoạt động ngoài", name: l.title }))
+    );
+    for (const { l, kind, name } of todays) {
+      const where = l.room || l.note ? "\n📍 " + (l.room || l.note) : "";
+      if (l.time === n.hhmm && !db.sent["lesson|" + k.id + "|" + l.id + "|" + n.date + "|start"]) {
+        db.sent["lesson|" + k.id + "|" + l.id + "|" + n.date + "|start"] = true;
+        persist();
+        try { await send("🔔 Bắt đầu " + kind.toLowerCase() + ": " + name + "\n⏰ " + l.time + where + tag); }
+        catch (e) { console.error("Gửi nhắc lỗi:", e.message); }
+      }
+      if (l.end && l.end === n.hhmm && !db.sent["lesson|" + k.id + "|" + l.id + "|" + n.date + "|end"]) {
+        db.sent["lesson|" + k.id + "|" + l.id + "|" + n.date + "|end"] = true;
+        persist();
+        try { await send("🏁 Kết thúc " + kind.toLowerCase() + ": " + name + "\n⏰ " + l.end + tag); }
+        catch (e) { console.error("Gửi nhắc lỗi:", e.message); }
+      }
+    }
     // Việc sắp đến hạn trong 60 phút tới (mỗi việc báo một lần)
     const openTasks = (k.tasks || []).filter(t => !t.done);
     for (const t of openTasks) {
