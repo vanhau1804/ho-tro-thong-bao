@@ -163,7 +163,7 @@ const SUBJ_CLS = {"Toán":"s-toan","Tiếng Việt":"s-viet","Tiếng Anh":"s-an
 const QUICK = ["Họp phụ huynh","Ký sổ liên lạc","Ngoại khoá cùng con","Đóng học phí"];
 const TITLES = {
   schedule: ["Đồng hành cùng con","Thời khoá biểu học chính, phụ đạo, hoạt động ngoài"],
-  notes: ["Sổ tay cá nhân","Việc phụ huynh cần tham gia cùng con"],
+  notes: ["Sổ tay cá nhân",""],
   results: ["Kết quả","Việc con hoàn thành và điểm số từng môn"],
   review: ["Đánh giá","Mức độ hoàn thành theo tuần và tháng"],
   settings: ["Cài đặt","Hồ sơ của con và nhắc hẹn"],
@@ -327,11 +327,11 @@ function field(label, name, value, opt) {
 }
 
 function vHome() {
-  const cell = (go, t, s) => '<button class="cell" data-go="' + go + '"><span class="ico">' + HOME_ICONS[go] + '</span><b>' + t + '</b><span>' + s + '</span></button>';
+  const cell = (go, t, s) => '<button class="cell" data-go="' + go + '"><span class="ico">' + HOME_ICONS[go] + '</span><b>' + t + '</b>' + (s ? '<span>' + s + '</span>' : '') + '</button>';
   return '<div class="ban"><div class="brandrow">' + iconBtn("openMenu", "Mở menu", "w") + '<div class="brand"><span class="mark" aria-hidden="true">H</span>Hành trình học tập</div></div><h1>Hành trình<br>Học Tập</h1><p>Cùng con đi qua từng ngày học</p></div>' +
     '<div class="pad"><div class="grid">' +
     cell("schedule", "Đồng hành cùng con", "Thời khoá biểu học chính, phụ đạo, hoạt động ngoài") +
-    cell("notes", "Sổ tay cá nhân", "Việc phụ huynh cần tham gia cùng con") +
+    cell("notes", "Sổ tay cá nhân", "") +
     cell("results", "Kết quả", "Việc con hoàn thành và điểm số từng môn") +
     cell("review", "Đánh giá", "Mức độ hoàn thành theo tuần và tháng") + '</div></div>';
 }
@@ -355,7 +355,7 @@ function vNotes() {
   const meta = r => dm(r.date) + " · " + (r.time || "") + (r.note ? " · " + r.note : "") + (r.series ? " · Lặp hằng tháng" : "");
   const total = notesList().length, doneN = notesList().filter(r => r.done).length;
   let h = '<div class="pad"><section class="hero"><small>Sổ tay cá nhân</small><b>' + (pending.length ? "Còn " + pending.length + " việc cần tham gia" : "Không còn việc nào cần tham gia") + '</b><p>Đã xong ' + doneN + "/" + total + ' việc</p></section>';
-  h += '<div class="hr"><h2>Cần tham gia cùng con</h2><button class="btn" data-act="addNote">+ Thêm việc</button></div>';
+  h += '<div class="hr"><h2>Việc cần nhắc</h2><button class="btn" data-act="addNote">+ Thêm việc</button></div>';
   h += pending.length ? pending.map(r => '<div class="card">' + tickBtn("tickNote", r.id, false, "Đánh dấu đã xong: " + r.t) + '<div class="tx"><b>' + esc(r.t) + '</b><span>' + esc(meta(r)) + '</span></div>' + delBtn("delNote", r.id, "Xoá việc " + r.t) + '</div>').join("") : '<div class="empty">Không còn việc nào cần tham gia.</div>';
   h += '<div class="hr"><h2>Đã xong</h2></div>';
   h += done.length ? done.map(r => '<div class="card fin">' + tickBtn("tickNote", r.id, true, "Bỏ đánh dấu: " + r.t) + '<div class="tx"><b>' + esc(r.t) + '</b><span>' + esc(meta(r)) + '</span></div>' + delBtn("delNote", r.id, "Xoá việc " + r.t) + '</div>').join("") : '<div class="empty">Chưa có việc nào hoàn thành.</div>';
@@ -401,11 +401,11 @@ function vReview() {
 
 function vSettings() {
   return '<div class="pad"><div class="kid"><span class="av" aria-hidden="true">' + esc((S.child.name || "B").trim().split(" ").pop().charAt(0).toUpperCase()) + '</span><div class="tx"><b style="font-size:16px">' + esc(S.child.name) + '</b><span>' + esc(S.child.cls + " · Năm học " + S.child.year) + '</span></div><button class="btn g" data-act="editChild" aria-label="Sửa hồ sơ của con">Sửa</button></div>' +
-    '<div class="hr"><h2>Nhắc hẹn</h2></div><div class="grp2"><div class="kv"><span>Giờ nhắc tổng hợp mỗi ngày</span><select class="fld" style="width:auto;min-height:42px" data-change="reminderTime" aria-label="Giờ nhắc tổng hợp">' + ["18:00","19:00","20:00","21:00"].map(x => '<option' + (x === S.reminder ? " selected" : "") + '>' + x + '</option>').join("") + '</select></div></div>' +
+    '<div class="hr"><h2>Nhắc hẹn</h2></div><div class="grp2"><div class="kv"><span>Giờ nhắc tổng hợp mỗi ngày</span><input class="fld" type="time" value="' + esc(S.reminder) + '" style="width:auto;min-height:42px" data-change="reminderTime" aria-label="Giờ nhắc tổng hợp"></div></div>' +
     '<div class="hr"><h2>Kết nối Telegram (' + (TG.connected ? "Đã kết nối" : "Chưa kết nối") + ')</h2></div><div class="card" style="display:block;padding:12px 14px"><div style="font-size:12px;color:#52708F;line-height:1.45">Mở Telegram, tìm bot của bạn, bấm Start, sau đó dán token và bấm Lấy mã kết nối.</div>' +
     '<label class="lb" for="tgToken">Token bot từ BotFather</label><input class="fld" id="tgToken" type="text" placeholder="Dán token vào đây">' +
     '<div class="row" style="margin-top:8px"><button class="btn g" style="flex:1" data-act="tgSave">Lưu token</button><button class="btn g" style="flex:1" data-act="tgDetect">Lấy mã kết nối</button><button class="btn" style="flex:1" data-act="tgTest">Gửi thử</button></div>' + (UI.tg ? '<p class="msg" role="status">' + esc(UI.tg) + '</p>' : '') + '</div>' +
-    '<div class="hr"><h2>Dữ liệu</h2></div><div class="grp2"><div class="kv"><span>Xuất thời khoá biểu ra CSV</span><button class="btn g" data-act="exportCsv">Xuất</button></div><div class="kv"><span>Nhập thời khoá biểu từ CSV</span><button class="btn g" data-act="importCsv">Nhập</button></div></div></div>';
+    '<div class="hr"><h2>Dữ liệu</h2></div><div class="grp2"><div class="kv"><span>Xuất: file CSV (.csv), cột Thứ, Giờ, Môn, Phòng. Chỉ gồm thời khoá biểu học chính</span><button class="btn g" data-act="exportCsv">Xuất</button></div><div class="kv"><span>Nhập: đọc file CSV có cùng cột Thứ, Giờ, Môn, Phòng</span><button class="btn g" data-act="importCsv">Nhập</button></div></div></div>';
 }
 
 function vDetail() {
@@ -569,7 +569,11 @@ $("csvFile").addEventListener("change", function (e) {
 document.addEventListener("input", function (e) { if (e.target.name && FORM_LIVE()) UI.form[e.target.name] = e.target.value; });
 function FORM_LIVE() { return FORMS.indexOf(UI.view) >= 0; }
 document.addEventListener("change", function (e) {
-  if (e.target.dataset && e.target.dataset.change === "reminderTime") { S.reminder = e.target.value; save(); toast("Đã đặt giờ nhắc " + S.reminder); }
+  if (e.target.dataset && e.target.dataset.change === "reminderTime") {
+    const hm = /^([01]\d|2[0-3]):[0-5]\d$/.test(e.target.value) ? e.target.value : "";
+    if (!hm) { toast("Giờ nhắc chưa đúng, vui lòng nhập lại"); e.target.value = S.reminder; }
+    else { S.reminder = hm; save(); toast("Đã đặt giờ nhắc " + S.reminder); }
+  }
   if (e.target.name === "rsubj") UI.form.rsubj = e.target.value;
 });
 document.addEventListener("click", function (e) {
