@@ -341,12 +341,14 @@ function toast(msg) {
 
 /* ======================= Dữ liệu dẫn xuất ======================= */
 const taskDate = t => t.date || (t.due === "tomorrow" ? addDays(todayStr(), 1) : todayStr());
-const notesList = () => S.reminders.filter(r => r.repeat !== "daily" && !r.auto);
+const notesList = () => S.reminders.filter(r => !r.auto);
+// Việc hằng ngày: xong hôm nay thì ẩn đến ngày mai; việc thường: đánh dấu done
+const isDoneNow = r => r.repeat === "daily" ? r.lastDone === todayStr() : !!r.done;
 function visibleNotes() {
   // Việc lặp hằng tháng: chỉ hiện lần gần nhất chưa xong của mỗi chuỗi
   const seen = {}, out = [];
   notesList().slice().sort((a, b) => (a.date || "").localeCompare(b.date || "") || (a.time || "").localeCompare(b.time || "")).forEach(function (r) {
-    if (r.done) { out.push(r); return; }
+    if (isDoneNow(r)) { out.push(r); return; }
     if (r.series) { if (seen[r.series]) return; seen[r.series] = true; }
     out.push(r);
   });
@@ -401,9 +403,9 @@ function vSchedule() {
 }
 
 function vNotes() {
-  const all = visibleNotes(), pending = all.filter(r => !r.done), done = all.filter(r => r.done);
-  const meta = r => dm(r.date) + " · " + (r.time || "") + (r.note ? " · " + r.note : "") + (r.series ? " · Lặp hằng tháng" : "");
-  const total = notesList().length, doneN = notesList().filter(r => r.done).length;
+  const all = visibleNotes(), pending = all.filter(r => !isDoneNow(r)), done = all.filter(r => isDoneNow(r));
+  const meta = r => (r.repeat === "daily" ? "Hằng ngày từ " + dm(r.date) : dm(r.date)) + " · " + (r.time || "") + (r.note ? " · " + r.note : "") + (r.series ? " · Lặp hằng tháng" : "");
+  const total = notesList().length, doneN = notesList().filter(r => isDoneNow(r)).length;
   let h = '<div class="pad"><section class="hero"><small>Sổ tay cá nhân</small><b>' + (pending.length ? "Còn " + pending.length + " việc cần tham gia" : "Không còn việc nào cần tham gia") + '</b><p>Đã xong ' + doneN + "/" + total + ' việc</p></section>';
   h += '<div class="hr"><h2>Việc cần nhắc</h2><button class="btn" data-act="addNote">+ Thêm việc</button></div>';
   h += pending.length ? pending.map(r => '<div class="card">' + tickBtn("tickNote", r.id, false, "Đánh dấu đã xong: " + r.t) + '<div class="tx"><b>' + esc(r.t) + '</b><span>' + esc(meta(r)) + '</span></div>' + delBtn("delNote", r.id, "Xoá việc " + r.t) + '</div>').join("") : '<div class="empty">Không còn việc nào cần tham gia.</div>';
@@ -433,7 +435,7 @@ function vResults() {
 function vReview() {
   const [a, b] = period(UI.mode), week = UI.mode === "week";
   const child = ratio(S.tasks.filter(t => inRange(taskDate(t), a, b)), t => t.done);
-  const par = ratio(notesList().filter(r => inRange(r.date || "", a, b)), r => r.done);
+  const par = ratio(notesList().filter(r => inRange(r.date || "", a, b)), r => isDoneNow(r));
   const donut = (title, r) => '<div class="pc"><h3>' + title + '</h3><div class="don" style="background:conic-gradient(#1A6AC8 ' + Math.round(r.pct * 3.6) + 'deg,#C9DFF8 0)"><span>' + r.pct + '%</span></div><p>' + (r.total ? r.done + "/" + r.total + " việc · chưa xong " + (100 - r.pct) + "%" : "Chưa có việc nào") + '</p></div>';
   let h = '<div class="pad"><div class="seg" role="group" aria-label="Khoảng thời gian"><button class="' + (week ? "on" : "") + '" data-act="mode" data-mode="week" aria-pressed="' + week + '">Theo tuần</button><button class="' + (week ? "" : "on") + '" data-act="mode" data-mode="month" aria-pressed="' + !week + '">Theo tháng</button></div>';
   h += '<div class="hr"><h2>' + (week ? "Tuần này · " : "Tháng " + a.slice(5, 7) + "/" + a.slice(0, 4) + " · ") + dm(a) + " – " + dm(b) + (week ? "/" + b.slice(0, 4) : "") + '</h2></div><div class="two">' + donut("Con", child) + donut("Phụ huynh", par) + '</div>';
@@ -485,7 +487,7 @@ function vForm(view) {
   } else if (view === "addNote") {
     h += field("Tên việc", "tname", f.tname, {ph: "VD: Họp phụ huynh"}) + '<span class="lb">Chọn nhanh</span><div class="opts">' + chips(QUICK, "fquick", QUICK.indexOf(f.tname)) + '</div>' +
       '<div class="two2"><div>' + field("Ngày", "tdate", f.tdate, {type: "date"}) + '</div><div>' + field("Giờ", "ttime", f.ttime, {type: "time"}) + '</div></div>' + field("Địa điểm (không bắt buộc)", "tplace", f.tplace) +
-      toggle("tremind", f.tremind, "Nhắc trước 1 ngày") + toggle("tmonthly", f.tmonthly, "Lặp lại hằng tháng");
+      '<span class="lb">Lặp lại</span><div class="row">' + chips(["Một lần", "Hằng ngày", "Hằng tháng"], "trepeat", f.trepeat || 0) + '</div>' + (f.trepeat === 1 ? "" : toggle("tremind", f.tremind, "Nhắc trước 1 ngày"));
   } else if (view === "addResult") {
     h += '<label class="lb" for="f-rsubj">Môn học</label><select class="fld" id="f-rsubj" name="rsubj">' + SUBJ_ORDER.map(s => '<option' + (s === f.rsubj ? " selected" : "") + '>' + esc(s) + '</option>').join("") + '</select>' +
       '<span class="lb">Điểm số (0 – 10)</span><div class="row">' + chips(["6", "7", "8", "9", "10"], "fscore", ["6", "7", "8", "9", "10"].indexOf(String(f.rscore))) + '</div>' +
@@ -532,7 +534,7 @@ function syncForm() { document.querySelectorAll("#main [name]").forEach(function
 function openForm(view, patch) {
   const t = todayStr();
   UI.form = Object.assign({kind: 0, title: "", day: UI.day, start: "07:30", end: "08:15", room: "",
-    tname: "", tdate: t, ttime: defaultTime(), tplace: "", tremind: true, tmonthly: false,
+    tname: "", tdate: t, ttime: defaultTime(), tplace: "", tremind: true, tmonthly: false, trepeat: 0,
     rsubj: "Toán", rscore: "8", rkind: "Kiểm tra 15 phút", rdate: t, rnote: "",
     dname: "", ddate: t, dtime: defaultTime(), ddone: true,
     cname: S.child.name || "", ccls: S.child.cls || "", cyear: S.child.year || ""}, patch || {});
@@ -561,8 +563,13 @@ function saveForm() {
     const name = (f.tname || "").trim(); if (!name) return fail("Vui lòng nhập tên việc.");
     if (!f.tdate) return fail("Vui lòng chọn ngày.");
     const time = parseTime(f.ttime); if (!time) return fail("Vui lòng chọn giờ.");
-    const place = (f.tplace || "").trim(), series = f.tmonthly ? "s" + nid() : "";
-    const n = f.tmonthly ? 12 : 1;
+    const place = (f.tplace || "").trim();
+    if (f.trepeat === 1) {
+      S.reminders.push({id: nid(), repeat: "daily", date: f.tdate, time: time, t: name, note: place, done: false, lastDone: ""});
+      save(); go("notes"); toast("Đã thêm việc hằng ngày"); return;
+    }
+    const series = f.trepeat === 2 ? "s" + nid() : "";
+    const n = f.trepeat === 2 ? 12 : 1;
     for (let i = 0; i < n; i++) {
       const date = addMonths(f.tdate, i), id = nid();
       S.reminders.push({id: id, repeat: "none", date: date, time: time, t: name, note: place, done: false, series: series});
@@ -669,11 +676,12 @@ document.addEventListener("click", function (e) {
     case "fscore": upd(); UI.form.rscore = ["6", "7", "8", "9", "10"][i]; render(); break;
     case "tremind": upd(); UI.form.tremind = !UI.form.tremind; render(); break;
     case "tmonthly": upd(); UI.form.tmonthly = !UI.form.tmonthly; render(); break;
+    case "trepeat": upd(); UI.form.trepeat = i; render(); break;
     case "ddone": upd(); UI.form.ddone = !UI.form.ddone; render(); break;
     case "save": saveForm(); break;
     case "delMain": S.schedule[UI.day] = (S.schedule[UI.day] || []).filter(x => x.id !== id); save(); render(); toast("Đã xoá tiết học"); break;
     case "delExtra": S.tutoring = S.tutoring.filter(x => x.id !== id); S.outside = S.outside.filter(x => x.id !== id); save(); render(); toast("Đã xoá"); break;
-    case "tickNote": { const r = S.reminders.find(x => x.id === id); if (r) { r.done = !r.done; save(); render(); } break; }
+    case "tickNote": { const r = S.reminders.find(x => x.id === id); if (r) { if (r.repeat === "daily") r.lastDone = r.lastDone === todayStr() ? "" : todayStr(); else r.done = !r.done; save(); render(); } break; }
     case "delNote": { const r = S.reminders.find(x => x.id === id); if (r) { S.reminders = S.reminders.filter(x => x.id !== id && x.pid !== id && !(r.series && x.series === r.series)); save(); render(); toast("Đã xoá việc"); } break; }
     case "tickTask": { const t = S.tasks.find(x => x.id === id); if (t) { t.done = !t.done; save(); render(); } break; }
     case "delTask": S.tasks = S.tasks.filter(x => x.id !== id); save(); render(); toast("Đã xoá"); break;
